@@ -6,7 +6,8 @@ import numpy as np
 import pretty_midi
 from matplotlib import pyplot as plt
 
-from PitchShift import PitchShift
+from augmentations.pitch_shift import PitchShift
+from augmentations.onset_time_shift import OnsetTimeShift
 
 
 def load_midi(path):
@@ -71,6 +72,7 @@ if __name__ == '__main__':
 
     midi_transforms = [
         PitchShift(max_shift=5, mode='both', p_instruments=1.0, p=0.1),
+        OnsetTimeShift(max_shift=2.3, mode='both', p_instruments=1.0, p=0.1),
     ]
 
     transformed_midi_data = copy.deepcopy(midi_data)
@@ -84,4 +86,4 @@ if __name__ == '__main__':
     print("Total time taken for all transforms = {}s".format(total_durn))
 
     save_midi(midi_data, '../short_transformed.mid')
-    viz_transform(midi_data, transformed_midi_data, 'PitchShift')
+    viz_transform(midi_data, transformed_midi_data, 'PitchShift + TimeShift')

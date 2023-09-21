@@ -9,18 +9,19 @@ VALID_MODES = ['both', 'up', 'down']
 
 
 class PitchShift(BaseMidiTransform):
-    def __init__(self, max_shift: int, mode: str = 'both', p_instruments: float = 1.0, p: float = 0.2) -> object:
+    def __init__(self, max_shift: int, mode: str = 'both', p_instruments: float = 1.0,
+                 p: float = 0.2):
         """
         Randomly transpose (pitch shift) MIDI note values.
 
-        :param max_shift: Maximum value by which a note can be randomly shifted.
+        :param max_shift: Maximum value by which a note pitch can be randomly shifted.
         :param mode: 'up' if notes can only be transposed up, 'down' if notes can only be transposed down,
         'both' if notes can be transposed up or down.
         :param p_instruments: If a MIDI file has >1 instruments, this parameter will determine the percentage of
         instruments that may have random note transpositions.
         :param p: Determines the percentage of notes that may be randomly transposed per instrument.
         """
-        super().__init__(p=p)
+        super().__init__(p_instruments=p_instruments, p=p)
 
         if not 0 <= max_shift <= 127:
             raise ValueError(
@@ -29,12 +30,7 @@ class PitchShift(BaseMidiTransform):
 
         if mode not in VALID_MODES:
             raise ValueError(
-                "Valid pitch shift modes are: {}.".format(VALID_MODES)
-            )
-
-        if not 0 <= p <= 1:
-            raise ValueError(
-                "Probability of applying PitchShift on an instrument must be >=0 and <=1."
+                "Valid PitchShift modes are: {}.".format(VALID_MODES)
             )
 
         self.max_shift = max_shift
@@ -46,8 +42,6 @@ class PitchShift(BaseMidiTransform):
         else:
             self.mode = self._both
 
-        self.p_instruments = p_instruments
-
     def _both(self, pitch):
         return np.clip(pitch + np.random.randint(-self.max_shift, self.max_shift + 1), 0, 127)
 
@@ -58,27 +52,7 @@ class PitchShift(BaseMidiTransform):
         return np.clip(pitch + np.random.randint(-self.max_shift, 1), 0, 127)
 
     def apply(self, midi_data):
-
-        modified_instruments = [instrument for instrument in midi_data.instruments if not instrument.is_drum]
-
-        if len(modified_instruments) == 0:
-            # TODO Replace with a better warning definition
-            logging.warning(
-                "MIDI file only contains drum tracks. Skipping PitchShift.",
-            )
-            return midi_data
-
-        if self.p_instruments < 1.0 and len(modified_instruments) > 1:
-            num_modified_instruments = int(self.p_instruments * len(modified_instruments))
-            if num_modified_instruments == 0:
-                # TODO Replace with a better warning definition
-                logging.warning(
-                    "PitchShift can't be performed on 0 non-drum instruments. Skipping.",
-                )
-                return midi_data
-
-            modified_instruments = random.sample(modified_instruments, k=num_modified_instruments)
-
+        modified_instruments = self._get_modified_instruments_list(midi_data)
         for instrument in modified_instruments:
             num_shifted_notes_per_instrument = int(self.p * len(instrument.notes))
             if num_shifted_notes_per_instrument == 0:
@@ -90,6 +64,4 @@ class PitchShift(BaseMidiTransform):
 
             for note in random.sample(instrument.notes, k=num_shifted_notes_per_instrument):
                 note.pitch = self.mode(note.pitch)
-
-            pass
         return midi_data
