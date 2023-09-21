@@ -7,7 +7,7 @@ class BaseMidiTransform:
         self.p = p
 
     def apply(self, midi_data):
-        raise NotImplemented
+        raise NotImplementedError
 
     def __call__(self, midi_data):
         return self.apply(midi_data)
