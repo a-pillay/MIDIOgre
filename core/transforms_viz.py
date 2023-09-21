@@ -86,4 +86,4 @@ if __name__ == '__main__':
     print("Total time taken for all transforms = {}s".format(total_durn))
 
     save_midi(midi_data, '../short_transformed.mid')
-    viz_transform(midi_data, transformed_midi_data, 'PitchShift + TimeShift')
+    viz_transform(midi_data, transformed_midi_data, 'PitchShift + OnsetTimeShift')
