@@ -8,9 +8,12 @@ MIDIOgre is a Python library designed for performing data augmentations on MIDI 
 models operating on MIDI data. With MIDIOgre, you can easily generate variations of MIDI sequences to enrich your
 training data and improve the robustness and generalization of your models.
 
+![Demo Plot of MIDIOgre Transformations](https://github.com/a-pillay/MIDIOgre/blob/main/docs/example_plot.png)
+
 ## Augmentations Implemented
 
 - **PitchShift**: Randomly transpose (pitch shift) MIDI note values of randomly selected instruments in a MIDI file.
+- **OnsetTimeShift**: Randomly modify MIDI note onset times while keeping their total durations intact.
 
 ## Note
 
