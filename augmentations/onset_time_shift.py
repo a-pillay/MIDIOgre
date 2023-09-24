@@ -9,9 +9,10 @@ VALID_MODES = ['both', 'left', 'right']
 
 
 class OnsetTimeShift(BaseMidiTransform):
-    def __init__(self, max_shift: int, mode: str = 'both', p_instruments: float = 1.0, p: float = 0.2):
+    def __init__(self, max_shift: float, mode: str = 'both', p_instruments: float = 1.0, p: float = 0.2):
         """
-        Randomly modify MIDI note onset times while keeping their total durations intact.
+        Randomly modify MIDI note onset times while keeping their total durations intact. Post augmentation,
+        the note onset time will be >= 0 and <= instrument track duration.
 
         :param max_shift: Maximum value by which a note onset time can be randomly shifted.
         :param mode: 'left' if notes can only be advanced, 'right' if notes can only be delayed,
