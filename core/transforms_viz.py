@@ -7,6 +7,7 @@ import pretty_midi
 from matplotlib import pyplot as plt
 
 from augmentations.duration_shift import DurationShift
+from augmentations.note_delete import NoteDelete
 from augmentations.pitch_shift import PitchShift
 from augmentations.onset_time_shift import OnsetTimeShift
 
@@ -75,6 +76,7 @@ if __name__ == '__main__':
         PitchShift(max_shift=5, mode='both', p_instruments=1.0, p=0.1),
         OnsetTimeShift(max_shift=2.3, mode='both', p_instruments=1.0, p=0.1),
         DurationShift(max_shift=0.5, mode='both', p_instruments=1.0, p=0.1),
+        NoteDelete(p_instruments=1.0, p=0.1),
     ]
 
     transformed_midi_data = copy.deepcopy(midi_data)

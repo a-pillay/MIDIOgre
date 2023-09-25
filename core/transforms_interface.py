@@ -18,6 +18,8 @@ class BaseMidiTransform:
         self.p_instruments = p_instruments
 
     def _get_modified_instruments_list(self, midi_data):
+
+        # filtering out drum instruments (TODO: Evaluate whether this is needed)
         modified_instruments = [instrument for instrument in midi_data.instruments if not instrument.is_drum]
 
         if len(modified_instruments) == 0:
