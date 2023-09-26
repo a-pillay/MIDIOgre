@@ -1,7 +1,7 @@
-'''
+"""
 As an experiment, this script was initially generated using ChatGPT September 25 Version (Free Research Preview).
 It was subsequently modified to fix errors and better cover the concerned code.
-'''
+"""
 
 from unittest.mock import Mock
 import random
