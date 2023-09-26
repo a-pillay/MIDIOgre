@@ -1,3 +1,8 @@
+'''
+As an experiment, this script was initially generated using ChatGPT September 25 Version (Free Research Preview).
+It was subsequently modified to fix errors and better cover the concerned code.
+'''
+
 from unittest.mock import Mock
 import random
 
@@ -58,7 +63,7 @@ def test_apply_enough_notes(pitch_shift_instance, monkeypatch):
     instrument.is_drum = False
     midi_data.instruments = [instrument]
 
-    # Mock random.randint to always return 0 for predictable testing
+    # Mock random.randint to always return 1 for predictable testing
     def mock_np_randint(low, high, size=None):
         return 1
 
@@ -85,7 +90,7 @@ def test_apply_not_enough_notes(pitch_shift_instance, monkeypatch):
     instrument.is_drum = False
     midi_data.instruments = [instrument]
 
-    # Mock random.randint to always return 0 for predictable testing
+    # Mock random.randint to always return 1 for predictable testing
     def mock_np_randint(low, high, size=None):
         return 1
 
@@ -98,5 +103,5 @@ def test_apply_not_enough_notes(pitch_shift_instance, monkeypatch):
     # Apply pitch shift
     modified_midi_data = pitch_shift_instance.apply(midi_data)
 
-    # Ensure that the note pitch has been modified
+    # Ensure that the note pitch has not been modified
     assert modified_midi_data.instruments[0].notes[0].pitch == 60
