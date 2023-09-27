@@ -1,3 +1,8 @@
+"""
+As an experiment, this script was initially generated using ChatGPT September 25 Version (Free Research Preview).
+It was subsequently modified to fix errors and better cover the concerned code.
+"""
+
 import random
 import pytest
 from MIDIOgre.augmentations.note_delete import NoteDelete

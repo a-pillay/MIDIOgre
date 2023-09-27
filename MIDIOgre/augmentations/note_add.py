@@ -1,4 +1,3 @@
-import logging
 import math
 
 import numpy as np
@@ -81,14 +80,7 @@ class NoteAdd(BaseMidiTransform):
     def apply(self, midi_data):
         modified_instruments = self._get_modified_instruments_list(midi_data)
         for instrument in modified_instruments:
-            num_new_notes_added_per_instrument = math.ceil(np.random.uniform(0, self.p) * len(instrument.notes))
-            if num_new_notes_added_per_instrument == 0:
-                # TODO Replace with a better warning definition
-                logging.debug(
-                    "NoteAdd has no notes to add for the given non-drum instrument. Skipping.",
-                )
-                continue
-
+            num_new_notes_added_per_instrument = math.ceil(np.random.uniform(1e-12, self.p) * len(instrument.notes))
             instrument.notes.extend(
                 self.__generate_n_midi_notes(n=num_new_notes_added_per_instrument,
                                              instrument_end_time=instrument.notes[-1].end)
