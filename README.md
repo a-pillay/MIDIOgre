@@ -33,8 +33,8 @@ _(Some of these have been inspired from [mdtk](https://github.com/JamesOwers/mid
 
 ## Note
 
-This work is highly primitive at the moment as is undergoing active development. I intend to include more augmentations
-shortly.
+This work is highly primitive at the moment and is undergoing active development. As of now, it is simply a showcase of
+work and is not ready to be integrated into your ML workflow. However, I intend to get it usable on priority.
 
 ## Contributing
 
