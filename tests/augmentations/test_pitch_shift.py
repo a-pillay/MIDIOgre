@@ -10,6 +10,7 @@ import numpy as np
 import pytest
 
 from augmentations.pitch_shift import PitchShift
+from tests.augmentations.core_mocks import generate_mock_midi_data
 
 
 @pytest.fixture
@@ -54,21 +55,15 @@ def test_invalid_max_shift():
 
 
 def test_apply_enough_notes(pitch_shift_instance, monkeypatch):
-    # Create a mock MIDI data object with instruments and notes
-    midi_data = Mock()
-    instrument = Mock()
-    note = Mock()
-    note.pitch = 60
-    instrument.notes = [note] * 10
-    instrument.is_drum = False
-    midi_data.instruments = [instrument]
+    midi_data = generate_mock_midi_data(num_notes=10)
 
     # Mock random.randint to always return 1 for predictable testing
     def mock_np_randint(low, high, size=None):
         return 1
 
+        # Mock random.sample to return only the first note
     def mock_randsamp(modified_instruments, k):
-        return [note]
+        return [midi_data.instruments[0].notes[0]]
 
     monkeypatch.setattr(np.random, 'randint', mock_np_randint)
     monkeypatch.setattr(random, 'sample', mock_randsamp)
@@ -81,21 +76,15 @@ def test_apply_enough_notes(pitch_shift_instance, monkeypatch):
 
 
 def test_apply_not_enough_notes(pitch_shift_instance, monkeypatch):
-    # Create a mock MIDI data object with instruments and notes
-    midi_data = Mock()
-    instrument = Mock()
-    note = Mock()
-    note.pitch = 60
-    instrument.notes = [note]
-    instrument.is_drum = False
-    midi_data.instruments = [instrument]
+    midi_data = generate_mock_midi_data(num_notes=1)
 
     # Mock random.randint to always return 1 for predictable testing
     def mock_np_randint(low, high, size=None):
         return 1
 
+        # Mock random.sample to return only the first note
     def mock_randsamp(modified_instruments, k):
-        return [note]
+        return [midi_data.instruments[0].notes[0]]
 
     monkeypatch.setattr(np.random, 'randint', mock_np_randint)
     monkeypatch.setattr(random, 'sample', mock_randsamp)
