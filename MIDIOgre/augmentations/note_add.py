@@ -8,7 +8,8 @@ from MIDIOgre.core.transforms_interface import BaseMidiTransform
 
 class NoteAdd(BaseMidiTransform):
     def __init__(self, note_num_range: (int, int), note_velocity_range: (int, int), note_duration_range: (int, int),
-                 restrict_to_instrument_time: bool = True, p_instruments: float = 1.0, p: float = 0.2):
+                 restrict_to_instrument_time: bool = True, p_instruments: float = 1.0, p: float = 0.2,
+                 eps: float = 1e-12):
         """
         Randomly add some notes to a MIDI instrument track.
 
@@ -22,8 +23,9 @@ class NoteAdd(BaseMidiTransform):
         instruments that may have random note deletions.
         :param p: Determines the maximum percentage of notes (relative to total notes) that may be randomly added
         per instrument.
+        :param eps: Epsilon term added to represent the lowest possible value (for numerical stability)
         """
-        super().__init__(p_instruments=p_instruments, p=p)
+        super().__init__(p_instruments=p_instruments, p=p, eps=eps)
 
         if len(note_num_range) != 2 or note_num_range[1] < note_num_range[0]:
             raise ValueError(
@@ -80,7 +82,7 @@ class NoteAdd(BaseMidiTransform):
     def apply(self, midi_data):
         modified_instruments = self._get_modified_instruments_list(midi_data)
         for instrument in modified_instruments:
-            num_new_notes_added_per_instrument = math.ceil(np.random.uniform(1e-12, self.p) * len(instrument.notes))
+            num_new_notes_added_per_instrument = math.ceil(np.random.uniform(self.eps, self.p) * len(instrument.notes))
             instrument.notes.extend(
                 self.__generate_n_midi_notes(n=num_new_notes_added_per_instrument,
                                              instrument_end_time=instrument.notes[-1].end)

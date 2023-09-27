@@ -9,7 +9,8 @@ VALID_MODES = ['both', 'left', 'right']
 
 
 class OnsetTimeShift(BaseMidiTransform):
-    def __init__(self, max_shift: float, mode: str = 'both', p_instruments: float = 1.0, p: float = 0.2):
+    def __init__(self, max_shift: float, mode: str = 'both', p_instruments: float = 1.0, p: float = 0.2,
+                 eps: float = 1e-12):
         """
         Randomly modify MIDI note onset times while keeping their total durations intact. Post augmentation,
         the note onset time will be >= 0 and <= instrument track duration.
@@ -20,8 +21,9 @@ class OnsetTimeShift(BaseMidiTransform):
         :param p_instruments: If a MIDI file has >1 instruments, this parameter will determine the percentage of
         instruments that may have random note onset time changes.
         :param p: Determines the percentage of notes that may have random onset time changes per instrument.
+        :param eps: Epsilon term added to represent the lowest possible value (for numerical stability)
         """
-        super().__init__(p_instruments=p_instruments, p=p)
+        super().__init__(p_instruments=p_instruments, p=p, eps=eps)
 
         if mode not in VALID_MODES:
             raise ValueError(

@@ -9,15 +9,16 @@ from MIDIOgre.core.transforms_interface import BaseMidiTransform
 
 
 class NoteDelete(BaseMidiTransform):
-    def __init__(self, p_instruments: float = 1.0, p: float = 0.2):
+    def __init__(self, p_instruments: float = 1.0, p: float = 0.2, eps: float = 1e-12):
         """
         Randomly delete some notes from a MIDI instrument track.
 
         :param p_instruments: If a MIDI file has >1 instruments, this parameter will determine the percentage of
         instruments that may have random note deletions.
         :param p: Determines the maximum percentage of notes that may be randomly deleted per instrument.
+        :param eps: Epsilon term added to represent the lowest possible value (for numerical stability)
         """
-        super().__init__(p_instruments=p_instruments, p=p)
+        super().__init__(p_instruments=p_instruments, p=p, eps=eps)
 
         # Correcting self.p to reflect probability of note deletions (inverse effect)
         self.p = 1 - self.p

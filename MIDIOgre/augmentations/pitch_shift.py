@@ -10,7 +10,7 @@ VALID_MODES = ['both', 'up', 'down']
 
 class PitchShift(BaseMidiTransform):
     def __init__(self, max_shift: int, mode: str = 'both', p_instruments: float = 1.0,
-                 p: float = 0.2):
+                 p: float = 0.2, eps: float = 1e-12):
         """
         Randomly transpose (pitch shift) MIDI note values.
 
@@ -20,8 +20,9 @@ class PitchShift(BaseMidiTransform):
         :param p_instruments: If a MIDI file has >1 instruments, this parameter will determine the percentage of
         instruments that may have random note transpositions.
         :param p: Determines the percentage of notes that may be randomly transposed per instrument.
+        :param eps: Epsilon term added to represent the lowest possible value (for numerical stability)
         """
-        super().__init__(p_instruments=p_instruments, p=p)
+        super().__init__(p_instruments=p_instruments, p=p, eps=eps)
 
         if not 0 <= max_shift <= 127:
             raise ValueError(

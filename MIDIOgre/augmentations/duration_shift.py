@@ -10,7 +10,7 @@ VALID_MODES = ['both', 'shrink', 'extend']
 
 class DurationShift(BaseMidiTransform):
     def __init__(self, max_shift: float, mode: str = 'both', min_duration=1e-6, p_instruments: float = 1.0,
-                 p: float = 0.2):
+                 p: float = 0.2, eps: float = 1e-12):
         """
         Randomly modify MIDI note durations while keeping their onset times intact. Post augmentation, the note duration
         will be >= min_duration and <= instrument track duration.
@@ -22,8 +22,9 @@ class DurationShift(BaseMidiTransform):
         :param p_instruments: If a MIDI file has >1 instruments, this parameter will determine the percentage of
         instruments that may have random note duration changes.
         :param p: Determines the percentage of notes that may have random duration changes per instrument.
+        :param eps: Epsilon term added to represent the lowest possible value (for numerical stability)
         """
-        super().__init__(p_instruments=p_instruments, p=p)
+        super().__init__(p_instruments=p_instruments, p=p, eps=eps)
 
         if mode not in VALID_MODES:
             raise ValueError(

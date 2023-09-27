@@ -3,7 +3,7 @@ import random
 
 
 class BaseMidiTransform:
-    def __init__(self, p_instruments: float, p: float):
+    def __init__(self, p_instruments: float, p: float, eps: float = 1e-12):
         if not 0 <= p <= 1:
             raise ValueError(
                 "Probability of applying a MIDI Transform must be >=0 and <=1."
@@ -16,6 +16,7 @@ class BaseMidiTransform:
 
         self.p = p
         self.p_instruments = p_instruments
+        self.eps = eps
 
     def _get_modified_instruments_list(self, midi_data):
 
