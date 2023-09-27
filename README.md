@@ -18,12 +18,16 @@ training data and improve the robustness and generalization of your models.
 - **OnsetTimeShift**: Randomly modify MIDI note onset times while keeping their total durations intact.
 - **DurationShift**: Randomly modify MIDI note durations while keeping their onset times intact.
 - **NoteDelete**: Randomly delete some notes from a MIDI instrument track.
+- **NoteAdd**: Randomly add some notes to a MIDI instrument track.
 
 ### Envisaged
 
-- **NoteAdd**: Randomly add some notes to a MIDI instrument track.
 - **NoteSplit**: Randomly split some notes in a MIDI instrument track to a random number of chunks.
 - **VelocityShift**: Randomly alter MIDI note velocities of randomly selected instruments in a MIDI file.
+- _Swing-based augmentations_
+- _MIDI CC based augmentations_
+- _Semantically-meaningful augmentations (respects rhythms & beats)_
+- _Suggestions welcome for more!_
 
 _(Some of these have been inspired from [mdtk](https://github.com/JamesOwers/midi_degradation_toolkit))_
 
@@ -34,8 +38,14 @@ shortly.
 
 ## Contributing
 
-Contributions to MIDIOgre are welcome! If you'd like to contribute, please reach out to me via email (refer the link to
-my website mentioned on my GitHub profile).
+Contributions to MIDIOgre are welcome! If you'd like to contribute, please reach out to me via email (_<
+my_github_id_without_hyphens>@cmu.edu_).
+
+Some areas I could use help (will update this progressively):
+
+- Writing extensive unit tests (not simply for the sake of maximizing code coverage).
+- Documentation (improving existing docs & adding more info to cater to developers from all kinds of music theory &
+  programming backgrounds).
 
 ## License
 
