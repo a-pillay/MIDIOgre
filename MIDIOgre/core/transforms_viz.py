@@ -7,6 +7,7 @@ import pretty_midi
 from matplotlib import pyplot as plt
 
 from MIDIOgre.augmentations.duration_shift import DurationShift
+from MIDIOgre.augmentations.note_add import NoteAdd
 from MIDIOgre.augmentations.note_delete import NoteDelete
 from MIDIOgre.augmentations.pitch_shift import PitchShift
 from MIDIOgre.augmentations.onset_time_shift import OnsetTimeShift
@@ -77,6 +78,8 @@ if __name__ == '__main__':
         OnsetTimeShift(max_shift=2.3, mode='both', p_instruments=1.0, p=0.1),
         DurationShift(max_shift=0.5, mode='both', p_instruments=1.0, p=0.1),
         NoteDelete(p_instruments=1.0, p=0.1),
+        NoteAdd(note_num_range=(20, 120), note_velocity_range=(20, 120), note_duration_range=(0.5, 1.5),
+                restrict_to_instrument_time=True, p_instruments=1.0, p=0.1),
     ]
 
     transformed_midi_data = copy.deepcopy(midi_data)

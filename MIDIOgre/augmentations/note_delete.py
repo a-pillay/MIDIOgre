@@ -3,6 +3,8 @@ import math
 import random
 from operator import itemgetter
 
+import numpy as np
+
 from MIDIOgre.core.transforms_interface import BaseMidiTransform
 
 
@@ -13,7 +15,7 @@ class NoteDelete(BaseMidiTransform):
 
         :param p_instruments: If a MIDI file has >1 instruments, this parameter will determine the percentage of
         instruments that may have random note deletions.
-        :param p: Determines the percentage of notes that may be randomly deleted per instrument.
+        :param p: Determines the maximum percentage of notes that may be randomly deleted per instrument.
         """
         super().__init__(p_instruments=p_instruments, p=p)
 
@@ -23,7 +25,8 @@ class NoteDelete(BaseMidiTransform):
     def apply(self, midi_data):
         modified_instruments = self._get_modified_instruments_list(midi_data)
         for instrument in modified_instruments:
-            num_preserved_notes_per_instrument = math.ceil(self.p * len(instrument.notes))
+
+            num_preserved_notes_per_instrument = math.ceil(np.random.uniform(self.p, 1.0) * len(instrument.notes))
             if num_preserved_notes_per_instrument == 0:
                 # TODO Replace with a better warning definition
                 logging.debug(
@@ -34,5 +37,5 @@ class NoteDelete(BaseMidiTransform):
             # TODO Is there a better logic to this (more efficient & intuitive)?
             preserved_note_indices = sorted(random.sample(range(len(instrument.notes)),
                                                           k=num_preserved_notes_per_instrument))
-            instrument.notes = itemgetter(*preserved_note_indices)(instrument.notes)
+            instrument.notes = list(itemgetter(*preserved_note_indices)(instrument.notes))
         return midi_data
