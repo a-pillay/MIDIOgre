@@ -1,4 +1,5 @@
 import logging
+import math
 import random
 from operator import itemgetter
 
@@ -22,14 +23,16 @@ class NoteDelete(BaseMidiTransform):
     def apply(self, midi_data):
         modified_instruments = self._get_modified_instruments_list(midi_data)
         for instrument in modified_instruments:
-            num_deleted_notes_per_instrument = int(self.p * len(instrument.notes))
-            if num_deleted_notes_per_instrument == 0:
+            num_preserved_notes_per_instrument = math.ceil(self.p * len(instrument.notes))
+            if num_preserved_notes_per_instrument == 0:
                 # TODO Replace with a better warning definition
                 logging.debug(
                     "NoteDelete can't be performed on 0 notes on given non-drum instrument. Skipping.",
                 )
                 continue
 
-            indices = sorted(random.sample(range(len(instrument.notes)), k=num_deleted_notes_per_instrument))
-            instrument.notes = itemgetter(*indices)(instrument.notes)
+            # TODO Is there a better logic to this (more efficient & intuitive)?
+            preserved_note_indices = sorted(random.sample(range(len(instrument.notes)),
+                                                          k=num_preserved_notes_per_instrument))
+            instrument.notes = itemgetter(*preserved_note_indices)(instrument.notes)
         return midi_data
