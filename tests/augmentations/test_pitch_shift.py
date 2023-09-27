@@ -105,3 +105,7 @@ def test_apply_not_enough_notes(pitch_shift_instance, monkeypatch):
 
     # Ensure that the note pitch has not been modified
     assert modified_midi_data.instruments[0].notes[0].pitch == 60
+
+
+if __name__ == '__main__':
+    pytest.main()
