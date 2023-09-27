@@ -3,14 +3,13 @@ As an experiment, this script was initially generated using ChatGPT September 25
 It was subsequently modified to fix errors and better cover the concerned code.
 """
 
-from unittest.mock import Mock
 import random
 
 import numpy as np
 import pytest
 
-from augmentations.pitch_shift import PitchShift
-from tests.augmentations.core_mocks import generate_mock_midi_data
+from MIDIOgre.augmentations.pitch_shift import PitchShift
+from tests.core_mocks import generate_mock_midi_data
 
 
 @pytest.fixture

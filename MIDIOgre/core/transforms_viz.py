@@ -6,10 +6,10 @@ import numpy as np
 import pretty_midi
 from matplotlib import pyplot as plt
 
-from augmentations.duration_shift import DurationShift
-from augmentations.note_delete import NoteDelete
-from augmentations.pitch_shift import PitchShift
-from augmentations.onset_time_shift import OnsetTimeShift
+from MIDIOgre.augmentations.duration_shift import DurationShift
+from MIDIOgre.augmentations.note_delete import NoteDelete
+from MIDIOgre.augmentations.pitch_shift import PitchShift
+from MIDIOgre.augmentations.onset_time_shift import OnsetTimeShift
 
 
 def load_midi(path):
@@ -68,9 +68,9 @@ def viz_transform(original_midi_data, transformed_midi_data, transform_name):
 
 
 if __name__ == '__main__':
-    midi_data = load_midi('../example.mid')
+    midi_data = load_midi('../../example.mid')
     midi_data = truncate_midi(midi_data, 100)
-    save_midi(midi_data, '../short.mid')
+    save_midi(midi_data, '../../short.mid')
 
     midi_transforms = [
         PitchShift(max_shift=5, mode='both', p_instruments=1.0, p=0.1),
@@ -89,5 +89,5 @@ if __name__ == '__main__':
     total_durn = time.time() - overall_start
     print("Total time taken for all transforms = {}s".format(total_durn))
 
-    save_midi(transformed_midi_data, '../short_transformed.mid')
+    save_midi(transformed_midi_data, '../../short_transformed.mid')
     viz_transform(midi_data, transformed_midi_data, 'After MIDIOgre Augmentations')

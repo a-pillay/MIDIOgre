@@ -1,9 +1,7 @@
 import random
-import logging
 import pytest
-from operator import itemgetter
-from augmentations.note_delete import NoteDelete
-from tests.augmentations.core_mocks import generate_mock_midi_data
+from MIDIOgre.augmentations.note_delete import NoteDelete
+from tests.core_mocks import generate_mock_midi_data
 
 
 @pytest.fixture

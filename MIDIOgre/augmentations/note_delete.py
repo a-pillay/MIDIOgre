@@ -3,7 +3,7 @@ import math
 import random
 from operator import itemgetter
 
-from core.transforms_interface import BaseMidiTransform
+from MIDIOgre.core.transforms_interface import BaseMidiTransform
 
 
 class NoteDelete(BaseMidiTransform):

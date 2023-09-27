@@ -3,7 +3,7 @@ import random
 
 import numpy as np
 
-from core.transforms_interface import BaseMidiTransform
+from MIDIOgre.core.transforms_interface import BaseMidiTransform
 
 VALID_MODES = ['both', 'shrink', 'extend']
 
