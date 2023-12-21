@@ -11,6 +11,7 @@ from MIDIOgre.augmentations.note_add import NoteAdd
 from MIDIOgre.augmentations.note_delete import NoteDelete
 from MIDIOgre.augmentations.pitch_shift import PitchShift
 from MIDIOgre.augmentations.onset_time_shift import OnsetTimeShift
+from MIDIOgre.core.composition import Compose
 
 
 def load_midi(path):
@@ -73,24 +74,20 @@ if __name__ == '__main__':
     midi_data = truncate_midi(midi_data, 100)
     save_midi(midi_data, '../../short.mid')
 
-    midi_transforms = [
+    midi_transform = Compose([
         PitchShift(max_shift=5, mode='both', p_instruments=1.0, p=0.1),
         OnsetTimeShift(max_shift=2.3, mode='both', p_instruments=1.0, p=0.1),
         DurationShift(max_shift=0.5, mode='both', p_instruments=1.0, p=0.1),
         NoteDelete(p_instruments=1.0, p=0.1),
         NoteAdd(note_num_range=(20, 120), note_velocity_range=(20, 120), note_duration_range=(0.5, 1.5),
                 restrict_to_instrument_time=True, p_instruments=1.0, p=0.1),
-    ]
+    ])
 
     transformed_midi_data = copy.deepcopy(midi_data)
     overall_start = time.time()
-    for transform in midi_transforms:
-        transform_start = time.time()
-        transformed_midi_data = transform(transformed_midi_data)
-        transform_durn = time.time() - transform_start
-        print("Time taken for {} = {}s".format(transform.__class__.__name__, transform_durn))
+    transformed_midi_data = midi_transform(transformed_midi_data)
     total_durn = time.time() - overall_start
-    print("Total time taken for all transforms = {}s".format(total_durn))
+    print("Total time taken for {} MIDIOgre transforms = {}s".format(len(midi_transform), total_durn))
 
     save_midi(transformed_midi_data, '../../short_transformed.mid')
     viz_transform(midi_data, transformed_midi_data, 'After MIDIOgre Augmentations')
