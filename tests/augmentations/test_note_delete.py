@@ -5,7 +5,7 @@ It was subsequently modified to fix errors and better cover the concerned code.
 
 import random
 import pytest
-from MIDIOgre.augmentations.note_delete import NoteDelete
+from midiogre.augmentations.note_delete import NoteDelete
 from tests.core_mocks import generate_mock_midi_data
 
 

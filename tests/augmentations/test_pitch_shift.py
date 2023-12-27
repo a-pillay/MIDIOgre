@@ -8,7 +8,7 @@ import random
 import numpy as np
 import pytest
 
-from MIDIOgre.augmentations.pitch_shift import PitchShift
+from midiogre.augmentations.pitch_shift import PitchShift
 from tests.core_mocks import generate_mock_midi_data
 
 

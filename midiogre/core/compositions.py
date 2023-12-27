@@ -3,7 +3,7 @@ from pretty_midi import PrettyMIDI
 
 class Compose:
 
-    def __init__(self, transforms: list | tuple):
+    def __init__(self, transforms: list or tuple):
         """
         Compose several MIDIOgre transforms together.
 

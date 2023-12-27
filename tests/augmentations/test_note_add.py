@@ -8,7 +8,7 @@ import math
 import numpy as np
 import pytest
 
-from MIDIOgre.augmentations.note_add import NoteAdd
+from midiogre.augmentations.note_add import NoteAdd
 from tests.core_mocks import generate_mock_midi_data
 
 

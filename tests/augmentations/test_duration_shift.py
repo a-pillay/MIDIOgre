@@ -8,7 +8,7 @@ import random
 import numpy as np
 import pytest
 
-from MIDIOgre.augmentations.duration_shift import DurationShift
+from midiogre.augmentations.duration_shift import DurationShift
 from tests.core_mocks import generate_mock_midi_data
 
 
