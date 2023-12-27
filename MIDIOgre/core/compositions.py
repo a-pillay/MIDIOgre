@@ -9,6 +9,11 @@ class Compose:
 
         :param transforms: list of MIDIOgre transforms to be performed in the given order
         """
+        if not (isinstance(transforms, list) or isinstance(transforms, tuple)):
+            raise TypeError(
+                "Transforms to be composed must be wrapped in a list or a tuple, got {}".format(type(transforms))
+            )
+
         self.transforms = transforms
 
     def __len__(self):
