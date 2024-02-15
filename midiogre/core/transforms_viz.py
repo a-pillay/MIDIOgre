@@ -1,18 +1,15 @@
 import copy
 import time
+from statistics import mean
 
 import matplotlib
 import numpy as np
 import pretty_midi
 from matplotlib import pyplot as plt
 
-from augmentations.duration_shift import DurationShift
-from augmentations.note_add import NoteAdd
-from augmentations.note_delete import NoteDelete
-from augmentations.pitch_shift import PitchShift
-from augmentations.onset_time_shift import OnsetTimeShift
-from core.compositions import Compose
-from core.conversions import ToPRollTensor
+from midiogre.augmentations import PitchShift, OnsetTimeShift, DurationShift, NoteDelete, NoteAdd
+from augmentations.tempo_shift import TempoShift
+from midiogre.core import ToPRollTensor, Compose
 
 
 def load_midi(path):
@@ -70,9 +67,9 @@ def viz_transform(original_midi_data, transformed_proll, transform_name):
 
 
 if __name__ == '__main__':
-    midi_data = load_midi('../../example.mid')
+    midi_data = load_midi('../assets/example.mid')
     midi_data = truncate_midi(midi_data, 100)
-    save_midi(midi_data, '../../short.mid')
+    save_midi(midi_data, '../assets/short.mid')
 
     midi_transform = Compose([
         PitchShift(max_shift=5, mode='both', p_instruments=1.0, p=0.1),
@@ -81,14 +78,19 @@ if __name__ == '__main__':
         NoteDelete(p_instruments=1.0, p=0.1),
         NoteAdd(note_num_range=(20, 120), note_velocity_range=(20, 120), note_duration_range=(0.5, 1.5),
                 restrict_to_instrument_time=True, p_instruments=1.0, p=0.1),
+        TempoShift(max_shift=30, mode='both', tempo_range=(30.0, 200.0), p=0.2),
         ToPRollTensor(device='cpu')
     ])
 
-    transformed_midi_data = copy.deepcopy(midi_data)
-    overall_start = time.time()
-    transformed_midi_data = midi_transform(transformed_midi_data)
-    total_durn = time.time() - overall_start
-    print("Total time taken for {} MIDIOgre transforms = {}s".format(len(midi_transform), total_durn))
+    num_iters = 5
+    durns = []
+    for i in range(num_iters):
+        transformed_midi_data = copy.deepcopy(midi_data)
+        overall_start = time.time()
+        transformed_midi_data = midi_transform(transformed_midi_data)
+        durns.append(time.time() - overall_start)
+    print("Mean time taken for {} iters of {} MIDIOgre transforms = {}s".format(num_iters, len(midi_transform),
+                                                                                mean(durns)))
 
-    # save_midi(transformed_midi_data, '../../short_transformed.mid')
+    # save_midi(transformed_midi_data, '../assets/short_transformed.mid')
     viz_transform(midi_data, transformed_midi_data, 'After MIDIOgre Augmentations')
