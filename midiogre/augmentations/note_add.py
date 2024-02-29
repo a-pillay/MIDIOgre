@@ -68,10 +68,11 @@ class NoteAdd(BaseMidiTransform):
     def __generate_n_midi_notes(self, n, instrument_end_time):
         generated_notes = []
         for i in range(n):
+            start_time = np.random.uniform(0, instrument_end_time)
             generated_notes.append(Note(pitch=np.random.randint(self.min_note_num, self.max_note_num + 1),
                                         velocity=np.random.randint(self.min_velo, self.max_velo + 1),
-                                        start=np.random.uniform(0, instrument_end_time),
-                                        end=None))
+                                        start=start_time,
+                                        end=start_time))
             generated_notes[-1].end = np.clip(
                 generated_notes[-1].start + np.random.uniform(self.min_durn, self.max_durn),
                 None,

@@ -19,7 +19,7 @@ setup(
     keywords=['MIDI', 'Audio', 'Machine Learning', 'Data Augmentation', 'Deep Learning'],
     install_requires=[
         "numpy>=1.21.6",
-        "pretty-midi>=0.2.10",
+        "pretty-midi @ git+https://github.com/craffel/pretty-midi",
         "torch>=1.13.1",
     ],
     extras_require={

@@ -19,6 +19,8 @@ training data and improve the robustness and generalization of your models.
 - **DurationShift**: Randomly modify MIDI note durations while keeping their onset times intact.
 - **NoteDelete**: Randomly delete some notes from a MIDI instrument track.
 - **NoteAdd**: Randomly add some notes to a MIDI instrument track.
+- **TempoShift**: Randomly vary the tempo of the whole MIDI file (currently, this does not support tempo changes within
+  the file).
 
 ### Envisaged
 

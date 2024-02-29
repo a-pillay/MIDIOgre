@@ -2,9 +2,11 @@ import logging
 import random
 
 import numpy as np
+from mido import MetaMessage
+
 from core.transforms_interface import BaseMidiTransform
 
-VALID_MODES = ['both', 'increase', 'decrease']
+VALID_MODES = ['both', 'up', 'down']
 
 
 class TempoShift(BaseMidiTransform):
@@ -38,40 +40,43 @@ class TempoShift(BaseMidiTransform):
         self.max_shift = max_shift
         self.tempo_range = tempo_range
 
-        if mode == 'increase':
-            self.mode = self._increase
-        elif mode == 'decrease':
-            self.mode = self._decrease
+        if mode == 'up':
+            self.mode = self._up
+        elif mode == 'down':
+            self.mode = self._down
         else:
             self.mode = self._both
 
     def _both(self, tempo):
-        return np.clip(tempo + np.random.uniform(-self.max_shift, self.max_shift),
-                       self.tempo_range[0], self.tempo_range[1])
+        return int(6e7 / np.clip(tempo +
+                                 np.random.uniform(-self.max_shift, self.max_shift),
+                                 self.tempo_range[0],
+                                 self.tempo_range[1]))
 
-    def _increase(self, tempo):
-        return np.clip(tempo + np.random.uniform(-self.max_shift, 0),
-                       self.tempo_range[0], self.tempo_range[1])
+    def _up(self, tempo):
+        return int(6e7 / np.clip(tempo +
+                                 np.random.uniform(0, self.max_shift), self.tempo_range[0], self.tempo_range[1]))
 
-    def _decrease(self, tempo):
-        return np.clip(tempo + np.random.uniform(0, self.max_shift),
-                       self.tempo_range[0], self.tempo_range[1])
+    def _down(self, tempo):
+        return int(6e7 / np.clip(tempo +
+                                 np.random.uniform(-self.max_shift, 0), self.tempo_range[0], self.tempo_range[1]))
 
     def apply(self, midi_data):
-        if random.random() < self.p:
-            old_tick_to_time = midi_data._PrettyMIDI__tick_to_time
-            old_tick_scales = midi_data._tick_scales
-            base_tempo = 60 / (old_tick_scales[0][1] * midi_data.resolution)
 
-            new_tick_scales = [(0, 60.0 / (self.mode(base_tempo) * midi_data.resolution))]
-            midi_data._tick_scales = new_tick_scales
-            midi_data._update_tick_to_time(len(midi_data._PrettyMIDI__tick_to_time) - 1)
-            new_tick_to_time = midi_data._PrettyMIDI__tick_to_time
+        tempo_events_idx = []
+        for idx, event in enumerate(midi_data.tracks[0]):
+            if event.type == 'set_tempo':
+                tempo_events_idx.append(idx)
 
-            midi_data._PrettyMIDI__tick_to_time = old_tick_to_time
-            midi_data._tick_scales = old_tick_scales
+        if len(tempo_events_idx) == 0:
+            logging.warning("No tempo metadata found in MIDI file; assuming a default value of 120 BPM.")
+            tempo = 120.0
+        else:
+            tempo = 6e7 / midi_data.tracks[0][tempo_events_idx[0]].tempo
 
-            midi_data.adjust_times(old_tick_to_time, new_tick_to_time)
-            midi_data._tick_scales = new_tick_scales
+        for idx in tempo_events_idx:
+            midi_data.tracks[0].pop(idx)
+
+        midi_data.tracks[0].append(MetaMessage(type="set_tempo", tempo=self.mode(tempo), time=0))
 
         return midi_data
