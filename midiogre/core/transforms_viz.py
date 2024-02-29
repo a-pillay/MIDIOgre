@@ -8,8 +8,7 @@ import pretty_midi
 from matplotlib import pyplot as plt
 
 from core.conversions import ConvertToMido, ConvertToPrettyMIDI
-from midiogre.augmentations import PitchShift, OnsetTimeShift, DurationShift, NoteDelete, NoteAdd
-from augmentations.tempo_shift import TempoShift
+from midiogre.augmentations import PitchShift, OnsetTimeShift, DurationShift, NoteDelete, NoteAdd, TempoShift
 from midiogre.core import ToPRollTensor, Compose
 
 
@@ -77,10 +76,10 @@ if __name__ == '__main__':
         TempoShift(max_shift=10, mode='down', tempo_range=(30.0, 200.0), p=0.1),
         ConvertToPrettyMIDI(),
         PitchShift(max_shift=5, mode='both', p_instruments=1.0, p=0.1),
-        OnsetTimeShift(max_shift=2.3, mode='both', p_instruments=1.0, p=0.1),
+        OnsetTimeShift(max_shift=1.2, mode='both', p_instruments=1.0, p=0.1),
         DurationShift(max_shift=0.5, mode='both', p_instruments=1.0, p=0.1),
         NoteDelete(p_instruments=1.0, p=0.1),
-        NoteAdd(note_num_range=(20, 120), note_velocity_range=(20, 120), note_duration_range=(0.5, 1.5),
+        NoteAdd(note_num_range=(50, 80), note_velocity_range=(20, 120), note_duration_range=(0.5, 1.5),
                 restrict_to_instrument_time=True, p_instruments=1.0, p=0.1),
 
         # ToPRollTensor(device='cpu')
