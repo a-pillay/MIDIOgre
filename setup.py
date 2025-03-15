@@ -1,13 +1,17 @@
 # Derived from: https://github.com/iver56/audiomentations/blob/main/setup.py
 
-
+import os
 from setuptools import setup, find_packages
 
 with open("README.md", "r") as readme_file:
     long_description = readme_file.read()
 
+# Use environment variable to determine package name
+# This allows different names for TestPyPI vs PyPI
+package_name = os.environ.get('PACKAGE_NAME', 'midiogre')
+
 setup(
-    name='midiogre-test',
+    name=package_name,
     packages=find_packages(exclude=["demo", "tests"]),
     version='0.1.0',
     license='MIT',

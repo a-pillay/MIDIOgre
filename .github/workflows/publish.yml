@@ -5,8 +5,12 @@ on:
     types: [published]
 
 jobs:
-  build-and-publish:
+  deploy:
     runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+    
     steps:
     - uses: actions/checkout@v3
       with:
@@ -35,8 +39,5 @@ jobs:
       run: |
         twine check dist/*
     
-    - name: Publish to PyPI
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-      run: twine upload dist/* 
+    - name: Publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1 
