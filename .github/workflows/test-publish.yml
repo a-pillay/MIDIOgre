@@ -45,7 +45,11 @@ jobs:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
         TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
-      run: twine upload --skip-existing dist/*
+      run: |
+        echo "Checking dist contents:"
+        ls -l dist/
+        echo "Uploading to Test PyPI..."
+        twine upload --verbose --skip-existing dist/*
     
     - name: Test install from Test PyPI
       run: |
