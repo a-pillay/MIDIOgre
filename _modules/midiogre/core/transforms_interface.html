@@ -1,0 +1,235 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>midiogre.core.transforms_interface &mdash; MIDIOgre  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            MIDIOgre
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">midiogre</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.html">midiogre package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.augmentations.html">midiogre.augmentations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.core.html">midiogre.core package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MIDIOgre</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">midiogre.core.transforms_interface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for midiogre.core.transforms_interface</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Base interface for all MIDI data augmentation transforms.</span>
+
+<span class="sd">This module provides the base class for implementing MIDI data augmentation transforms.</span>
+<span class="sd">All transforms in MIDIOgre inherit from this class and must implement the `apply` method.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; class MyTransform(BaseMidiTransform):</span>
+<span class="sd">    ...     def __init__(self, p_instruments=1.0, p=0.5):</span>
+<span class="sd">    ...         super().__init__(p_instruments=p_instruments, p=p)</span>
+<span class="sd">    ...     </span>
+<span class="sd">    ...     def apply(self, midi_data):</span>
+<span class="sd">    ...         # Implement your transform logic here</span>
+<span class="sd">    ...         return midi_data</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+
+<div class="viewcode-block" id="BaseMidiTransform">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseMidiTransform</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all MIDI data augmentation transforms.</span>
+<span class="sd">    </span>
+<span class="sd">    This class provides common functionality for MIDI transforms including:</span>
+<span class="sd">    - Probability handling for transform application</span>
+<span class="sd">    - Instrument selection for multi-instrument MIDI files</span>
+<span class="sd">    - Basic validation of transform parameters</span>
+<span class="sd">    </span>
+<span class="sd">    All transforms should inherit from this class and implement the `apply` method.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        p_instruments (float): Probability of applying the transform to each instrument</span>
+<span class="sd">            when multiple instruments are present. Must be in range [0, 1].</span>
+<span class="sd">            Default: 1.0 (apply to all instruments)</span>
+<span class="sd">        p (float): Probability of applying the transform to selected notes within</span>
+<span class="sd">            each chosen instrument. Must be in range [0, 1].</span>
+<span class="sd">            Default: 0.5</span>
+<span class="sd">        eps (float, optional): Small epsilon value for numerical stability.</span>
+<span class="sd">            Default: 1e-12</span>
+<span class="sd">            </span>
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If p or p_instruments are not in range [0, 1]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_instruments</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-12</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Probability of applying a MIDI Transform must be &gt;=0 and &lt;=1.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">p_instruments</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Probability of applying transform on an instrument must be &gt;=0 and &lt;=1.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p_instruments</span> <span class="o">=</span> <span class="n">p_instruments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_modified_instruments_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midi_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get list of instruments to be modified based on p_instruments.</span>
+<span class="sd">        </span>
+<span class="sd">        This internal method handles the selection of instruments to be modified</span>
+<span class="sd">        based on the p_instruments parameter. It filters out drum instruments and</span>
+<span class="sd">        randomly selects instruments if p_instruments &lt; 1.0.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            midi_data: A PrettyMIDI object containing the MIDI data to transform.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list: List of instruments selected for modification.</span>
+<span class="sd">            </span>
+<span class="sd">        Note:</span>
+<span class="sd">            Currently drum instruments are filtered out by default.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># filtering out drum instruments (TODO: Evaluate whether this is needed)</span>
+        <span class="n">modified_instruments</span> <span class="o">=</span> <span class="p">[</span><span class="n">instrument</span> <span class="k">for</span> <span class="n">instrument</span> <span class="ow">in</span> <span class="n">midi_data</span><span class="o">.</span><span class="n">instruments</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">instrument</span><span class="o">.</span><span class="n">is_drum</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">modified_instruments</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;MIDI file only contains drum tracks.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_instruments</span> <span class="o">&lt;</span> <span class="mf">1.0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">modified_instruments</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">num_modified_instruments</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_instruments</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">modified_instruments</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">num_modified_instruments</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">&quot;No instruments left to randomly modify in MIDI file. Skipping.&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">midi_data</span>
+
+            <span class="n">modified_instruments</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">modified_instruments</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">num_modified_instruments</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">modified_instruments</span>
+
+<div class="viewcode-block" id="BaseMidiTransform.apply">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midi_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the transform to the MIDI data.</span>
+<span class="sd">        </span>
+<span class="sd">        This method should be implemented by all transform classes.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            midi_data: A PrettyMIDI object containing the MIDI data to transform.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            The transformed PrettyMIDI object.</span>
+<span class="sd">            </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            NotImplementedError: If the child class does not implement this method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="BaseMidiTransform.__call__">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform.__call__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midi_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the transform to the MIDI data.</span>
+<span class="sd">        </span>
+<span class="sd">        This method makes the transform callable, allowing it to be used as a function.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            midi_data: A PrettyMIDI object containing the MIDI data to transform.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            The transformed PrettyMIDI object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

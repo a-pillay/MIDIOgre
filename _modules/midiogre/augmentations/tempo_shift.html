@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>midiogre.augmentations.tempo_shift &mdash; MIDIOgre  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            MIDIOgre
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">midiogre</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.html">midiogre package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.augmentations.html">midiogre.augmentations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.core.html">midiogre.core package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MIDIOgre</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">midiogre.augmentations.tempo_shift</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for midiogre.augmentations.tempo_shift</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;MIDI tempo augmentation module.</span>
+
+<span class="sd">This module provides functionality to modify the tempo of MIDI files while preserving</span>
+<span class="sd">the relative timing of notes. The tempo can be shifted up or down within specified</span>
+<span class="sd">bounds, and the transform can either respect existing tempo changes or apply a single</span>
+<span class="sd">global tempo.</span>
+
+<span class="sd">Note:</span>
+<span class="sd">    This transform operates on Mido MidiFile objects. If you have a PrettyMIDI object,</span>
+<span class="sd">    you must first convert it using MIDIOgre&#39;s converters:</span>
+<span class="sd">    &gt;&gt;&gt; from midiogre.core.conversions import ConvertToMido</span>
+<span class="sd">    &gt;&gt;&gt; midi_data = ConvertToMido()(pretty_midi_obj)</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; from midiogre.augmentations import TempoShift</span>
+<span class="sd">    &gt;&gt;&gt; from midiogre.core.conversions import ConvertToMido, ConvertToPrettyMIDI</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; # Create transform that can increase or decrease tempo by up to 20 BPM</span>
+<span class="sd">    &gt;&gt;&gt; transform = TempoShift(</span>
+<span class="sd">    ...     max_shift=20.0,</span>
+<span class="sd">    ...     mode=&#39;both&#39;,</span>
+<span class="sd">    ...     tempo_range=(60.0, 180.0),</span>
+<span class="sd">    ...     p=0.8</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; # Load and transform MIDI file</span>
+<span class="sd">    &gt;&gt;&gt; midi_data = ConvertToMido()(&#39;song.mid&#39;)  # Convert to Mido format</span>
+<span class="sd">    &gt;&gt;&gt; transformed = transform(midi_data)  # Apply transform</span>
+<span class="sd">    &gt;&gt;&gt; pretty_midi_obj = ConvertToPrettyMIDI()(transformed)  # Convert back if needed</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mido</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetaMessage</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.core.transforms_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMidiTransform</span>
+
+<span class="n">VALID_MODES</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="s1">&#39;up&#39;</span><span class="p">,</span> <span class="s1">&#39;down&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="TempoShift">
+<a class="viewcode-back" href="../../../midiogre.augmentations.html#midiogre.augmentations.tempo_shift.TempoShift">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TempoShift</span><span class="p">(</span><span class="n">BaseMidiTransform</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform for randomly modifying MIDI tempo.</span>
+<span class="sd">    </span>
+<span class="sd">    This transform allows for random modification of MIDI tempo while preserving</span>
+<span class="sd">    the relative timing of notes. It can either respect all existing tempo changes</span>
+<span class="sd">    in the file or replace them with a single global tempo.</span>
+<span class="sd">    </span>
+<span class="sd">    Note:</span>
+<span class="sd">        This transform operates on Mido MidiFile objects. If you have a PrettyMIDI object,</span>
+<span class="sd">        you must first convert it using MIDIOgre&#39;s converters:</span>
+<span class="sd">        &gt;&gt;&gt; from midiogre.core.conversions import ConvertToMido</span>
+<span class="sd">        &gt;&gt;&gt; midi_data = ConvertToMido()(pretty_midi_obj)</span>
+<span class="sd">    </span>
+<span class="sd">    The tempo shift is applied with probability p, and when applied, generates</span>
+<span class="sd">    random shifts based on the specified mode and maximum shift value. The final</span>
+<span class="sd">    tempo is always clipped to stay within the specified tempo range.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        max_shift (float): Maximum value by which tempo can be randomly shifted (in BPM).</span>
+<span class="sd">            Must be positive.</span>
+<span class="sd">        mode (str): Direction of tempo shift. One of:</span>
+<span class="sd">            - &#39;up&#39;: Only increase tempo</span>
+<span class="sd">            - &#39;down&#39;: Only decrease tempo</span>
+<span class="sd">            - &#39;both&#39;: Allow both increase and decrease</span>
+<span class="sd">            Default: &#39;both&#39;</span>
+<span class="sd">        tempo_range (tuple[float, float]): Allowed tempo range in BPM as (min_tempo, max_tempo).</span>
+<span class="sd">            The transformed tempo will be clipped to stay within this range.</span>
+<span class="sd">            Default: (30.0, 200.0)</span>
+<span class="sd">        p (float): Probability of applying the tempo shift. Must be in range [0, 1].</span>
+<span class="sd">            Default: 0.2</span>
+<span class="sd">        respect_tempo_shifts (bool): If True, preserves all tempo change events,</span>
+<span class="sd">            shifting each while maintaining their timing. If False, replaces all</span>
+<span class="sd">            tempo events with a single tempo at the start.</span>
+<span class="sd">            Default: True</span>
+<span class="sd">        eps (float, optional): Small epsilon value for numerical stability.</span>
+<span class="sd">            Default: 1e-12</span>
+<span class="sd">            </span>
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If any of the following conditions are met:</span>
+<span class="sd">            - mode is not one of &#39;both&#39;, &#39;up&#39;, &#39;down&#39;</span>
+<span class="sd">            - max_shift is not positive</span>
+<span class="sd">            - tempo_range is not a tuple/list of length 2</span>
+<span class="sd">            - min_tempo is negative</span>
+<span class="sd">            - min_tempo &gt;= max_tempo</span>
+<span class="sd">            </span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from midiogre.core.conversions import ConvertToMido, ConvertToPrettyMIDI</span>
+<span class="sd">        &gt;&gt;&gt; # Create transform that increases tempo by 10-30 BPM</span>
+<span class="sd">        &gt;&gt;&gt; transform = TempoShift(</span>
+<span class="sd">        ...     max_shift=30.0,</span>
+<span class="sd">        ...     mode=&#39;up&#39;,</span>
+<span class="sd">        ...     tempo_range=(60.0, 240.0),</span>
+<span class="sd">        ...     p=1.0</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; midi_data = ConvertToMido()(&#39;song.mid&#39;)  # Convert to Mido format</span>
+<span class="sd">        &gt;&gt;&gt; transformed = transform(midi_data)  # Apply transform</span>
+<span class="sd">        &gt;&gt;&gt; pretty_midi_obj = ConvertToPrettyMIDI()(transformed)  # Convert back if needed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TempoShift.__init__">
+<a class="viewcode-back" href="../../../midiogre.augmentations.html#midiogre.augmentations.tempo_shift.TempoShift.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_shift</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">tempo_range</span><span class="p">:</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mf">30.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">),</span>
+                 <span class="n">p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">respect_tempo_shifts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-12</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the TempoShift transform.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            max_shift (float): Maximum value by which tempo can be randomly shifted (in BPM).</span>
+<span class="sd">            mode (str, optional): Direction of tempo shift (&#39;up&#39;, &#39;down&#39;, or &#39;both&#39;).</span>
+<span class="sd">                Default: &#39;both&#39;</span>
+<span class="sd">            tempo_range (tuple[float, float], optional): Allowed tempo range in BPM.</span>
+<span class="sd">                Default: (30.0, 200.0)</span>
+<span class="sd">            p (float, optional): Probability of applying the transform.</span>
+<span class="sd">                Default: 0.2</span>
+<span class="sd">            respect_tempo_shifts (bool, optional): Whether to preserve multiple tempo events.</span>
+<span class="sd">                Default: True</span>
+<span class="sd">            eps (float, optional): Small epsilon value for numerical stability.</span>
+<span class="sd">                Default: 1e-12</span>
+<span class="sd">                </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If parameters are invalid (see class docstring for details).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">p_instruments</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">eps</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">VALID_MODES</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Mode must be one of </span><span class="si">{</span><span class="n">VALID_MODES</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">max_shift</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;max_shift must be positive, got </span><span class="si">{</span><span class="n">max_shift</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tempo_range</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">tempo_range</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;tempo_range must be a tuple or list of length 2, got </span><span class="si">{</span><span class="n">tempo_range</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">min_tempo</span><span class="p">,</span> <span class="n">max_tempo</span> <span class="o">=</span> <span class="n">tempo_range</span>
+        <span class="k">if</span> <span class="n">min_tempo</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;min_tempo must be positive, got </span><span class="si">{</span><span class="n">min_tempo</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">min_tempo</span> <span class="o">&gt;=</span> <span class="n">max_tempo</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;min_tempo must be less than max_tempo, got </span><span class="si">{</span><span class="n">min_tempo</span><span class="si">}</span><span class="s2"> &gt;= </span><span class="si">{</span><span class="n">max_tempo</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_shift</span> <span class="o">=</span> <span class="n">max_shift</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tempo_range</span> <span class="o">=</span> <span class="n">tempo_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">respect_tempo_shifts</span> <span class="o">=</span> <span class="n">respect_tempo_shifts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_generate_shifts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_shifts</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate random tempo shifts based on the configured mode.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            num_shifts (int): Number of shifts to generate.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Array of random shifts in BPM. Shape: (num_shifts,)</span>
+<span class="sd">            </span>
+<span class="sd">        Note:</span>
+<span class="sd">            The shifts are generated uniformly within the range determined by</span>
+<span class="sd">            self.mode and self.max_shift:</span>
+<span class="sd">            - &#39;up&#39;: [0, max_shift]</span>
+<span class="sd">            - &#39;down&#39;: [-max_shift, 0]</span>
+<span class="sd">            - &#39;both&#39;: [-max_shift, max_shift]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">num_shifts</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+            
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;up&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_shift</span><span class="p">,</span> <span class="n">num_shifts</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;down&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">max_shift</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">num_shifts</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># both</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">max_shift</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_shift</span><span class="p">,</span> <span class="n">num_shifts</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_convert_tempo_to_bpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tempo_microseconds_per_beat</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert tempo from microseconds per beat to BPM.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            tempo_microseconds_per_beat (int): Tempo in microseconds per beat.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            float: Tempo in beats per minute (BPM).</span>
+<span class="sd">            </span>
+<span class="sd">        Note:</span>
+<span class="sd">            The conversion formula is: BPM = 60,000,000 / microseconds_per_beat</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">6e7</span> <span class="o">/</span> <span class="n">tempo_microseconds_per_beat</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_convert_bpm_to_tempo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bpm</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert BPM to tempo in microseconds per beat.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            bpm (float): Tempo in beats per minute.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            int: Tempo in microseconds per beat, rounded to nearest integer.</span>
+<span class="sd">            </span>
+<span class="sd">        Note:</span>
+<span class="sd">            The conversion formula is: microseconds_per_beat = 60,000,000 / BPM</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mf">6e7</span> <span class="o">/</span> <span class="n">bpm</span><span class="p">))</span>
+
+<div class="viewcode-block" id="TempoShift.apply">
+<a class="viewcode-back" href="../../../midiogre.augmentations.html#midiogre.augmentations.tempo_shift.TempoShift.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midi_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the tempo shift transformation to the MIDI data.</span>
+<span class="sd">        </span>
+<span class="sd">        This method handles several cases:</span>
+<span class="sd">        1. Empty MIDI file (returns unchanged)</span>
+<span class="sd">        2. No tempo events (adds default 120 BPM)</span>
+<span class="sd">        3. Single tempo event</span>
+<span class="sd">        4. Multiple tempo events (based on respect_tempo_shifts)</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            midi_data (mido.MidiFile): The MIDI data to transform.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            mido.MidiFile: The transformed MIDI data with modified tempo(s).</span>
+<span class="sd">            </span>
+<span class="sd">        Note:</span>
+<span class="sd">            - If no tempo events are found, a default tempo of 120 BPM is used.</span>
+<span class="sd">            - Only tempo events in the first track are processed.</span>
+<span class="sd">            - When respect_tempo_shifts is True, all tempo events maintain their</span>
+<span class="sd">              relative timing but get new tempo values.</span>
+<span class="sd">            - When respect_tempo_shifts is False, all tempo events are replaced</span>
+<span class="sd">              with a single tempo event at the start.</span>
+<span class="sd">            - The transform is applied with probability self.p. If not applied,</span>
+<span class="sd">              the original tempo(s) are preserved.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">midi_data</span><span class="o">.</span><span class="n">tracks</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Empty MIDI file provided&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">midi_data</span>
+
+        <span class="c1"># Find all tempo events in first track</span>
+        <span class="n">tempo_events</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tempo_events_idx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">midi_data</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;set_tempo&#39;</span><span class="p">:</span>
+                <span class="n">tempo_events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+                <span class="n">tempo_events_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+        <span class="c1"># Handle case with no tempo events</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tempo_events</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No tempo metadata found in MIDI file; assuming a default value of 120 BPM.&quot;</span><span class="p">)</span>
+            <span class="n">default_bpm</span> <span class="o">=</span> <span class="mf">120.0</span>
+            <span class="n">should_change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
+            
+            <span class="k">if</span> <span class="n">should_change</span><span class="p">:</span>
+                <span class="n">shifts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_shifts</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">new_bpm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">default_bpm</span> <span class="o">+</span> <span class="n">shifts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempo_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempo_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">new_tempo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_bpm_to_tempo</span><span class="p">(</span><span class="n">new_bpm</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_tempo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_bpm_to_tempo</span><span class="p">(</span><span class="n">default_bpm</span><span class="p">)</span>
+                
+            <span class="n">midi_data</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MetaMessage</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;set_tempo&quot;</span><span class="p">,</span> <span class="n">tempo</span><span class="o">=</span><span class="n">new_tempo</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">midi_data</span>
+
+        <span class="c1"># Remove existing tempo events (in reverse order to maintain indices)</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">tempo_events_idx</span><span class="p">):</span>
+            <span class="n">midi_data</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+        <span class="c1"># Determine if we should apply changes</span>
+        <span class="n">should_change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">respect_tempo_shifts</span><span class="p">:</span>
+            <span class="c1"># Process all tempo events while maintaining timing</span>
+            <span class="k">if</span> <span class="n">should_change</span><span class="p">:</span>
+                <span class="n">shifts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_shifts</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tempo_events</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tempo_events</span><span class="p">):</span>
+                    <span class="n">current_bpm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_tempo_to_bpm</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">tempo</span><span class="p">)</span>
+                    <span class="n">new_bpm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">current_bpm</span> <span class="o">+</span> <span class="n">shifts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempo_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempo_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">new_tempo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_bpm_to_tempo</span><span class="p">(</span><span class="n">new_bpm</span><span class="p">)</span>
+                    <span class="n">midi_data</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">MetaMessage</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;set_tempo&quot;</span><span class="p">,</span> <span class="n">tempo</span><span class="o">=</span><span class="n">new_tempo</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Keep original tempos</span>
+                <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">tempo_events</span><span class="p">:</span>
+                    <span class="n">midi_data</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">MetaMessage</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;set_tempo&quot;</span><span class="p">,</span> <span class="n">tempo</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">tempo</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+                    <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Use only first tempo event and place at start</span>
+            <span class="n">current_bpm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_tempo_to_bpm</span><span class="p">(</span><span class="n">tempo_events</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tempo</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">should_change</span><span class="p">:</span>
+                <span class="n">shifts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_shifts</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">new_bpm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">current_bpm</span> <span class="o">+</span> <span class="n">shifts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempo_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempo_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">new_tempo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_bpm_to_tempo</span><span class="p">(</span><span class="n">new_bpm</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_tempo</span> <span class="o">=</span> <span class="n">tempo_events</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tempo</span>
+                
+            <span class="n">midi_data</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MetaMessage</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s2">&quot;set_tempo&quot;</span><span class="p">,</span> <span class="n">tempo</span><span class="o">=</span><span class="n">new_tempo</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">midi_data</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

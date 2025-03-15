@@ -1,0 +1,457 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>midiogre.core.conversions &mdash; MIDIOgre  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            MIDIOgre
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">midiogre</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.html">midiogre package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.augmentations.html">midiogre.augmentations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.core.html">midiogre.core package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MIDIOgre</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">midiogre.core.conversions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for midiogre.core.conversions</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;MIDI format conversion module.</span>
+
+<span class="sd">This module provides tools for converting between different MIDI representations and formats,</span>
+<span class="sd">primarily to enable composition of multiple MIDI augmentations. Similar to image augmentation</span>
+<span class="sd">libraries like albumentations, these converters allow you to seamlessly chain transforms</span>
+<span class="sd">that operate on different MIDI formats.</span>
+
+<span class="sd">The module supports conversions between:</span>
+<span class="sd">- Mido MidiFile objects</span>
+<span class="sd">- PrettyMIDI objects</span>
+<span class="sd">- Piano roll representations (NumPy arrays and PyTorch tensors)</span>
+
+<span class="sd">Primary Use Case - Augmentation Pipeline:</span>
+<span class="sd">    &gt;&gt;&gt; from midiogre.augmentations import PitchShift, TempoShift, OnsetTimeShift</span>
+<span class="sd">    &gt;&gt;&gt; from midiogre.core.conversions import ConvertToMido, ConvertToPrettyMIDI</span>
+<span class="sd">    &gt;&gt;&gt; from midiogre.core import Compose</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; # Create a pipeline with transforms that need different MIDI formats</span>
+<span class="sd">    &gt;&gt;&gt; transform = Compose([</span>
+<span class="sd">    ...     PitchShift(max_shift=2),  # Uses PrettyMIDI</span>
+<span class="sd">    ...     ConvertToMido(),  # Convert to Mido format</span>
+<span class="sd">    ...     TempoShift(max_shift=20.0),  # Uses Mido</span>
+<span class="sd">    ...     ConvertToPrettyMIDI(),  # Convert back to PrettyMIDI</span>
+<span class="sd">    ...     OnsetTimeShift(max_shift=0.1)  # Uses PrettyMIDI</span>
+<span class="sd">    ... ])</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; # Apply entire pipeline with automatic format conversion</span>
+<span class="sd">    &gt;&gt;&gt; midi_data = pretty_midi.PrettyMIDI(&#39;song.mid&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; transformed = transform(midi_data)</span>
+
+<span class="sd">Other Use Cases:</span>
+<span class="sd">    &gt;&gt;&gt; # Direct format conversion</span>
+<span class="sd">    &gt;&gt;&gt; mido_obj = ConvertToMido()(&#39;song.mid&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; pretty_midi_obj = ConvertToPrettyMIDI()(mido_obj)</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; # Create piano roll representation</span>
+<span class="sd">    &gt;&gt;&gt; from midiogre.core.conversions import ToPRollTensor</span>
+<span class="sd">    &gt;&gt;&gt; piano_roll = ToPRollTensor()(pretty_midi_obj)</span>
+
+<span class="sd">Note:</span>
+<span class="sd">    When composing transforms, the converters handle format compatibility automatically.</span>
+<span class="sd">    You only need to ensure that:</span>
+<span class="sd">    1. The input format matches what the first transform expects</span>
+<span class="sd">    2. You convert between formats when switching between Mido and PrettyMIDI transforms</span>
+<span class="sd">    3. The final output format is what you need for your application</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">mido</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
+
+
+<div class="viewcode-block" id="BaseConversion">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.BaseConversion">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseConversion</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all MIDI format conversions.</span>
+<span class="sd">    </span>
+<span class="sd">    This class defines the interface that all conversion classes must implement.</span>
+<span class="sd">    Conversion classes are callable objects that take a MIDI object or file path</span>
+<span class="sd">    as input and return a transformed representation.</span>
+<span class="sd">    </span>
+<span class="sd">    The __call__ method handles input validation and file path resolution, while</span>
+<span class="sd">    the actual conversion logic should be implemented in the apply method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BaseConversion.__init__">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.BaseConversion.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the conversion.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseConversion.apply">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.BaseConversion.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midi_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the conversion to the MIDI data.</span>
+<span class="sd">        </span>
+<span class="sd">        This method should be implemented by all conversion classes.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            midi_data: The MIDI data to convert.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            The converted MIDI data.</span>
+<span class="sd">            </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            NotImplementedError: If the child class does not implement this method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="BaseConversion.__call__">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.BaseConversion.__call__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midi_data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">,</span> <span class="n">mido</span><span class="o">.</span><span class="n">MidiFile</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the MIDI data.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            midi_data: The MIDI data to convert. Can be:</span>
+<span class="sd">                - A file path string</span>
+<span class="sd">                - A PrettyMIDI object</span>
+<span class="sd">                - A Mido MidiFile object</span>
+<span class="sd">                </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            The converted MIDI data.</span>
+<span class="sd">            </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If a file path is provided but the file does not exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">midi_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">midi_data</span> <span class="o">=</span> <span class="n">midi_data</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid path provided: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">midi_data</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ConvertToMido">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ConvertToMido">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConvertToMido</span><span class="p">(</span><span class="n">BaseConversion</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert MIDI data to a Mido MidiFile object.</span>
+<span class="sd">    </span>
+<span class="sd">    This converter is particularly useful when working with transforms that</span>
+<span class="sd">    require Mido objects, such as TempoShift.</span>
+<span class="sd">    </span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; converter = ConvertToMido()</span>
+<span class="sd">        &gt;&gt;&gt; # Convert from file</span>
+<span class="sd">        &gt;&gt;&gt; mido_obj = converter(&#39;song.mid&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; # Convert from PrettyMIDI</span>
+<span class="sd">        &gt;&gt;&gt; mido_obj = converter(pretty_midi_obj)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConvertToMido.__init__">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ConvertToMido.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Mido converter.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ConvertToMido.apply">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ConvertToMido.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_midi</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert MIDI data to a Mido MidiFile object.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            path_to_midi (str): Path to the MIDI file to load.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            mido.MidiFile: The loaded MIDI data as a Mido object.</span>
+<span class="sd">            </span>
+<span class="sd">        Warning:</span>
+<span class="sd">            If tempo, key signature, or time signature events are found on non-zero</span>
+<span class="sd">            tracks, they may not be interpreted correctly as this violates the MIDI</span>
+<span class="sd">            type 0/1 specification.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">midi_data</span> <span class="o">=</span> <span class="n">mido</span><span class="o">.</span><span class="n">MidiFile</span><span class="p">(</span><span class="n">path_to_midi</span><span class="p">)</span>
+
+        <span class="c1"># Borrowed from pretty-midi</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;set_tempo&#39;</span><span class="p">,</span> <span class="s1">&#39;key_signature&#39;</span><span class="p">,</span> <span class="s1">&#39;time_signature&#39;</span><span class="p">)</span>
+               <span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">midi_data</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">track</span><span class="p">):</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Tempo, Key or Time signature change events found on &quot;</span>
+                <span class="s2">&quot;non-zero tracks.  This is not a valid type 0 or type 1 &quot;</span>
+                <span class="s2">&quot;MIDI file.  Tempo, Key or Time Signature may be wrong.&quot;</span><span class="p">,</span>
+                <span class="ne">RuntimeWarning</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">midi_data</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ConvertToPrettyMIDI">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ConvertToPrettyMIDI">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ConvertToPrettyMIDI</span><span class="p">(</span><span class="n">BaseConversion</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert MIDI data to a PrettyMIDI object.</span>
+<span class="sd">    </span>
+<span class="sd">    This converter is useful when working with most MIDIOgre transforms, as they</span>
+<span class="sd">    typically operate on PrettyMIDI objects. It can convert from either a file path</span>
+<span class="sd">    or a Mido MidiFile object.</span>
+<span class="sd">    </span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; converter = ConvertToPrettyMIDI()</span>
+<span class="sd">        &gt;&gt;&gt; # Convert from file</span>
+<span class="sd">        &gt;&gt;&gt; pretty_midi_obj = converter(&#39;song.mid&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; # Convert from Mido</span>
+<span class="sd">        &gt;&gt;&gt; pretty_midi_obj = converter(mido_obj)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ConvertToPrettyMIDI.__init__">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ConvertToPrettyMIDI.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the PrettyMIDI converter.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ConvertToPrettyMIDI.apply">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ConvertToPrettyMIDI.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midi_data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">mido</span><span class="o">.</span><span class="n">MidiFile</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert MIDI data to a PrettyMIDI object.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            midi_data: The MIDI data to convert. Can be:</span>
+<span class="sd">                - A file path string</span>
+<span class="sd">                - A Mido MidiFile object</span>
+<span class="sd">                </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            pretty_midi.PrettyMIDI: The converted MIDI data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">midi_data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">(</span><span class="n">midi_file</span><span class="o">=</span><span class="n">midi_data</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">(</span><span class="n">mido_object</span><span class="o">=</span><span class="n">midi_data</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ToPRollNumpy">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ToPRollNumpy">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ToPRollNumpy</span><span class="p">(</span><span class="n">BaseConversion</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert MIDI data to a piano roll NumPy array.</span>
+<span class="sd">    </span>
+<span class="sd">    This converter transforms MIDI data into a piano roll representation as a</span>
+<span class="sd">    2D NumPy array of shape (128, time_steps). The array values represent note</span>
+<span class="sd">    velocities at each time step.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        binarize (bool, optional): Whether to binarize the piano roll.</span>
+<span class="sd">            Default: False</span>
+<span class="sd">        fs (int, optional): Sampling frequency in Hz.</span>
+<span class="sd">            Default: 100</span>
+<span class="sd">        times (array-like, optional): Times at which to sample the piano roll.</span>
+<span class="sd">            Default: None</span>
+<span class="sd">        pedal_threshold (int, optional): Threshold above which the sustain pedal</span>
+<span class="sd">            is activated.</span>
+<span class="sd">            Default: 64</span>
+<span class="sd">            </span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; converter = ToPRollNumpy(fs=200)  # 200 Hz sampling</span>
+<span class="sd">        &gt;&gt;&gt; piano_roll = converter(pretty_midi_obj)  # Shape: (128, time_steps)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ToPRollNumpy.__init__">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ToPRollNumpy.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binarize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pedal_threshold</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the piano roll converter.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            binarize (bool, optional): Whether to binarize the piano roll.</span>
+<span class="sd">            fs (int, optional): Sampling frequency in Hz.</span>
+<span class="sd">            times (array-like, optional): Times at which to sample.</span>
+<span class="sd">            pedal_threshold (int, optional): Sustain pedal threshold.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binarize</span> <span class="o">=</span> <span class="n">binarize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fs</span> <span class="o">=</span> <span class="n">fs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">times</span> <span class="o">=</span> <span class="n">times</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pedal_threshold</span> <span class="o">=</span> <span class="n">pedal_threshold</span></div>
+
+
+<div class="viewcode-block" id="ToPRollNumpy.apply">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ToPRollNumpy.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midi_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert MIDI data to a piano roll NumPy array.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            midi_data (pretty_midi.PrettyMIDI): The MIDI data to convert.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            np.ndarray: Piano roll array of shape (128, time_steps).</span>
+<span class="sd">            </span>
+<span class="sd">        Note:</span>
+<span class="sd">            For more details on the piano roll format, see:</span>
+<span class="sd">            https://craffel.github.io/pretty-midi/#pretty_midi.PrettyMIDI.get_piano_roll</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">midi_data</span><span class="o">.</span><span class="n">get_piano_roll</span><span class="p">(</span><span class="n">fs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">,</span> <span class="n">pedal_threshold</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pedal_threshold</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ToPRollTensor">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ToPRollTensor">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ToPRollTensor</span><span class="p">(</span><span class="n">ToPRollNumpy</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert MIDI data to a piano roll PyTorch tensor.</span>
+<span class="sd">    </span>
+<span class="sd">    This converter transforms MIDI data into a piano roll representation as a</span>
+<span class="sd">    2D PyTorch tensor of shape (128, time_steps). The tensor values represent note</span>
+<span class="sd">    velocities at each time step.</span>
+<span class="sd">    </span>
+<span class="sd">    This class inherits from ToPRollNumpy and adds PyTorch-specific functionality,</span>
+<span class="sd">    such as device placement.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        binarize (bool, optional): Whether to binarize the piano roll.</span>
+<span class="sd">            Default: False</span>
+<span class="sd">        device (str, optional): PyTorch device to place the tensor on.</span>
+<span class="sd">            Default: &#39;cpu&#39;</span>
+<span class="sd">        fs (int, optional): Sampling frequency in Hz.</span>
+<span class="sd">            Default: 100</span>
+<span class="sd">        times (array-like, optional): Times at which to sample the piano roll.</span>
+<span class="sd">            Default: None</span>
+<span class="sd">        pedal_threshold (int, optional): Threshold above which the sustain pedal</span>
+<span class="sd">            is activated.</span>
+<span class="sd">            Default: 64</span>
+<span class="sd">            </span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; converter = ToPRollTensor(fs=200, device=&#39;cuda&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; piano_roll = converter(pretty_midi_obj)  # Shape: (128, time_steps)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ToPRollTensor.__init__">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ToPRollTensor.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binarize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cpu&#39;</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pedal_threshold</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the piano roll tensor converter.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            binarize (bool, optional): Whether to binarize the piano roll.</span>
+<span class="sd">            device (str, optional): PyTorch device to place the tensor on.</span>
+<span class="sd">            fs (int, optional): Sampling frequency in Hz.</span>
+<span class="sd">            times (array-like, optional): Times at which to sample.</span>
+<span class="sd">            pedal_threshold (int, optional): Sustain pedal threshold.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">binarize</span><span class="o">=</span><span class="n">binarize</span><span class="p">,</span> <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">pedal_threshold</span><span class="o">=</span><span class="n">pedal_threshold</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ToPRollTensor.apply">
+<a class="viewcode-back" href="../../../midiogre.core.html#midiogre.core.conversions.ToPRollTensor.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midi_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert MIDI data to a piano roll PyTorch tensor.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            midi_data (pretty_midi.PrettyMIDI): The MIDI data to convert.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor: Piano roll tensor of shape (128, time_steps).</span>
+<span class="sd">            </span>
+<span class="sd">        Note:</span>
+<span class="sd">            For more details on the piano roll format, see:</span>
+<span class="sd">            https://craffel.github.io/pretty-midi/#pretty_midi.PrettyMIDI.get_piano_roll</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">midi_data</span><span class="o">=</span><span class="n">midi_data</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

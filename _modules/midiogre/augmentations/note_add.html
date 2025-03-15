@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>midiogre.augmentations.note_add &mdash; MIDIOgre  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            MIDIOgre
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">midiogre</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.html">midiogre package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.augmentations.html">midiogre.augmentations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../midiogre.core.html">midiogre.core package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MIDIOgre</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">midiogre.augmentations.note_add</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for midiogre.augmentations.note_add</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;MIDI note addition augmentation module.</span>
+
+<span class="sd">This module provides functionality to randomly add new notes to MIDI tracks.</span>
+<span class="sd">The added notes can be configured in terms of their pitch range, velocity range,</span>
+<span class="sd">and duration range, allowing for controlled density variations in the music.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; from midiogre.augmentations import NoteAdd</span>
+<span class="sd">    &gt;&gt;&gt; import pretty_midi</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; # Create transform that adds notes in the middle register</span>
+<span class="sd">    &gt;&gt;&gt; transform = NoteAdd(</span>
+<span class="sd">    ...     note_num_range=(48, 72),  # C3 to C5</span>
+<span class="sd">    ...     note_velocity_range=(60, 100),</span>
+<span class="sd">    ...     note_duration_range=(0.2, 0.8),</span>
+<span class="sd">    ...     p=0.3</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; </span>
+<span class="sd">    &gt;&gt;&gt; # Load and transform MIDI file</span>
+<span class="sd">    &gt;&gt;&gt; midi_data = pretty_midi.PrettyMIDI(&#39;song.mid&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; transformed = transform(midi_data)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pretty_midi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Note</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.core.transforms_interface</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMidiTransform</span>
+
+
+<div class="viewcode-block" id="NoteAdd">
+<a class="viewcode-back" href="../../../midiogre.augmentations.html#midiogre.augmentations.note_add.NoteAdd">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">NoteAdd</span><span class="p">(</span><span class="n">BaseMidiTransform</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform for randomly adding new MIDI notes.</span>
+<span class="sd">    </span>
+<span class="sd">    This transform allows for random addition of new notes to MIDI tracks.</span>
+<span class="sd">    Each new note&#39;s properties (pitch, velocity, duration, timing) are randomly</span>
+<span class="sd">    generated within specified ranges. The number of notes added is proportional</span>
+<span class="sd">    to the existing number of notes in each track.</span>
+<span class="sd">    </span>
+<span class="sd">    The note addition is applied with probability p to each selected instrument.</span>
+<span class="sd">    For each selected instrument, the number of notes to add is randomly chosen</span>
+<span class="sd">    between 0 and p * (current number of notes).</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        note_num_range (tuple[int, int]): Range of MIDI note numbers for new notes</span>
+<span class="sd">            as (min_note, max_note). Each value must be in range [0, 127].</span>
+<span class="sd">            Example: (60, 72) for notes between middle C and C5.</span>
+<span class="sd">        note_velocity_range (tuple[int, int]): Range of MIDI velocities for new</span>
+<span class="sd">            notes as (min_velocity, max_velocity). Each value must be in range [0, 127].</span>
+<span class="sd">            Example: (64, 100) for medium to loud notes.</span>
+<span class="sd">        note_duration_range (tuple[float, float]): Range of note durations in seconds</span>
+<span class="sd">            as (min_duration, max_duration). Values must be positive.</span>
+<span class="sd">            Example: (0.1, 0.5) for short to medium notes.</span>
+<span class="sd">        restrict_to_instrument_time (bool): If True, new notes will not extend beyond</span>
+<span class="sd">            the end time of existing notes in the instrument.</span>
+<span class="sd">            Default: True</span>
+<span class="sd">        p_instruments (float): If a MIDI file has multiple instruments, this</span>
+<span class="sd">            determines the probability of applying the transform to each</span>
+<span class="sd">            instrument. Must be in range [0, 1].</span>
+<span class="sd">            Default: 1.0 (apply to all instruments)</span>
+<span class="sd">        p (float): For each selected instrument, this determines the maximum ratio</span>
+<span class="sd">            of new notes to add relative to existing notes. Must be in range [0, 1].</span>
+<span class="sd">            Example: If p=0.2 and an instrument has 100 notes, up to 20 new notes</span>
+<span class="sd">            may be added.</span>
+<span class="sd">            Default: 0.2</span>
+<span class="sd">        eps (float, optional): Small epsilon value for numerical stability.</span>
+<span class="sd">            Default: 1e-12</span>
+<span class="sd">            </span>
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If any of the following conditions are met:</span>
+<span class="sd">            - note_num_range values not in [0, 127]</span>
+<span class="sd">            - note_velocity_range values not in [0, 127]</span>
+<span class="sd">            - note_duration_range values not positive</span>
+<span class="sd">            - ranges not specified as (min, max) with max &gt; min</span>
+<span class="sd">            - p_instruments not in range [0, 1]</span>
+<span class="sd">            - p not in range [0, 1]</span>
+<span class="sd">            </span>
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; # Create transform that adds short, quiet notes in the high register</span>
+<span class="sd">        &gt;&gt;&gt; transform = NoteAdd(</span>
+<span class="sd">        ...     note_num_range=(72, 96),  # C5 to C7</span>
+<span class="sd">        ...     note_velocity_range=(20, 40),  # Soft notes</span>
+<span class="sd">        ...     note_duration_range=(0.05, 0.2),  # Short notes</span>
+<span class="sd">        ...     restrict_to_instrument_time=True,</span>
+<span class="sd">        ...     p_instruments=1.0,</span>
+<span class="sd">        ...     p=0.15</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; transformed = transform(midi_data)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NoteAdd.__init__">
+<a class="viewcode-back" href="../../../midiogre.augmentations.html#midiogre.augmentations.note_add.NoteAdd.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">note_num_range</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">note_velocity_range</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="n">note_duration_range</span><span class="p">:</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
+                 <span class="n">restrict_to_instrument_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">p_instruments</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+                 <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-12</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the NoteAdd transform.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            note_num_range (tuple[int, int]): Range of MIDI note numbers for new notes.</span>
+<span class="sd">            note_velocity_range (tuple[int, int]): Range of MIDI velocities for new notes.</span>
+<span class="sd">            note_duration_range (tuple[float, float]): Range of note durations in seconds.</span>
+<span class="sd">            restrict_to_instrument_time (bool, optional): Whether to limit note end times.</span>
+<span class="sd">                Default: True</span>
+<span class="sd">            p_instruments (float, optional): Probability of applying to each instrument.</span>
+<span class="sd">                Default: 1.0</span>
+<span class="sd">            p (float, optional): Maximum ratio of new notes to add.</span>
+<span class="sd">                Default: 0.2</span>
+<span class="sd">            eps (float, optional): Small epsilon value for numerical stability.</span>
+<span class="sd">                Default: 1e-12</span>
+<span class="sd">                </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If parameters are invalid (see class docstring for details).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">p_instruments</span><span class="o">=</span><span class="n">p_instruments</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">eps</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">note_num_range</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">note_num_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">note_num_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;MIDI note numbers must be specified as (min_note_num, max_note_num] where max_note_num &gt; min_note_num.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">note_num_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">note_num_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;MIDI note numbers must be integers &gt;=0 and &lt; 128.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">note_velocity_range</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">note_velocity_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">note_velocity_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;MIDI note velocities must be specified as (min_note_velocity, max_note_velocity] where &quot;</span>
+                <span class="s2">&quot;max_note_velocity &gt; min_note_velocity.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">note_velocity_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">note_velocity_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">128</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;MIDI note velocities must be integers &gt;=0 and &lt; 128.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">note_duration_range</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">note_duration_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">note_duration_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;MIDI note durations must be specified as (min_note_duration, max_note_duration] where &quot;</span>
+                <span class="s2">&quot;min_note_duration &gt; max_note_duration.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_note_num</span> <span class="o">=</span> <span class="n">note_num_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_note_num</span> <span class="o">=</span> <span class="n">note_num_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_velo</span> <span class="o">=</span> <span class="n">note_velocity_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_velo</span> <span class="o">=</span> <span class="n">note_velocity_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_durn</span> <span class="o">=</span> <span class="n">note_duration_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_durn</span> <span class="o">=</span> <span class="n">note_duration_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">restrict_to_instrument_time</span> <span class="o">=</span> <span class="n">restrict_to_instrument_time</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__generate_n_midi_notes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">instrument_end_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate n random MIDI notes within the configured ranges.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            n (int): Number of notes to generate.</span>
+<span class="sd">            instrument_end_time (float): End time of the last note in the instrument.</span>
+<span class="sd">                Used when restrict_to_instrument_time is True.</span>
+<span class="sd">                </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list[Note]: List of n randomly generated MIDI notes.</span>
+<span class="sd">            </span>
+<span class="sd">        Note:</span>
+<span class="sd">            Generated notes have:</span>
+<span class="sd">            - Pitches uniformly distributed in note_num_range</span>
+<span class="sd">            - Velocities uniformly distributed in note_velocity_range</span>
+<span class="sd">            - Durations uniformly distributed in note_duration_range</span>
+<span class="sd">            - Start times uniformly distributed between 0 and instrument_end_time</span>
+<span class="sd">            - End times clipped to instrument_end_time if restrict_to_instrument_time</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Vectorized random number generation</span>
+        <span class="n">start_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">instrument_end_time</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">pitches</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_note_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_note_num</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">velocities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_velo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_velo</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">durations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_durn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_durn</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">end_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">start_times</span> <span class="o">+</span> <span class="n">durations</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">instrument_end_time</span><span class="p">)</span>
+        
+        <span class="c1"># Create notes in a list comprehension for better performance</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Note</span><span class="p">(</span><span class="n">pitch</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">velocity</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> 
+                <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pitches</span><span class="p">,</span> <span class="n">velocities</span><span class="p">,</span> <span class="n">start_times</span><span class="p">,</span> <span class="n">end_times</span><span class="p">)]</span>
+
+<div class="viewcode-block" id="NoteAdd.apply">
+<a class="viewcode-back" href="../../../midiogre.augmentations.html#midiogre.augmentations.note_add.NoteAdd.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midi_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the note addition transformation to the MIDI data.</span>
+<span class="sd">        </span>
+<span class="sd">        For each non-drum instrument selected based on p_instruments, this method:</span>
+<span class="sd">        1. Determines the number of notes to add based on p</span>
+<span class="sd">        2. Generates random notes within the configured ranges</span>
+<span class="sd">        3. Adds the new notes to the instrument track</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            midi_data (pretty_midi.PrettyMIDI): The MIDI data to transform.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            pretty_midi.PrettyMIDI: The transformed MIDI data with added notes.</span>
+<span class="sd">            </span>
+<span class="sd">        Note:</span>
+<span class="sd">            - Drum instruments are skipped by default</span>
+<span class="sd">            - The number of notes added is random but proportional to existing notes</span>
+<span class="sd">            - New notes have random properties within the configured ranges</span>
+<span class="sd">            - If restrict_to_instrument_time is True, new notes won&#39;t extend beyond</span>
+<span class="sd">              the end of existing notes in the track</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">modified_instruments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_modified_instruments_list</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">instrument</span> <span class="ow">in</span> <span class="n">modified_instruments</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">instrument</span><span class="o">.</span><span class="n">notes</span><span class="p">:</span>  <span class="c1"># Skip empty instruments</span>
+                <span class="k">continue</span>
+            <span class="n">num_new_notes</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">instrument</span><span class="o">.</span><span class="n">notes</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">num_new_notes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># Only generate notes if we need to</span>
+                <span class="n">instrument</span><span class="o">.</span><span class="n">notes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__generate_n_midi_notes</span><span class="p">(</span>
+                        <span class="n">n</span><span class="o">=</span><span class="n">num_new_notes</span><span class="p">,</span>
+                        <span class="n">instrument_end_time</span><span class="o">=</span><span class="n">instrument</span><span class="o">.</span><span class="n">notes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">end</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">return</span> <span class="n">midi_data</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

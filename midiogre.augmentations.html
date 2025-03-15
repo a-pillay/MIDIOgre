@@ -1,0 +1,1801 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>midiogre.augmentations package &mdash; MIDIOgre  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="midiogre.core package" href="midiogre.core.html" />
+    <link rel="prev" title="midiogre package" href="midiogre.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MIDIOgre
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">midiogre</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="midiogre.html">midiogre package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="midiogre.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">midiogre.augmentations package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="midiogre.core.html">midiogre.core package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="midiogre.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="midiogre.html">midiogre package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="midiogre.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">midiogre.augmentations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre-augmentations-duration-shift-module">midiogre.augmentations.duration_shift module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre-augmentations-note-add-module">midiogre.augmentations.note_add module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre-augmentations-note-delete-module">midiogre.augmentations.note_delete module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre-augmentations-onset-time-shift-module">midiogre.augmentations.onset_time_shift module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre-augmentations-pitch-shift-module">midiogre.augmentations.pitch_shift module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre-augmentations-tempo-shift-module">midiogre.augmentations.tempo_shift module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="midiogre.core.html">midiogre.core package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="midiogre.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">midiogre.augmentations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#midiogre-augmentations-duration-shift-module">midiogre.augmentations.duration_shift module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.duration_shift.DurationShift"><code class="docutils literal notranslate"><span class="pre">DurationShift</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.duration_shift.DurationShift.__init__"><code class="docutils literal notranslate"><span class="pre">DurationShift.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.duration_shift.DurationShift.apply"><code class="docutils literal notranslate"><span class="pre">DurationShift.apply()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#midiogre-augmentations-note-add-module">midiogre.augmentations.note_add module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.note_add.NoteAdd"><code class="docutils literal notranslate"><span class="pre">NoteAdd</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.note_add.NoteAdd.__init__"><code class="docutils literal notranslate"><span class="pre">NoteAdd.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.note_add.NoteAdd.apply"><code class="docutils literal notranslate"><span class="pre">NoteAdd.apply()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#midiogre-augmentations-note-delete-module">midiogre.augmentations.note_delete module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.note_delete.NoteDelete"><code class="docutils literal notranslate"><span class="pre">NoteDelete</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.note_delete.NoteDelete.__init__"><code class="docutils literal notranslate"><span class="pre">NoteDelete.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.note_delete.NoteDelete.apply"><code class="docutils literal notranslate"><span class="pre">NoteDelete.apply()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#midiogre-augmentations-onset-time-shift-module">midiogre.augmentations.onset_time_shift module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.onset_time_shift.OnsetTimeShift"><code class="docutils literal notranslate"><span class="pre">OnsetTimeShift</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.onset_time_shift.OnsetTimeShift.__init__"><code class="docutils literal notranslate"><span class="pre">OnsetTimeShift.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.onset_time_shift.OnsetTimeShift.apply"><code class="docutils literal notranslate"><span class="pre">OnsetTimeShift.apply()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#midiogre-augmentations-pitch-shift-module">midiogre.augmentations.pitch_shift module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.pitch_shift.PitchShift"><code class="docutils literal notranslate"><span class="pre">PitchShift</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.pitch_shift.PitchShift.__init__"><code class="docutils literal notranslate"><span class="pre">PitchShift.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.pitch_shift.PitchShift.apply"><code class="docutils literal notranslate"><span class="pre">PitchShift.apply()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#midiogre-augmentations-tempo-shift-module">midiogre.augmentations.tempo_shift module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.tempo_shift.TempoShift"><code class="docutils literal notranslate"><span class="pre">TempoShift</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.tempo_shift.TempoShift.__init__"><code class="docutils literal notranslate"><span class="pre">TempoShift.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.tempo_shift.TempoShift.apply"><code class="docutils literal notranslate"><span class="pre">TempoShift.apply()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-contents">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.DurationShift"><code class="docutils literal notranslate"><span class="pre">DurationShift</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.DurationShift.__init__"><code class="docutils literal notranslate"><span class="pre">DurationShift.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.DurationShift.apply"><code class="docutils literal notranslate"><span class="pre">DurationShift.apply()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.NoteAdd"><code class="docutils literal notranslate"><span class="pre">NoteAdd</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.NoteAdd.__init__"><code class="docutils literal notranslate"><span class="pre">NoteAdd.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.NoteAdd.apply"><code class="docutils literal notranslate"><span class="pre">NoteAdd.apply()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.NoteDelete"><code class="docutils literal notranslate"><span class="pre">NoteDelete</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.NoteDelete.__init__"><code class="docutils literal notranslate"><span class="pre">NoteDelete.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.NoteDelete.apply"><code class="docutils literal notranslate"><span class="pre">NoteDelete.apply()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.OnsetTimeShift"><code class="docutils literal notranslate"><span class="pre">OnsetTimeShift</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.OnsetTimeShift.__init__"><code class="docutils literal notranslate"><span class="pre">OnsetTimeShift.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.OnsetTimeShift.apply"><code class="docutils literal notranslate"><span class="pre">OnsetTimeShift.apply()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.PitchShift"><code class="docutils literal notranslate"><span class="pre">PitchShift</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.PitchShift.__init__"><code class="docutils literal notranslate"><span class="pre">PitchShift.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.PitchShift.apply"><code class="docutils literal notranslate"><span class="pre">PitchShift.apply()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#midiogre.augmentations.TempoShift"><code class="docutils literal notranslate"><span class="pre">TempoShift</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.TempoShift.__init__"><code class="docutils literal notranslate"><span class="pre">TempoShift.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#midiogre.augmentations.TempoShift.apply"><code class="docutils literal notranslate"><span class="pre">TempoShift.apply()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="midiogre.core.html">midiogre.core package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MIDIOgre</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">midiogre</a></li>
+          <li class="breadcrumb-item"><a href="midiogre.html">midiogre package</a></li>
+      <li class="breadcrumb-item active">midiogre.augmentations package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/midiogre.augmentations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="midiogre-augmentations-package">
+<h1>midiogre.augmentations package<a class="headerlink" href="#midiogre-augmentations-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="midiogre-augmentations-duration-shift-module">
+<h2>midiogre.augmentations.duration_shift module<a class="headerlink" href="#midiogre-augmentations-duration-shift-module" title="Link to this heading"></a></h2>
+<p id="module-midiogre.augmentations.duration_shift">MIDI note duration augmentation module.</p>
+<p>This module provides functionality to randomly modify the durations of MIDI notes
+while preserving their onset times. The durations can be extended or shortened,
+allowing for articulation variations while maintaining rhythmic timing.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">DurationShift</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that modifies note durations by up to 0.5 seconds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">DurationShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load and transform MIDI file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">midi_data</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">(</span><span class="s1">&#39;song.mid&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.duration_shift.DurationShift">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.duration_shift.</span></span><span class="sig-name descname"><span class="pre">DurationShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/duration_shift.html#DurationShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.duration_shift.DurationShift" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly modifying MIDI note durations.</p>
+<p>This transform allows for random modification of note durations while
+preserving their onset times. Each selected note can be shortened or
+lengthened by a random amount within the specified range. The shifts
+are applied on a per-note basis, allowing for varied articulation.</p>
+<p>The duration shift is applied with probability p to each selected instrument,
+and within each instrument, to a random subset of notes determined by p.
+All shifts are automatically clipped to ensure notes maintain a minimum
+duration and don’t extend beyond the track end.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum time in seconds by which a note duration can
+be modified. Must be positive.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Type of duration modification. One of:
+- ‘shrink’: Only shorten notes
+- ‘extend’: Only lengthen notes
+- ‘both’: Allow both shortening and lengthening
+Default: ‘both’</p></li>
+<li><p><strong>min_duration</strong> (<em>float</em>) – Minimum allowed note duration in seconds. Notes
+will not be shortened below this value.
+Default: 1e-6</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em>) – If a MIDI file has multiple instruments, this
+determines the probability of applying the transform to each
+instrument. Must be in range [0, 1].
+Default: 1.0 (apply to all instruments)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – For each selected instrument, this determines the probability
+of modifying each note. Must be in range [0, 1].
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - max_shift is not positive
+    - mode is not one of ‘both’, ‘shrink’, ‘extend’
+    - min_duration is not positive
+    - p_instruments is not in range [0, 1]
+    - p is not in range [0, 1]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that only extends notes by 0.1-0.3 seconds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">DurationShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;extend&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">min_duration</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p_instruments</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.4</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.duration_shift.DurationShift.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/duration_shift.html#DurationShift.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.duration_shift.DurationShift.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the DurationShift transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum time in seconds for duration modifications.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of duration modification (‘shrink’, ‘extend’, or ‘both’).
+Default: ‘both’</p></li>
+<li><p><strong>min_duration</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum allowed note duration in seconds.
+Default: 1e-6</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying to each instrument.
+Default: 1.0</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of modifying each note.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.duration_shift.DurationShift.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/duration_shift.html#DurationShift.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.duration_shift.DurationShift.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the duration shift transformation to the MIDI data.</p>
+<p>For each non-drum instrument selected based on p_instruments, this method:
+1. Randomly selects a subset of notes based on p
+2. Generates random duration shifts based on mode and max_shift
+3. Applies the shifts while maintaining onset times and ensuring valid durations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>pretty_midi.PrettyMIDI</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with modified note durations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pretty_midi.PrettyMIDI</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Drum instruments are skipped by default</p></li>
+<li><p>The transform maintains the onset time of all notes</p></li>
+<li><p>Notes are modified independently, allowing for varied articulation</p></li>
+<li><dl class="simple">
+<dt>Duration changes are clipped to ensure:</dt><dd><ul>
+<li><p>Notes maintain the minimum duration</p></li>
+<li><p>Notes don’t extend beyond the end of the track</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="midiogre-augmentations-note-add-module">
+<h2>midiogre.augmentations.note_add module<a class="headerlink" href="#midiogre-augmentations-note-add-module" title="Link to this heading"></a></h2>
+<p id="module-midiogre.augmentations.note_add">MIDI note addition augmentation module.</p>
+<p>This module provides functionality to randomly add new notes to MIDI tracks.
+The added notes can be configured in terms of their pitch range, velocity range,
+and duration range, allowing for controlled density variations in the music.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">NoteAdd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that adds notes in the middle register</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">NoteAdd</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">note_num_range</span><span class="o">=</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="mi">72</span><span class="p">),</span>  <span class="c1"># C3 to C5</span>
+<span class="gp">... </span>    <span class="n">note_velocity_range</span><span class="o">=</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">note_duration_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.3</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load and transform MIDI file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">midi_data</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">(</span><span class="s1">&#39;song.mid&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.note_add.NoteAdd">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.note_add.</span></span><span class="sig-name descname"><span class="pre">NoteAdd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">note_num_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">note_velocity_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">note_duration_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restrict_to_instrument_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_add.html#NoteAdd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.note_add.NoteAdd" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly adding new MIDI notes.</p>
+<p>This transform allows for random addition of new notes to MIDI tracks.
+Each new note’s properties (pitch, velocity, duration, timing) are randomly
+generated within specified ranges. The number of notes added is proportional
+to the existing number of notes in each track.</p>
+<p>The note addition is applied with probability p to each selected instrument.
+For each selected instrument, the number of notes to add is randomly chosen
+between 0 and p * (current number of notes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>note_num_range</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Range of MIDI note numbers for new notes
+as (min_note, max_note). Each value must be in range [0, 127].
+Example: (60, 72) for notes between middle C and C5.</p></li>
+<li><p><strong>note_velocity_range</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Range of MIDI velocities for new
+notes as (min_velocity, max_velocity). Each value must be in range [0, 127].
+Example: (64, 100) for medium to loud notes.</p></li>
+<li><p><strong>note_duration_range</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Range of note durations in seconds
+as (min_duration, max_duration). Values must be positive.
+Example: (0.1, 0.5) for short to medium notes.</p></li>
+<li><p><strong>restrict_to_instrument_time</strong> (<em>bool</em>) – If True, new notes will not extend beyond
+the end time of existing notes in the instrument.
+Default: True</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em>) – If a MIDI file has multiple instruments, this
+determines the probability of applying the transform to each
+instrument. Must be in range [0, 1].
+Default: 1.0 (apply to all instruments)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – For each selected instrument, this determines the maximum ratio
+of new notes to add relative to existing notes. Must be in range [0, 1].
+Example: If p=0.2 and an instrument has 100 notes, up to 20 new notes
+may be added.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - note_num_range values not in [0, 127]
+    - note_velocity_range values not in [0, 127]
+    - note_duration_range values not positive
+    - ranges not specified as (min, max) with max &gt; min
+    - p_instruments not in range [0, 1]
+    - p not in range [0, 1]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that adds short, quiet notes in the high register</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">NoteAdd</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">note_num_range</span><span class="o">=</span><span class="p">(</span><span class="mi">72</span><span class="p">,</span> <span class="mi">96</span><span class="p">),</span>  <span class="c1"># C5 to C7</span>
+<span class="gp">... </span>    <span class="n">note_velocity_range</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>  <span class="c1"># Soft notes</span>
+<span class="gp">... </span>    <span class="n">note_duration_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>  <span class="c1"># Short notes</span>
+<span class="gp">... </span>    <span class="n">restrict_to_instrument_time</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p_instruments</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.15</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.note_add.NoteAdd.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">note_num_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">note_velocity_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">note_duration_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restrict_to_instrument_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_add.html#NoteAdd.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.note_add.NoteAdd.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the NoteAdd transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>note_num_range</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Range of MIDI note numbers for new notes.</p></li>
+<li><p><strong>note_velocity_range</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Range of MIDI velocities for new notes.</p></li>
+<li><p><strong>note_duration_range</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Range of note durations in seconds.</p></li>
+<li><p><strong>restrict_to_instrument_time</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to limit note end times.
+Default: True</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying to each instrument.
+Default: 1.0</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum ratio of new notes to add.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.note_add.NoteAdd.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_add.html#NoteAdd.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.note_add.NoteAdd.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the note addition transformation to the MIDI data.</p>
+<p>For each non-drum instrument selected based on p_instruments, this method:
+1. Determines the number of notes to add based on p
+2. Generates random notes within the configured ranges
+3. Adds the new notes to the instrument track</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>pretty_midi.PrettyMIDI</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with added notes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pretty_midi.PrettyMIDI</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Drum instruments are skipped by default</p></li>
+<li><p>The number of notes added is random but proportional to existing notes</p></li>
+<li><p>New notes have random properties within the configured ranges</p></li>
+<li><p>If restrict_to_instrument_time is True, new notes won’t extend beyond
+the end of existing notes in the track</p></li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="midiogre-augmentations-note-delete-module">
+<h2>midiogre.augmentations.note_delete module<a class="headerlink" href="#midiogre-augmentations-note-delete-module" title="Link to this heading"></a></h2>
+<p id="module-midiogre.augmentations.note_delete">MIDI note deletion augmentation module.</p>
+<p>This module provides functionality to randomly remove notes from MIDI tracks.
+The deletion process can be configured to affect a certain percentage of notes
+across selected instruments, allowing for controlled sparsification of the music.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">NoteDelete</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that randomly removes up to 20% of notes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">NoteDelete</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load and transform MIDI file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">midi_data</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">(</span><span class="s1">&#39;song.mid&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.note_delete.NoteDelete">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.note_delete.</span></span><span class="sig-name descname"><span class="pre">NoteDelete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_delete.html#NoteDelete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.note_delete.NoteDelete" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly deleting MIDI notes.</p>
+<p>This transform allows for random deletion of existing notes from MIDI tracks.
+The deletion is applied with probability p to each selected instrument.
+For each selected instrument, the number of notes to delete is randomly chosen
+between 0 and p * (current number of notes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – If a MIDI file has multiple instruments, this
+determines the probability of applying the transform to each
+instrument. Must be in range [0, 1].
+Default: 1.0 (apply to all instruments)</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – For each selected instrument, this determines the maximum
+ratio of notes that may be deleted. Must be in range [0, 1].
+Example: If p=0.2 and an instrument has 100 notes, up to 20 notes
+may be deleted.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - p_instruments not in range [0, 1]
+    - p not in range [0, 1]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that aggressively thins out notes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">NoteDelete</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">p_instruments</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># Apply to 80% of instruments</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>  <span class="c1"># Delete up to 40% of notes</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.note_delete.NoteDelete.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_delete.html#NoteDelete.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.note_delete.NoteDelete.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the NoteDelete transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying to each instrument.
+Default: 1.0</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum ratio of notes that may be deleted.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.note_delete.NoteDelete.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_delete.html#NoteDelete.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.note_delete.NoteDelete.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the note deletion transformation to the MIDI data.</p>
+<p>For each non-drum instrument selected based on p_instruments, this method:
+1. Determines the number of notes to delete based on p
+2. Randomly selects notes for deletion
+3. Removes the selected notes from the instrument track</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>pretty_midi.PrettyMIDI</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with notes deleted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pretty_midi.PrettyMIDI</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Drum instruments are skipped by default</p></li>
+<li><p>The number of notes deleted is random but proportional to existing notes</p></li>
+<li><p>Notes are selected for deletion uniformly at random</p></li>
+<li><p>Empty instruments (no notes) are skipped</p></li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="midiogre-augmentations-onset-time-shift-module">
+<h2>midiogre.augmentations.onset_time_shift module<a class="headerlink" href="#midiogre-augmentations-onset-time-shift-module" title="Link to this heading"></a></h2>
+<p id="module-midiogre.augmentations.onset_time_shift">MIDI onset time augmentation module.</p>
+<p>This module provides functionality to randomly shift the onset times of MIDI notes
+while preserving their durations. The shifts can be applied to move notes earlier
+or later in time, allowing for rhythmic variations while maintaining note lengths.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">OnsetTimeShift</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that shifts note timings by up to 0.1 seconds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">OnsetTimeShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load and transform MIDI file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">midi_data</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">(</span><span class="s1">&#39;song.mid&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.onset_time_shift.OnsetTimeShift">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.onset_time_shift.</span></span><span class="sig-name descname"><span class="pre">OnsetTimeShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/onset_time_shift.html#OnsetTimeShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.onset_time_shift.OnsetTimeShift" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly shifting MIDI note onset times.</p>
+<p>This transform allows for random modification of note start times while
+preserving their durations. Each selected note can be shifted earlier or
+later in time by a random amount within the specified range. The shifts
+are applied on a per-note basis, allowing for complex rhythmic variations.</p>
+<p>The onset shift is applied with probability p to each selected instrument,
+and within each instrument, to a random subset of notes determined by p.
+All shifts are automatically clipped to ensure notes stay within valid time
+ranges (no negative start times, no extending beyond track end).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum time in seconds by which a note onset can
+be shifted. Must be positive.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Direction of time shift. One of:
+- ‘left’: Only shift notes earlier (ie, advance) in time
+- ‘right’: Only shift notes later (ie, delay) in time
+- ‘both’: Allow both earlier and later shifts
+Default: ‘both’</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em>) – If a MIDI file has multiple instruments, this
+determines the probability of applying the transform to each
+instrument. Must be in range [0, 1].
+Default: 1.0 (apply to all instruments)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – For each selected instrument, this determines the probability
+of shifting each note. Must be in range [0, 1].
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - max_shift is not positive
+    - mode is not one of ‘both’, ‘left’, ‘right’
+    - p_instruments is not in range [0, 1]
+    - p is not in range [0, 1]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that only delays notes by 0.05-0.15 seconds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">OnsetTimeShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p_instruments</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.3</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.onset_time_shift.OnsetTimeShift.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/onset_time_shift.html#OnsetTimeShift.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.onset_time_shift.OnsetTimeShift.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the OnsetTimeShift transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum time in seconds for onset shifts.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Direction of time shift (‘left’, ‘right’, or ‘both’).
+Default: ‘both’</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying to each instrument.
+Default: 1.0</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of shifting each note.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.onset_time_shift.OnsetTimeShift.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/onset_time_shift.html#OnsetTimeShift.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.onset_time_shift.OnsetTimeShift.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the onset time shift transformation to the MIDI data.</p>
+<p>For each non-drum instrument selected based on p_instruments, this method:
+1. Randomly selects a subset of notes based on p
+2. Generates random time shifts based on mode and max_shift
+3. Applies the shifts while maintaining note durations and ensuring valid times</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>pretty_midi.PrettyMIDI</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with shifted note timings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pretty_midi.PrettyMIDI</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Drum instruments are skipped by default</p></li>
+<li><p>The transform maintains the duration of all notes</p></li>
+<li><p>Notes are shifted independently, allowing for complex rhythmic variations</p></li>
+<li><dl class="simple">
+<dt>Shifts are clipped to ensure notes stay within valid time ranges:</dt><dd><ul>
+<li><p>No negative start times</p></li>
+<li><p>No extending beyond the end of the track</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="midiogre-augmentations-pitch-shift-module">
+<h2>midiogre.augmentations.pitch_shift module<a class="headerlink" href="#midiogre-augmentations-pitch-shift-module" title="Link to this heading"></a></h2>
+<p id="module-midiogre.augmentations.pitch_shift">MIDI pitch augmentation module.</p>
+<p>This module provides functionality to randomly transpose MIDI notes up or down
+while preserving their timing and velocity. The pitch shifts are applied on a
+per-note basis, allowing for complex harmonic variations.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">PitchShift</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that shifts pitches up or down by up to 2 semitones</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">PitchShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load and transform MIDI file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">midi_data</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">(</span><span class="s1">&#39;song.mid&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.pitch_shift.PitchShift">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.pitch_shift.</span></span><span class="sig-name descname"><span class="pre">PitchShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/pitch_shift.html#PitchShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.pitch_shift.PitchShift" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly transposing MIDI note pitches.</p>
+<p>This transform allows for random transposition of MIDI notes while preserving
+their timing and velocity. Each selected note can be shifted up or down by
+a random amount within the specified range. The shifts are applied on a
+per-note basis, allowing for complex harmonic variations.</p>
+<p>The pitch shift is applied with probability p to each selected instrument,
+and within each instrument, to a random subset of notes determined by p.
+All shifts are automatically clipped to stay within the valid MIDI note
+range [0, 127].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>int</em>) – Maximum number of semitones by which a note pitch can
+be shifted. Must be in range [0, 127].</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Direction of pitch shift. One of:
+- ‘up’: Only shift pitches up
+- ‘down’: Only shift pitches down
+- ‘both’: Allow both up and down shifts
+Default: ‘both’</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em>) – If a MIDI file has multiple instruments, this
+determines the probability of applying the transform to each
+instrument. Must be in range [0, 1].
+Default: 1.0 (apply to all instruments)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – For each selected instrument, this determines the probability
+of shifting each note. Must be in range [0, 1].
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - max_shift is not in range [0, 127]
+    - mode is not one of ‘both’, ‘up’, ‘down’
+    - p_instruments is not in range [0, 1]
+    - p is not in range [0, 1]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that only shifts pitches up by 1-3 semitones</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">PitchShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;up&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p_instruments</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.pitch_shift.PitchShift.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/pitch_shift.html#PitchShift.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.pitch_shift.PitchShift.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the PitchShift transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>int</em>) – Maximum number of semitones for pitch shifts.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Direction of pitch shift (‘up’, ‘down’, or ‘both’).
+Default: ‘both’</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying to each instrument.
+Default: 1.0</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of shifting each note.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.pitch_shift.PitchShift.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/pitch_shift.html#PitchShift.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.pitch_shift.PitchShift.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the pitch shift transformation to the MIDI data.</p>
+<p>For each non-drum instrument selected based on p_instruments, this method:
+1. Randomly selects a subset of notes based on p
+2. Generates random pitch shifts based on mode and max_shift
+3. Applies the shifts while clipping to valid MIDI note range [0, 127]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>pretty_midi.PrettyMIDI</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with shifted pitches.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pretty_midi.PrettyMIDI</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Drum instruments are skipped by default</p></li>
+<li><p>The transform maintains the original timing and velocity of all notes</p></li>
+<li><p>Notes are shifted independently, allowing for complex harmonic variations</p></li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="midiogre-augmentations-tempo-shift-module">
+<h2>midiogre.augmentations.tempo_shift module<a class="headerlink" href="#midiogre-augmentations-tempo-shift-module" title="Link to this heading"></a></h2>
+<p id="module-midiogre.augmentations.tempo_shift">MIDI tempo augmentation module.</p>
+<p>This module provides functionality to modify the tempo of MIDI files while preserving
+the relative timing of notes. The tempo can be shifted up or down within specified
+bounds, and the transform can either respect existing tempo changes or apply a single
+global tempo.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This transform operates on Mido MidiFile objects. If you have a PrettyMIDI object,
+you must first convert it using MIDIOgre’s converters:
+&gt;&gt;&gt; from midiogre.core.conversions import ConvertToMido
+&gt;&gt;&gt; midi_data = ConvertToMido()(pretty_midi_obj)</p>
+</div>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">TempoShift</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.core.conversions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConvertToMido</span><span class="p">,</span> <span class="n">ConvertToPrettyMIDI</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that can increase or decrease tempo by up to 20 BPM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">TempoShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">tempo_range</span><span class="o">=</span><span class="p">(</span><span class="mf">60.0</span><span class="p">,</span> <span class="mf">180.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.8</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load and transform MIDI file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">midi_data</span> <span class="o">=</span> <span class="n">ConvertToMido</span><span class="p">()(</span><span class="s1">&#39;song.mid&#39;</span><span class="p">)</span>  <span class="c1"># Convert to Mido format</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>  <span class="c1"># Apply transform</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pretty_midi_obj</span> <span class="o">=</span> <span class="n">ConvertToPrettyMIDI</span><span class="p">()(</span><span class="n">transformed</span><span class="p">)</span>  <span class="c1"># Convert back if needed</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.tempo_shift.TempoShift">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.tempo_shift.</span></span><span class="sig-name descname"><span class="pre">TempoShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tempo_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(30.0,</span> <span class="pre">200.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">respect_tempo_shifts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/tempo_shift.html#TempoShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.tempo_shift.TempoShift" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly modifying MIDI tempo.</p>
+<p>This transform allows for random modification of MIDI tempo while preserving
+the relative timing of notes. It can either respect all existing tempo changes
+in the file or replace them with a single global tempo.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This transform operates on Mido MidiFile objects. If you have a PrettyMIDI object,
+you must first convert it using MIDIOgre’s converters:
+&gt;&gt;&gt; from midiogre.core.conversions import ConvertToMido
+&gt;&gt;&gt; midi_data = ConvertToMido()(pretty_midi_obj)</p>
+</div>
+<p>The tempo shift is applied with probability p, and when applied, generates
+random shifts based on the specified mode and maximum shift value. The final
+tempo is always clipped to stay within the specified tempo range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum value by which tempo can be randomly shifted (in BPM).
+Must be positive.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Direction of tempo shift. One of:
+- ‘up’: Only increase tempo
+- ‘down’: Only decrease tempo
+- ‘both’: Allow both increase and decrease
+Default: ‘both’</p></li>
+<li><p><strong>tempo_range</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Allowed tempo range in BPM as (min_tempo, max_tempo).
+The transformed tempo will be clipped to stay within this range.
+Default: (30.0, 200.0)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – Probability of applying the tempo shift. Must be in range [0, 1].
+Default: 0.2</p></li>
+<li><p><strong>respect_tempo_shifts</strong> (<em>bool</em>) – If True, preserves all tempo change events,
+shifting each while maintaining their timing. If False, replaces all
+tempo events with a single tempo at the start.
+Default: True</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - mode is not one of ‘both’, ‘up’, ‘down’
+    - max_shift is not positive
+    - tempo_range is not a tuple/list of length 2
+    - min_tempo is negative
+    - min_tempo &gt;= max_tempo</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.core.conversions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConvertToMido</span><span class="p">,</span> <span class="n">ConvertToPrettyMIDI</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that increases tempo by 10-30 BPM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">TempoShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;up&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">tempo_range</span><span class="o">=</span><span class="p">(</span><span class="mf">60.0</span><span class="p">,</span> <span class="mf">240.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">1.0</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">midi_data</span> <span class="o">=</span> <span class="n">ConvertToMido</span><span class="p">()(</span><span class="s1">&#39;song.mid&#39;</span><span class="p">)</span>  <span class="c1"># Convert to Mido format</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>  <span class="c1"># Apply transform</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pretty_midi_obj</span> <span class="o">=</span> <span class="n">ConvertToPrettyMIDI</span><span class="p">()(</span><span class="n">transformed</span><span class="p">)</span>  <span class="c1"># Convert back if needed</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.tempo_shift.TempoShift.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tempo_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(30.0,</span> <span class="pre">200.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">respect_tempo_shifts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/tempo_shift.html#TempoShift.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.tempo_shift.TempoShift.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the TempoShift transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum value by which tempo can be randomly shifted (in BPM).</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Direction of tempo shift (‘up’, ‘down’, or ‘both’).
+Default: ‘both’</p></li>
+<li><p><strong>tempo_range</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – Allowed tempo range in BPM.
+Default: (30.0, 200.0)</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying the transform.
+Default: 0.2</p></li>
+<li><p><strong>respect_tempo_shifts</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to preserve multiple tempo events.
+Default: True</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.tempo_shift.TempoShift.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/tempo_shift.html#TempoShift.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.tempo_shift.TempoShift.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the tempo shift transformation to the MIDI data.</p>
+<p>This method handles several cases:
+1. Empty MIDI file (returns unchanged)
+2. No tempo events (adds default 120 BPM)
+3. Single tempo event
+4. Multiple tempo events (based on respect_tempo_shifts)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>mido.MidiFile</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with modified tempo(s).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>mido.MidiFile</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>If no tempo events are found, a default tempo of 120 BPM is used.</p></li>
+<li><p>Only tempo events in the first track are processed.</p></li>
+<li><p>When respect_tempo_shifts is True, all tempo events maintain their
+relative timing but get new tempo values.</p></li>
+<li><p>When respect_tempo_shifts is False, all tempo events are replaced
+with a single tempo event at the start.</p></li>
+<li><p>The transform is applied with probability self.p. If not applied,
+the original tempo(s) are preserved.</p></li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<p id="module-midiogre.augmentations">MIDI data augmentation transforms.</p>
+<p>This module provides a collection of transforms for augmenting MIDI data. These transforms
+can be used individually or composed together to create complex augmentation pipelines.</p>
+<dl class="simple">
+<dt>Available Transforms:</dt><dd><ul class="simple">
+<li><p>DurationShift: Randomly modify note durations while keeping onset times intact</p></li>
+<li><p>NoteAdd: Randomly add new notes to instrument tracks</p></li>
+<li><p>NoteDelete: Randomly remove notes from instrument tracks</p></li>
+<li><p>OnsetTimeShift: Randomly shift note onset times while preserving durations</p></li>
+<li><p>PitchShift: Randomly transpose note pitches up or down</p></li>
+<li><p>TempoShift: Randomly modify tempo while preserving relative note timing</p></li>
+</ul>
+</dd>
+<dt>All transforms follow a consistent interface inherited from BaseMidiTransform:</dt><dd><ul class="simple">
+<li><p>They are callable objects that take a PrettyMIDI object as input</p></li>
+<li><p>They support probabilistic application through the ‘p’ parameter</p></li>
+<li><p>They handle multi-instrument MIDI files through the ‘p_instruments’ parameter</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">PitchShift</span><span class="p">,</span> <span class="n">OnsetTimeShift</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Compose</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform pipeline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">Compose</span><span class="p">([</span>
+<span class="gp">... </span>    <span class="n">PitchShift</span><span class="p">(</span><span class="n">max_shift</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">OnsetTimeShift</span><span class="p">(</span><span class="n">max_shift</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load and transform MIDI file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">midi_data</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">(</span><span class="s1">&#39;song.mid&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>midiogre.core.transforms_interface: Base class and interface for all transforms
+midiogre.core.compositions: Tools for composing multiple transforms</p>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.DurationShift">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.</span></span><span class="sig-name descname"><span class="pre">DurationShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/duration_shift.html#DurationShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.DurationShift" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly modifying MIDI note durations.</p>
+<p>This transform allows for random modification of note durations while
+preserving their onset times. Each selected note can be shortened or
+lengthened by a random amount within the specified range. The shifts
+are applied on a per-note basis, allowing for varied articulation.</p>
+<p>The duration shift is applied with probability p to each selected instrument,
+and within each instrument, to a random subset of notes determined by p.
+All shifts are automatically clipped to ensure notes maintain a minimum
+duration and don’t extend beyond the track end.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum time in seconds by which a note duration can
+be modified. Must be positive.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Type of duration modification. One of:
+- ‘shrink’: Only shorten notes
+- ‘extend’: Only lengthen notes
+- ‘both’: Allow both shortening and lengthening
+Default: ‘both’</p></li>
+<li><p><strong>min_duration</strong> (<em>float</em>) – Minimum allowed note duration in seconds. Notes
+will not be shortened below this value.
+Default: 1e-6</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em>) – If a MIDI file has multiple instruments, this
+determines the probability of applying the transform to each
+instrument. Must be in range [0, 1].
+Default: 1.0 (apply to all instruments)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – For each selected instrument, this determines the probability
+of modifying each note. Must be in range [0, 1].
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - max_shift is not positive
+    - mode is not one of ‘both’, ‘shrink’, ‘extend’
+    - min_duration is not positive
+    - p_instruments is not in range [0, 1]
+    - p is not in range [0, 1]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that only extends notes by 0.1-0.3 seconds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">DurationShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;extend&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">min_duration</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p_instruments</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.4</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.DurationShift.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/duration_shift.html#DurationShift.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.DurationShift.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the DurationShift transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum time in seconds for duration modifications.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of duration modification (‘shrink’, ‘extend’, or ‘both’).
+Default: ‘both’</p></li>
+<li><p><strong>min_duration</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum allowed note duration in seconds.
+Default: 1e-6</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying to each instrument.
+Default: 1.0</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of modifying each note.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.DurationShift.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/duration_shift.html#DurationShift.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.DurationShift.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the duration shift transformation to the MIDI data.</p>
+<p>For each non-drum instrument selected based on p_instruments, this method:
+1. Randomly selects a subset of notes based on p
+2. Generates random duration shifts based on mode and max_shift
+3. Applies the shifts while maintaining onset times and ensuring valid durations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>pretty_midi.PrettyMIDI</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with modified note durations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pretty_midi.PrettyMIDI</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Drum instruments are skipped by default</p></li>
+<li><p>The transform maintains the onset time of all notes</p></li>
+<li><p>Notes are modified independently, allowing for varied articulation</p></li>
+<li><dl class="simple">
+<dt>Duration changes are clipped to ensure:</dt><dd><ul>
+<li><p>Notes maintain the minimum duration</p></li>
+<li><p>Notes don’t extend beyond the end of the track</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.NoteAdd">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.</span></span><span class="sig-name descname"><span class="pre">NoteAdd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">note_num_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">note_velocity_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">note_duration_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restrict_to_instrument_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_add.html#NoteAdd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.NoteAdd" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly adding new MIDI notes.</p>
+<p>This transform allows for random addition of new notes to MIDI tracks.
+Each new note’s properties (pitch, velocity, duration, timing) are randomly
+generated within specified ranges. The number of notes added is proportional
+to the existing number of notes in each track.</p>
+<p>The note addition is applied with probability p to each selected instrument.
+For each selected instrument, the number of notes to add is randomly chosen
+between 0 and p * (current number of notes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>note_num_range</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Range of MIDI note numbers for new notes
+as (min_note, max_note). Each value must be in range [0, 127].
+Example: (60, 72) for notes between middle C and C5.</p></li>
+<li><p><strong>note_velocity_range</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Range of MIDI velocities for new
+notes as (min_velocity, max_velocity). Each value must be in range [0, 127].
+Example: (64, 100) for medium to loud notes.</p></li>
+<li><p><strong>note_duration_range</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Range of note durations in seconds
+as (min_duration, max_duration). Values must be positive.
+Example: (0.1, 0.5) for short to medium notes.</p></li>
+<li><p><strong>restrict_to_instrument_time</strong> (<em>bool</em>) – If True, new notes will not extend beyond
+the end time of existing notes in the instrument.
+Default: True</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em>) – If a MIDI file has multiple instruments, this
+determines the probability of applying the transform to each
+instrument. Must be in range [0, 1].
+Default: 1.0 (apply to all instruments)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – For each selected instrument, this determines the maximum ratio
+of new notes to add relative to existing notes. Must be in range [0, 1].
+Example: If p=0.2 and an instrument has 100 notes, up to 20 new notes
+may be added.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - note_num_range values not in [0, 127]
+    - note_velocity_range values not in [0, 127]
+    - note_duration_range values not positive
+    - ranges not specified as (min, max) with max &gt; min
+    - p_instruments not in range [0, 1]
+    - p not in range [0, 1]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that adds short, quiet notes in the high register</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">NoteAdd</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">note_num_range</span><span class="o">=</span><span class="p">(</span><span class="mi">72</span><span class="p">,</span> <span class="mi">96</span><span class="p">),</span>  <span class="c1"># C5 to C7</span>
+<span class="gp">... </span>    <span class="n">note_velocity_range</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>  <span class="c1"># Soft notes</span>
+<span class="gp">... </span>    <span class="n">note_duration_range</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>  <span class="c1"># Short notes</span>
+<span class="gp">... </span>    <span class="n">restrict_to_instrument_time</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p_instruments</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.15</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.NoteAdd.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">note_num_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">note_velocity_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">note_duration_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restrict_to_instrument_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_add.html#NoteAdd.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.NoteAdd.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the NoteAdd transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>note_num_range</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Range of MIDI note numbers for new notes.</p></li>
+<li><p><strong>note_velocity_range</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Range of MIDI velocities for new notes.</p></li>
+<li><p><strong>note_duration_range</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Range of note durations in seconds.</p></li>
+<li><p><strong>restrict_to_instrument_time</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to limit note end times.
+Default: True</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying to each instrument.
+Default: 1.0</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum ratio of new notes to add.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.NoteAdd.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_add.html#NoteAdd.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.NoteAdd.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the note addition transformation to the MIDI data.</p>
+<p>For each non-drum instrument selected based on p_instruments, this method:
+1. Determines the number of notes to add based on p
+2. Generates random notes within the configured ranges
+3. Adds the new notes to the instrument track</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>pretty_midi.PrettyMIDI</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with added notes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pretty_midi.PrettyMIDI</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Drum instruments are skipped by default</p></li>
+<li><p>The number of notes added is random but proportional to existing notes</p></li>
+<li><p>New notes have random properties within the configured ranges</p></li>
+<li><p>If restrict_to_instrument_time is True, new notes won’t extend beyond
+the end of existing notes in the track</p></li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.NoteDelete">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.</span></span><span class="sig-name descname"><span class="pre">NoteDelete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_delete.html#NoteDelete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.NoteDelete" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly deleting MIDI notes.</p>
+<p>This transform allows for random deletion of existing notes from MIDI tracks.
+The deletion is applied with probability p to each selected instrument.
+For each selected instrument, the number of notes to delete is randomly chosen
+between 0 and p * (current number of notes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – If a MIDI file has multiple instruments, this
+determines the probability of applying the transform to each
+instrument. Must be in range [0, 1].
+Default: 1.0 (apply to all instruments)</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – For each selected instrument, this determines the maximum
+ratio of notes that may be deleted. Must be in range [0, 1].
+Example: If p=0.2 and an instrument has 100 notes, up to 20 notes
+may be deleted.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - p_instruments not in range [0, 1]
+    - p not in range [0, 1]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that aggressively thins out notes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">NoteDelete</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">p_instruments</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>  <span class="c1"># Apply to 80% of instruments</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>  <span class="c1"># Delete up to 40% of notes</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.NoteDelete.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_delete.html#NoteDelete.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.NoteDelete.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the NoteDelete transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying to each instrument.
+Default: 1.0</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Maximum ratio of notes that may be deleted.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.NoteDelete.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/note_delete.html#NoteDelete.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.NoteDelete.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the note deletion transformation to the MIDI data.</p>
+<p>For each non-drum instrument selected based on p_instruments, this method:
+1. Determines the number of notes to delete based on p
+2. Randomly selects notes for deletion
+3. Removes the selected notes from the instrument track</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>pretty_midi.PrettyMIDI</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with notes deleted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pretty_midi.PrettyMIDI</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Drum instruments are skipped by default</p></li>
+<li><p>The number of notes deleted is random but proportional to existing notes</p></li>
+<li><p>Notes are selected for deletion uniformly at random</p></li>
+<li><p>Empty instruments (no notes) are skipped</p></li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.OnsetTimeShift">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.</span></span><span class="sig-name descname"><span class="pre">OnsetTimeShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/onset_time_shift.html#OnsetTimeShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.OnsetTimeShift" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly shifting MIDI note onset times.</p>
+<p>This transform allows for random modification of note start times while
+preserving their durations. Each selected note can be shifted earlier or
+later in time by a random amount within the specified range. The shifts
+are applied on a per-note basis, allowing for complex rhythmic variations.</p>
+<p>The onset shift is applied with probability p to each selected instrument,
+and within each instrument, to a random subset of notes determined by p.
+All shifts are automatically clipped to ensure notes stay within valid time
+ranges (no negative start times, no extending beyond track end).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum time in seconds by which a note onset can
+be shifted. Must be positive.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Direction of time shift. One of:
+- ‘left’: Only shift notes earlier (ie, advance) in time
+- ‘right’: Only shift notes later (ie, delay) in time
+- ‘both’: Allow both earlier and later shifts
+Default: ‘both’</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em>) – If a MIDI file has multiple instruments, this
+determines the probability of applying the transform to each
+instrument. Must be in range [0, 1].
+Default: 1.0 (apply to all instruments)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – For each selected instrument, this determines the probability
+of shifting each note. Must be in range [0, 1].
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - max_shift is not positive
+    - mode is not one of ‘both’, ‘left’, ‘right’
+    - p_instruments is not in range [0, 1]
+    - p is not in range [0, 1]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that only delays notes by 0.05-0.15 seconds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">OnsetTimeShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p_instruments</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.3</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.OnsetTimeShift.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/onset_time_shift.html#OnsetTimeShift.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.OnsetTimeShift.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the OnsetTimeShift transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum time in seconds for onset shifts.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Direction of time shift (‘left’, ‘right’, or ‘both’).
+Default: ‘both’</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying to each instrument.
+Default: 1.0</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of shifting each note.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.OnsetTimeShift.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/onset_time_shift.html#OnsetTimeShift.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.OnsetTimeShift.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the onset time shift transformation to the MIDI data.</p>
+<p>For each non-drum instrument selected based on p_instruments, this method:
+1. Randomly selects a subset of notes based on p
+2. Generates random time shifts based on mode and max_shift
+3. Applies the shifts while maintaining note durations and ensuring valid times</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>pretty_midi.PrettyMIDI</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with shifted note timings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pretty_midi.PrettyMIDI</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Drum instruments are skipped by default</p></li>
+<li><p>The transform maintains the duration of all notes</p></li>
+<li><p>Notes are shifted independently, allowing for complex rhythmic variations</p></li>
+<li><dl class="simple">
+<dt>Shifts are clipped to ensure notes stay within valid time ranges:</dt><dd><ul>
+<li><p>No negative start times</p></li>
+<li><p>No extending beyond the end of the track</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.PitchShift">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.</span></span><span class="sig-name descname"><span class="pre">PitchShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/pitch_shift.html#PitchShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.PitchShift" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly transposing MIDI note pitches.</p>
+<p>This transform allows for random transposition of MIDI notes while preserving
+their timing and velocity. Each selected note can be shifted up or down by
+a random amount within the specified range. The shifts are applied on a
+per-note basis, allowing for complex harmonic variations.</p>
+<p>The pitch shift is applied with probability p to each selected instrument,
+and within each instrument, to a random subset of notes determined by p.
+All shifts are automatically clipped to stay within the valid MIDI note
+range [0, 127].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>int</em>) – Maximum number of semitones by which a note pitch can
+be shifted. Must be in range [0, 127].</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Direction of pitch shift. One of:
+- ‘up’: Only shift pitches up
+- ‘down’: Only shift pitches down
+- ‘both’: Allow both up and down shifts
+Default: ‘both’</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em>) – If a MIDI file has multiple instruments, this
+determines the probability of applying the transform to each
+instrument. Must be in range [0, 1].
+Default: 1.0 (apply to all instruments)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – For each selected instrument, this determines the probability
+of shifting each note. Must be in range [0, 1].
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - max_shift is not in range [0, 127]
+    - mode is not one of ‘both’, ‘up’, ‘down’
+    - p_instruments is not in range [0, 1]
+    - p is not in range [0, 1]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that only shifts pitches up by 1-3 semitones</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">PitchShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;up&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p_instruments</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.PitchShift.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_instruments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/pitch_shift.html#PitchShift.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.PitchShift.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the PitchShift transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>int</em>) – Maximum number of semitones for pitch shifts.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Direction of pitch shift (‘up’, ‘down’, or ‘both’).
+Default: ‘both’</p></li>
+<li><p><strong>p_instruments</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying to each instrument.
+Default: 1.0</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of shifting each note.
+Default: 0.2</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.PitchShift.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/pitch_shift.html#PitchShift.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.PitchShift.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the pitch shift transformation to the MIDI data.</p>
+<p>For each non-drum instrument selected based on p_instruments, this method:
+1. Randomly selects a subset of notes based on p
+2. Generates random pitch shifts based on mode and max_shift
+3. Applies the shifts while clipping to valid MIDI note range [0, 127]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>pretty_midi.PrettyMIDI</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with shifted pitches.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pretty_midi.PrettyMIDI</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Drum instruments are skipped by default</p></li>
+<li><p>The transform maintains the original timing and velocity of all notes</p></li>
+<li><p>Notes are shifted independently, allowing for complex harmonic variations</p></li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="midiogre.augmentations.TempoShift">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">midiogre.augmentations.</span></span><span class="sig-name descname"><span class="pre">TempoShift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tempo_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(30.0,</span> <span class="pre">200.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">respect_tempo_shifts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/tempo_shift.html#TempoShift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.TempoShift" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="midiogre.core.html#midiogre.core.transforms_interface.BaseMidiTransform" title="midiogre.core.transforms_interface.BaseMidiTransform"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseMidiTransform</span></code></a></p>
+<p>Transform for randomly modifying MIDI tempo.</p>
+<p>This transform allows for random modification of MIDI tempo while preserving
+the relative timing of notes. It can either respect all existing tempo changes
+in the file or replace them with a single global tempo.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This transform operates on Mido MidiFile objects. If you have a PrettyMIDI object,
+you must first convert it using MIDIOgre’s converters:
+&gt;&gt;&gt; from midiogre.core.conversions import ConvertToMido
+&gt;&gt;&gt; midi_data = ConvertToMido()(pretty_midi_obj)</p>
+</div>
+<p>The tempo shift is applied with probability p, and when applied, generates
+random shifts based on the specified mode and maximum shift value. The final
+tempo is always clipped to stay within the specified tempo range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum value by which tempo can be randomly shifted (in BPM).
+Must be positive.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Direction of tempo shift. One of:
+- ‘up’: Only increase tempo
+- ‘down’: Only decrease tempo
+- ‘both’: Allow both increase and decrease
+Default: ‘both’</p></li>
+<li><p><strong>tempo_range</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – Allowed tempo range in BPM as (min_tempo, max_tempo).
+The transformed tempo will be clipped to stay within this range.
+Default: (30.0, 200.0)</p></li>
+<li><p><strong>p</strong> (<em>float</em>) – Probability of applying the tempo shift. Must be in range [0, 1].
+Default: 0.2</p></li>
+<li><p><strong>respect_tempo_shifts</strong> (<em>bool</em>) – If True, preserves all tempo change events,
+shifting each while maintaining their timing. If False, replaces all
+tempo events with a single tempo at the start.
+Default: True</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any of the following conditions are met:
+    - mode is not one of ‘both’, ‘up’, ‘down’
+    - max_shift is not positive
+    - tempo_range is not a tuple/list of length 2
+    - min_tempo is negative
+    - min_tempo &gt;= max_tempo</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.core.conversions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConvertToMido</span><span class="p">,</span> <span class="n">ConvertToPrettyMIDI</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create transform that increases tempo by 10-30 BPM</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transform</span> <span class="o">=</span> <span class="n">TempoShift</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">max_shift</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;up&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">tempo_range</span><span class="o">=</span><span class="p">(</span><span class="mf">60.0</span><span class="p">,</span> <span class="mf">240.0</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">p</span><span class="o">=</span><span class="mf">1.0</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">midi_data</span> <span class="o">=</span> <span class="n">ConvertToMido</span><span class="p">()(</span><span class="s1">&#39;song.mid&#39;</span><span class="p">)</span>  <span class="c1"># Convert to Mido format</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transformed</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>  <span class="c1"># Apply transform</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pretty_midi_obj</span> <span class="o">=</span> <span class="n">ConvertToPrettyMIDI</span><span class="p">()(</span><span class="n">transformed</span><span class="p">)</span>  <span class="c1"># Convert back if needed</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.TempoShift.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tempo_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(30.0,</span> <span class="pre">200.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">respect_tempo_shifts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/tempo_shift.html#TempoShift.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.TempoShift.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the TempoShift transform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_shift</strong> (<em>float</em>) – Maximum value by which tempo can be randomly shifted (in BPM).</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Direction of tempo shift (‘up’, ‘down’, or ‘both’).
+Default: ‘both’</p></li>
+<li><p><strong>tempo_range</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>, </em><em>optional</em>) – Allowed tempo range in BPM.
+Default: (30.0, 200.0)</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>optional</em>) – Probability of applying the transform.
+Default: 0.2</p></li>
+<li><p><strong>respect_tempo_shifts</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to preserve multiple tempo events.
+Default: True</p></li>
+<li><p><strong>eps</strong> (<em>float</em><em>, </em><em>optional</em>) – Small epsilon value for numerical stability.
+Default: 1e-12</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If parameters are invalid (see class docstring for details).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="midiogre.augmentations.TempoShift.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/midiogre/augmentations/tempo_shift.html#TempoShift.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#midiogre.augmentations.TempoShift.apply" title="Link to this definition"></a></dt>
+<dd><p>Apply the tempo shift transformation to the MIDI data.</p>
+<p>This method handles several cases:
+1. Empty MIDI file (returns unchanged)
+2. No tempo events (adds default 120 BPM)
+3. Single tempo event
+4. Multiple tempo events (based on respect_tempo_shifts)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midi_data</strong> (<em>mido.MidiFile</em>) – The MIDI data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The transformed MIDI data with modified tempo(s).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>mido.MidiFile</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>If no tempo events are found, a default tempo of 120 BPM is used.</p></li>
+<li><p>Only tempo events in the first track are processed.</p></li>
+<li><p>When respect_tempo_shifts is True, all tempo events maintain their
+relative timing but get new tempo values.</p></li>
+<li><p>When respect_tempo_shifts is False, all tempo events are replaced
+with a single tempo event at the start.</p></li>
+<li><p>The transform is applied with probability self.p. If not applied,
+the original tempo(s) are preserved.</p></li>
+</ul>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="midiogre.html" class="btn btn-neutral float-left" title="midiogre package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="midiogre.core.html" class="btn btn-neutral float-right" title="midiogre.core package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
