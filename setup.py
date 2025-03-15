@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
     long_description = readme_file.read()
 
 setup(
-    name='midiogre',
+    name='midiogre-test',
     packages=find_packages(exclude=["demo", "tests"]),
     version='0.1.0',
     license='MIT',
