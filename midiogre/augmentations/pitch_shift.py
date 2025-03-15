@@ -35,34 +35,44 @@ class PitchShift(BaseMidiTransform):
             )
 
         self.max_shift = max_shift
+        self.mode = mode  # Store the mode string for vectorized operations
 
-        if mode == 'up':
-            self.mode = self._up
-        elif mode == 'down':
-            self.mode = self._down
-        else:
-            self.mode = self._both
-
-    def _both(self, pitch):
-        return np.clip(pitch + np.random.randint(-self.max_shift, self.max_shift + 1), 0, 127)
-
-    def _up(self, pitch):
-        return np.clip(pitch + np.random.randint(0, self.max_shift + 1), 0, 127)
-
-    def _down(self, pitch):
-        return np.clip(pitch + np.random.randint(-self.max_shift, 1), 0, 127)
+    def _generate_shifts(self, num_shifts: int) -> np.ndarray:
+        """Generate pitch shifts in a vectorized manner."""
+        if self.mode == 'up':
+            return np.random.randint(0, self.max_shift + 1, num_shifts)
+        elif self.mode == 'down':
+            return np.random.randint(-self.max_shift, 1, num_shifts)
+        else:  # both
+            return np.random.randint(-self.max_shift, self.max_shift + 1, num_shifts)
 
     def apply(self, midi_data):
         modified_instruments = self._get_modified_instruments_list(midi_data)
         for instrument in modified_instruments:
-            num_shifted_notes_per_instrument = int(self.p * len(instrument.notes))
-            if num_shifted_notes_per_instrument == 0:
-                # TODO Replace with a better warning definition
+            if not instrument.notes:  # Skip empty instruments
+                continue
+                
+            num_notes_to_shift = int(self.p * len(instrument.notes))
+            if num_notes_to_shift == 0:
                 logging.debug(
                     "PitchShift can't be performed on 0 notes on given non-drum instrument. Skipping.",
                 )
                 continue
 
-            for note in random.sample(instrument.notes, k=num_shifted_notes_per_instrument):
-                note.pitch = self.mode(note.pitch)
+            # Select notes to modify
+            notes_to_modify = random.sample(instrument.notes, k=num_notes_to_shift)
+            
+            # Get current pitches
+            current_pitches = np.array([note.pitch for note in notes_to_modify])
+            
+            # Generate shifts in a vectorized manner
+            shifts = self._generate_shifts(num_notes_to_shift)
+            
+            # Apply shifts and clip to valid MIDI note range
+            new_pitches = np.clip(current_pitches + shifts, 0, 127)
+            
+            # Update notes with new pitches
+            for note, new_pitch in zip(notes_to_modify, new_pitches):
+                note.pitch = int(new_pitch)
+                
         return midi_data
