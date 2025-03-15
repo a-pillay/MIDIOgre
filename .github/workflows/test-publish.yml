@@ -35,8 +35,13 @@ jobs:
       run: |
         pytest tests/ --cov=midiogre --cov-report=term-missing
     
-    - name: Build package
-      run: python -m build
+    - name: Prepare package for Test PyPI
+      run: |
+        # Temporarily modify pyproject.toml for test publication
+        sed -i 's/name = "midiogre"/name = "midiogre-test"/' pyproject.toml
+        python -m build
+        # Restore original pyproject.toml
+        git checkout pyproject.toml
     
     - name: Check package
       run: |
@@ -46,12 +51,9 @@ jobs:
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
+        TWINE_REPOSITORY: testpypi
       run: |
-        echo "Checking dist contents:"
-        ls -l dist/
-        echo "Uploading to Test PyPI..."
-        twine upload --verbose --skip-existing dist/*
+        python -m twine upload --repository testpypi --verbose dist/*
     
     - name: Test install from Test PyPI
       run: |

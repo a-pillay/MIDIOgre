@@ -3,7 +3,8 @@ requires = ["setuptools>=61.0", "wheel", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-dynamic = ["name", "version"]
+name = "midiogre"
+dynamic = ["version"]
 description = "The On-the-fly MIDI Data Augmentation Library!"
 readme = "README.md"
 requires-python = ">=3.7"
