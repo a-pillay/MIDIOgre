@@ -109,7 +109,11 @@ def test_note_selection(duration_shift_instance, monkeypatch):
             return 0.2
         return np.full(size, 0.2)
     
+    def mock_sample(population, k):
+        return list(population)[:k]  # Take first k elements deterministically
+    
     monkeypatch.setattr(np.random, 'uniform', mock_uniform)
+    monkeypatch.setattr(random, 'sample', mock_sample)
     
     modified_midi = duration_shift_instance.apply(midi_data)
     

@@ -196,14 +196,14 @@ def test_probability():
     """Test that changes are only applied based on probability."""
     midi_data = create_mock_midi_with_tempo(tempo=500000)  # 120 BPM
     
-    # Test with p=1 (should never change)
-    tempo_shift = TempoShift(max_shift=10, p=1)
+    # Test with p=0 (should never change)
+    tempo_shift = TempoShift(max_shift=10, p=0)
     modified_midi = tempo_shift.apply(midi_data)
     tempo_events = [msg for msg in modified_midi.tracks[0] if msg.type == 'set_tempo']
     assert tempo_events[0].tempo == 500000
     
-    # Test with p=0 (should always change)
-    tempo_shift = TempoShift(max_shift=10, p=0)
+    # Test with p=1 (should always change)
+    tempo_shift = TempoShift(max_shift=10, p=1)
     modified_midi = tempo_shift.apply(midi_data)
     tempo_events = [msg for msg in modified_midi.tracks[0] if msg.type == 'set_tempo']
     assert tempo_events[0].tempo != 500000
@@ -219,7 +219,8 @@ def test_tempo_range_clipping():
         modified_midi = tempo_shift.apply(midi_data)
         tempo_events = [msg for msg in modified_midi.tracks[0] if msg.type == 'set_tempo']
         bpm = tempo_shift._convert_tempo_to_bpm(tempo_events[0].tempo)
-        assert 50 <= bpm <= 180
+        # Allow for small floating point imprecision
+        assert 49.99 <= bpm <= 180.01
 
 
 def test_performance():

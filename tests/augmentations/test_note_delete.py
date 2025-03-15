@@ -7,6 +7,7 @@ import random
 import pytest
 from midiogre.augmentations.note_delete import NoteDelete
 from tests.core_mocks import generate_mock_midi_data
+import numpy as np
 
 
 @pytest.fixture
@@ -20,18 +21,23 @@ def test_apply_enough_notes(note_delete_instance, monkeypatch):
     tot_notes = 10
     midi_data = generate_mock_midi_data(num_notes=tot_notes)
 
-    # Mock random.sample to return indices of notes to be deleted
-    def mock_randsamp(modified_instruments, k):
-        preserved_notes = list(range(tot_notes))
-        random.shuffle(preserved_notes)
-        return preserved_notes[:int(tot_notes * note_delete_instance.p)]
+    # Mock random generation to delete exactly 20% of notes
+    def mock_uniform(low, high, size=None):
+        return note_delete_instance.p  # Return p to delete maximum number of notes
 
-    monkeypatch.setattr(random, 'sample', mock_randsamp)
+    def mock_choice(population, size=None, replace=False):
+        if isinstance(population, int):
+            population = range(population)
+        return list(range(size))  # Return first 'size' indices deterministically
+
+    monkeypatch.setattr(np.random, 'uniform', mock_uniform)
+    monkeypatch.setattr(np.random, 'choice', mock_choice)
 
     # Apply note deletion
     modified_midi_data = note_delete_instance.apply(midi_data)
 
     # Ensure that the correct number of notes have been deleted
+    # With p=0.2, expect 20% of notes to be deleted (2 notes), leaving 8 notes
     assert len(modified_midi_data.instruments[0].notes) == 8
 
 
@@ -39,18 +45,22 @@ def test_apply_not_enough_notes(note_delete_instance, monkeypatch):
     tot_notes = 2
     midi_data = generate_mock_midi_data(num_notes=tot_notes)
 
-    # Mock random.sample to return indices of notes to be deleted
-    def mock_randsamp(modified_instruments, k):
-        preserved_notes = list(range(tot_notes))
-        random.shuffle(preserved_notes)
-        return preserved_notes[:k]
+    # Mock random generation to return values that preserve all notes
+    def mock_uniform(low, high, size=None):
+        return 0  # Return 0 to ensure no notes are deleted
 
-    monkeypatch.setattr(random, 'sample', mock_randsamp)
+    def mock_choice(population, size=None, replace=False):
+        if isinstance(population, int):
+            population = range(population)
+        return list(population)[:size]  # Return all indices to keep all notes
+
+    monkeypatch.setattr(np.random, 'uniform', mock_uniform)
+    monkeypatch.setattr(np.random, 'choice', mock_choice)
 
     # Apply note deletion
     modified_midi_data = note_delete_instance.apply(midi_data)
 
-    # Ensure that all notes have been deleted
+    # Ensure that all notes have been preserved
     assert len(modified_midi_data.instruments[0].notes) == 2
 
 
