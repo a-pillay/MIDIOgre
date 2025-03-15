@@ -1,3 +1,21 @@
+"""MIDI note deletion augmentation module.
+
+This module provides functionality to randomly remove notes from MIDI tracks.
+The deletion process can be configured to affect a certain percentage of notes
+across selected instruments, allowing for controlled sparsification of the music.
+
+Example:
+    >>> from midiogre.augmentations import NoteDelete
+    >>> import pretty_midi
+    >>> 
+    >>> # Create transform that randomly removes up to 20% of notes
+    >>> transform = NoteDelete(p=0.2)
+    >>> 
+    >>> # Load and transform MIDI file
+    >>> midi_data = pretty_midi.PrettyMIDI('song.mid')
+    >>> transformed = transform(midi_data)
+"""
+
 import logging
 import math
 import random
@@ -9,44 +27,86 @@ from midiogre.core.transforms_interface import BaseMidiTransform
 
 
 class NoteDelete(BaseMidiTransform):
-    def __init__(self, can_delete_last_note: bool = True, p_instruments: float = 1.0, p: float = 0.2,
-                 eps: float = 1e-12):
+    """Transform for randomly deleting MIDI notes.
+    
+    This transform allows for random deletion of existing notes from MIDI tracks.
+    The deletion is applied with probability p to each selected instrument.
+    For each selected instrument, the number of notes to delete is randomly chosen
+    between 0 and p * (current number of notes).
+    
+    Args:
+        p_instruments (float, optional): If a MIDI file has multiple instruments, this
+            determines the probability of applying the transform to each
+            instrument. Must be in range [0, 1].
+            Default: 1.0 (apply to all instruments)
+        p (float, optional): For each selected instrument, this determines the maximum
+            ratio of notes that may be deleted. Must be in range [0, 1].
+            Example: If p=0.2 and an instrument has 100 notes, up to 20 notes
+            may be deleted.
+            Default: 0.2
+        eps (float, optional): Small epsilon value for numerical stability.
+            Default: 1e-12
+            
+    Raises:
+        ValueError: If any of the following conditions are met:
+            - p_instruments not in range [0, 1]
+            - p not in range [0, 1]
+            
+    Example:
+        >>> # Create transform that aggressively thins out notes
+        >>> transform = NoteDelete(
+        ...     p_instruments=0.8,  # Apply to 80% of instruments
+        ...     p=0.4,  # Delete up to 40% of notes
+        ... )
+        >>> transformed = transform(midi_data)
+    """
 
-        """
-        Randomly delete some notes from a MIDI instrument track.
-
-        :param can_delete_last_note: If true, the last note in an instrument will not be deleted (thus keeping the total
-        instrument duration unchanged)
-        :param p_instruments: If a MIDI file has >1 instruments, this parameter will determine the percentage of
-        instruments that may have random note deletions.
-        :param p: Determines the maximum percentage of notes that may be randomly deleted per instrument.
-        :param eps: Epsilon term added to represent the lowest possible value (for numerical stability)
+    def __init__(self, p_instruments: float = 1.0, p: float = 0.2, eps: float = 1e-12):
+        """Initialize the NoteDelete transform.
+        
+        Args:
+            p_instruments (float, optional): Probability of applying to each instrument.
+                Default: 1.0
+            p (float, optional): Maximum ratio of notes that may be deleted.
+                Default: 0.2
+            eps (float, optional): Small epsilon value for numerical stability.
+                Default: 1e-12
+                
+        Raises:
+            ValueError: If parameters are invalid (see class docstring for details).
         """
         super().__init__(p_instruments=p_instruments, p=p, eps=eps)
 
-        self.can_delete_last_note = can_delete_last_note
-
-        # Correcting self.p to reflect probability of note deletions (inverse effect)
-        self.p = 1 - self.p
-
     def apply(self, midi_data):
+        """Apply the note deletion transformation to the MIDI data.
+        
+        For each non-drum instrument selected based on p_instruments, this method:
+        1. Determines the number of notes to delete based on p
+        2. Randomly selects notes for deletion
+        3. Removes the selected notes from the instrument track
+        
+        Args:
+            midi_data (pretty_midi.PrettyMIDI): The MIDI data to transform.
+            
+        Returns:
+            pretty_midi.PrettyMIDI: The transformed MIDI data with notes deleted.
+            
+        Note:
+            - Drum instruments are skipped by default
+            - The number of notes deleted is random but proportional to existing notes
+            - Notes are selected for deletion uniformly at random
+            - Empty instruments (no notes) are skipped
+        """
         modified_instruments = self._get_modified_instruments_list(midi_data)
         for instrument in modified_instruments:
-
-            num_deleteable_notes = len(instrument.notes) if self.can_delete_last_note else len(instrument.notes) - 1
-            num_preserved_notes_per_instrument = math.ceil(np.random.uniform(self.p, 1.0) * num_deleteable_notes)
-            if num_preserved_notes_per_instrument == 0:
-                # TODO Replace with a better warning definition
-                logging.debug(
-                    "NoteDelete can't be performed on 0 notes on given non-drum instrument. Skipping.",
-                )
+            if not instrument.notes:  # Skip empty instruments
                 continue
-
-            # TODO Check for a better logic (more efficient & intuitive)
-            preserved_note_indices = sorted(random.sample(range(num_deleteable_notes),
-                                                          k=num_preserved_notes_per_instrument))
-            if not self.can_delete_last_note:
-                # Add index of last note to the preserved note indices list
-                preserved_note_indices.append(num_deleteable_notes)
-            instrument.notes = list(itemgetter(*preserved_note_indices)(instrument.notes))
+            num_notes_to_delete = math.ceil(np.random.uniform(self.eps, self.p) * len(instrument.notes))
+            if num_notes_to_delete > 0:  # Only delete if we need to
+                indices_to_keep = np.random.choice(
+                    len(instrument.notes),
+                    size=len(instrument.notes) - num_notes_to_delete,
+                    replace=False
+                )
+                instrument.notes = [instrument.notes[i] for i in sorted(indices_to_keep)]
         return midi_data

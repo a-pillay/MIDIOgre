@@ -1,3 +1,25 @@
+"""MIDI onset time augmentation module.
+
+This module provides functionality to randomly shift the onset times of MIDI notes
+while preserving their durations. The shifts can be applied to move notes earlier
+or later in time, allowing for rhythmic variations while maintaining note lengths.
+
+Example:
+    >>> from midiogre.augmentations import OnsetTimeShift
+    >>> import pretty_midi
+    >>> 
+    >>> # Create transform that shifts note timings by up to 0.1 seconds
+    >>> transform = OnsetTimeShift(
+    ...     max_shift=0.1,
+    ...     mode='both',
+    ...     p=0.5
+    ... )
+    >>> 
+    >>> # Load and transform MIDI file
+    >>> midi_data = pretty_midi.PrettyMIDI('song.mid')
+    >>> transformed = transform(midi_data)
+"""
+
 import logging
 import random
 
@@ -9,18 +31,71 @@ VALID_MODES = ['both', 'left', 'right']
 
 
 class OnsetTimeShift(BaseMidiTransform):
+    """Transform for randomly shifting MIDI note onset times.
+    
+    This transform allows for random modification of note start times while
+    preserving their durations. Each selected note can be shifted earlier or
+    later in time by a random amount within the specified range. The shifts
+    are applied on a per-note basis, allowing for complex rhythmic variations.
+    
+    The onset shift is applied with probability p to each selected instrument,
+    and within each instrument, to a random subset of notes determined by p.
+    All shifts are automatically clipped to ensure notes stay within valid time
+    ranges (no negative start times, no extending beyond track end).
+    
+    Args:
+        max_shift (float): Maximum time in seconds by which a note onset can
+            be shifted. Must be positive.
+        mode (str): Direction of time shift. One of:
+            - 'left': Only shift notes earlier (ie, advance) in time
+            - 'right': Only shift notes later (ie, delay) in time
+            - 'both': Allow both earlier and later shifts
+            Default: 'both'
+        p_instruments (float): If a MIDI file has multiple instruments, this
+            determines the probability of applying the transform to each
+            instrument. Must be in range [0, 1].
+            Default: 1.0 (apply to all instruments)
+        p (float): For each selected instrument, this determines the probability
+            of shifting each note. Must be in range [0, 1].
+            Default: 0.2
+        eps (float, optional): Small epsilon value for numerical stability.
+            Default: 1e-12
+            
+    Raises:
+        ValueError: If any of the following conditions are met:
+            - max_shift is not positive
+            - mode is not one of 'both', 'left', 'right'
+            - p_instruments is not in range [0, 1]
+            - p is not in range [0, 1]
+            
+    Example:
+        >>> # Create transform that only delays notes by 0.05-0.15 seconds
+        >>> transform = OnsetTimeShift(
+        ...     max_shift=0.15,
+        ...     mode='right',
+        ...     p_instruments=1.0,
+        ...     p=0.3
+        ... )
+        >>> transformed = transform(midi_data)
+    """
+
     def __init__(self, max_shift: float, mode: str = 'both', p_instruments: float = 1.0,
                  p: float = 0.2, eps: float = 1e-12):
-        """
-        Randomly modify MIDI note onset times while keeping their total durations intact.
-
-        :param max_shift: Maximum value by which a note onset time can be randomly shifted.
-        :param mode: 'left' if notes can only be advanced, 'right' if notes can only be delayed,
-        'both' if notes can be advanced or delayed.
-        :param p_instruments: If a MIDI file has >1 instruments, this parameter will determine the percentage of
-        instruments that may have random note onset time changes.
-        :param p: Determines the percentage of notes that may have random onset time changes per instrument.
-        :param eps: Epsilon term added to represent the lowest possible value (for numerical stability)
+        """Initialize the OnsetTimeShift transform.
+        
+        Args:
+            max_shift (float): Maximum time in seconds for onset shifts.
+            mode (str, optional): Direction of time shift ('left', 'right', or 'both').
+                Default: 'both'
+            p_instruments (float, optional): Probability of applying to each instrument.
+                Default: 1.0
+            p (float, optional): Probability of shifting each note.
+                Default: 0.2
+            eps (float, optional): Small epsilon value for numerical stability.
+                Default: 1e-12
+                
+        Raises:
+            ValueError: If parameters are invalid (see class docstring for details).
         """
         super().__init__(p_instruments=p_instruments, p=p, eps=eps)
 
@@ -38,7 +113,21 @@ class OnsetTimeShift(BaseMidiTransform):
         self.mode = mode
 
     def _generate_shifts(self, num_shifts: int) -> np.ndarray:
-        """Generate onset time shifts in a vectorized manner."""
+        """Generate random onset time shifts based on the configured mode.
+        
+        Args:
+            num_shifts (int): Number of shifts to generate.
+            
+        Returns:
+            np.ndarray: Array of random shifts in seconds. Shape: (num_shifts,)
+            
+        Note:
+            The shifts are generated uniformly within the range determined by
+            self.mode and self.max_shift:
+            - 'left': [-max_shift, 0] (earlier in time)
+            - 'right': [0, max_shift] (later in time)
+            - 'both': [-max_shift, max_shift] (either direction)
+        """
         if num_shifts == 0:
             return np.array([])
             
@@ -50,14 +139,26 @@ class OnsetTimeShift(BaseMidiTransform):
             return np.random.uniform(-self.max_shift, self.max_shift, num_shifts)
 
     def apply(self, midi_data):
-        """
-        Apply the onset time shift transformation to the MIDI data.
-
+        """Apply the onset time shift transformation to the MIDI data.
+        
+        For each non-drum instrument selected based on p_instruments, this method:
+        1. Randomly selects a subset of notes based on p
+        2. Generates random time shifts based on mode and max_shift
+        3. Applies the shifts while maintaining note durations and ensuring valid times
+        
         Args:
-            midi_data: A PrettyMIDI object to transform.
-
+            midi_data (pretty_midi.PrettyMIDI): The MIDI data to transform.
+            
         Returns:
-            The transformed PrettyMIDI object.
+            pretty_midi.PrettyMIDI: The transformed MIDI data with shifted note timings.
+            
+        Note:
+            - Drum instruments are skipped by default
+            - The transform maintains the duration of all notes
+            - Notes are shifted independently, allowing for complex rhythmic variations
+            - Shifts are clipped to ensure notes stay within valid time ranges:
+                - No negative start times
+                - No extending beyond the end of the track
         """
         modified_instruments = self._get_modified_instruments_list(midi_data)
         for instrument in modified_instruments:

@@ -1,3 +1,25 @@
+"""MIDI transform visualization tools.
+
+This module provides tools for visualizing the effects of MIDI transforms. It includes
+functions for loading MIDI files, converting them to piano roll format, and creating
+side-by-side visualizations of original and transformed MIDI data.
+
+The visualizations use matplotlib to create color-coded piano roll representations,
+where the intensity of the color indicates the velocity of the notes.
+
+Example:
+    >>> from midiogre.core.transforms_viz import load_midi, viz_transform
+    >>> from midiogre.augmentations import PitchShift
+    >>> 
+    >>> # Load MIDI file and create transform
+    >>> midi_data = load_midi('song.mid')
+    >>> transform = PitchShift(max_shift=2, p=1.0)
+    >>> 
+    >>> # Apply transform and visualize
+    >>> transformed = transform(midi_data)
+    >>> viz_transform(midi_data, transformed, 'Pitch Shift')
+"""
+
 import copy
 import time
 from statistics import mean
@@ -12,7 +34,18 @@ from midiogre.augmentations import PitchShift, OnsetTimeShift, DurationShift, No
 from midiogre.core import ToPRollTensor, Compose
 
 
-def load_midi(path):
+def load_midi(path: str) -> pretty_midi.PrettyMIDI:
+    """Load a MIDI file from disk.
+    
+    Args:
+        path (str): Path to the MIDI file to load.
+        
+    Returns:
+        pretty_midi.PrettyMIDI: The loaded MIDI data.
+        
+    Note:
+        This function strips any whitespace from the path before loading.
+    """
     return pretty_midi.PrettyMIDI(path.strip())
 
 
@@ -34,7 +67,19 @@ def get_piano_roll(midi_data):
     return midi_data.get_piano_roll(fs=100)
 
 
-def create_proll_cmap(cmap_name):
+def create_proll_cmap(cmap_name: str) -> matplotlib.colors.ListedColormap:
+    """Create a colormap for piano roll visualization with alpha channel.
+    
+    This function creates a colormap that varies both in color and opacity,
+    making it suitable for overlaying multiple piano rolls in the same plot.
+    
+    Args:
+        cmap_name (str): Name of the base matplotlib colormap to use.
+        
+    Returns:
+        matplotlib.colors.ListedColormap: A new colormap with alpha channel
+        that varies from transparent to opaque.
+    """
     cmap = matplotlib.colormaps[cmap_name]
     alpha_cmap = cmap(np.arange(cmap.N))
     alpha_cmap[:, -1] = np.linspace(0, 1, cmap.N)
@@ -42,7 +87,27 @@ def create_proll_cmap(cmap_name):
     return alpha_cmap
 
 
-def viz_transform(original_midi_data, transformed_proll, transform_name):
+def viz_transform(original_midi_data: pretty_midi.PrettyMIDI,
+                 transformed_proll: np.ndarray,
+                 transform_name: str):
+    """Visualize the effect of a MIDI transform.
+    
+    Creates a side-by-side visualization comparing the original MIDI data
+    with the transformed version. The visualization uses piano roll format
+    with different colors for original and transformed data.
+    
+    Args:
+        original_midi_data (pretty_midi.PrettyMIDI): The original MIDI data.
+        transformed_proll (np.ndarray): Piano roll representation of the
+            transformed MIDI data.
+        transform_name (str): Name of the transform for the plot title.
+            
+    Note:
+        - Original data is shown in red
+        - Transformed data is shown in blue
+        - Color intensity indicates note velocity
+        - Both piano rolls are overlaid in the same plot for easy comparison
+    """
     fig, ax = plt.subplots(nrows=1, ncols=1)
 
     original_proll = get_piano_roll(original_midi_data)
@@ -67,10 +132,12 @@ def viz_transform(original_midi_data, transformed_proll, transform_name):
 
 
 if __name__ == '__main__':
+    # Example usage of the visualization tools
     midi_data = load_midi('../assets/example.mid')
     midi_data = truncate_midi(midi_data, 100)
     save_midi(midi_data, '../assets/short.mid')
 
+    # Create a transform pipeline with various augmentations
     midi_transform = Compose([
         ConvertToMido(),
         TempoShift(max_shift=10, mode='down', tempo_range=(30.0, 200.0), p=0.1),
@@ -85,6 +152,7 @@ if __name__ == '__main__':
         # ToPRollTensor(device='cpu')
     ])
 
+    # Benchmark transform pipeline
     num_iters = 5
     durns = []
     for i in range(num_iters):
@@ -95,6 +163,7 @@ if __name__ == '__main__':
     print("Mean time taken for {} iters of {} MIDIOgre transforms = {}s".format(num_iters, len(midi_transform),
                                                                                 mean(durns)))
 
+    # Save and visualize results
     save_midi(transformed_midi_data, '../assets/short_transformed.mid')
     transformed_midi_data = truncate_midi(transformed_midi_data, 100)
     viz_transform(midi_data, get_piano_roll(transformed_midi_data), 'After MIDIOgre Augmentations')
