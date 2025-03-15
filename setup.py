@@ -13,7 +13,11 @@ package_name = os.environ.get('PACKAGE_NAME', 'midiogre')
 setup(
     name=package_name,
     packages=find_packages(exclude=["demo", "tests"]),
-    version='0.1.0',
+    use_scm_version={
+        "write_to": "midiogre/_version.py",
+        "version_scheme": "post-release",
+    },
+    setup_requires=['setuptools_scm'],
     license='MIT',
     description='The On-the-fly MIDI Data Augmentation Library!',
     long_description=long_description,
@@ -29,7 +33,15 @@ setup(
     extras_require={
         "extras": [
             "matplotlib>=3.5.3",
-        ]
+        ],
+        "dev": [
+            "pytest>=7.0.0",
+            "pytest-cov>=4.0.0",
+            "black>=22.0.0",
+            "isort>=5.0.0",
+            "sphinx>=4.0.0",
+            "sphinx-rtd-theme>=1.0.0",
+        ],
     },
     python_requires=">=3.7",
     classifiers=[
@@ -45,8 +57,7 @@ setup(
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
     project_urls={
-        # "Documentation": "TBA",  # TODO
-        # "Changelog": "TBA",  # TODO
+        "Documentation": "https://a-pillay.github.io/MIDIOgre/",
         "Issue Tracker": "https://github.com/a-pillay/MIDIOgre/issues",
     },
 )

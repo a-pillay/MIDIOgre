@@ -1,0 +1,10 @@
+-e .[dev]
+black>=22.0.0
+isort>=5.0.0
+pytest>=7.0.0
+pytest-cov>=4.0.0
+sphinx>=4.0.0
+sphinx-rtd-theme>=1.0.0
+build>=0.10.0
+twine>=4.0.0
+setuptools_scm>=6.2 
