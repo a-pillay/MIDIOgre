@@ -66,26 +66,28 @@ class NoteAdd(BaseMidiTransform):
         self.restrict_to_instrument_time = restrict_to_instrument_time
 
     def __generate_n_midi_notes(self, n, instrument_end_time):
-        generated_notes = []
-        for i in range(n):
-            start_time = np.random.uniform(0, instrument_end_time)
-            generated_notes.append(Note(pitch=np.random.randint(self.min_note_num, self.max_note_num + 1),
-                                        velocity=np.random.randint(self.min_velo, self.max_velo + 1),
-                                        start=start_time,
-                                        end=start_time))
-            generated_notes[-1].end = np.clip(
-                generated_notes[-1].start + np.random.uniform(self.min_durn, self.max_durn),
-                None,
-                instrument_end_time
-            )
-        return generated_notes
+        # Vectorized random number generation
+        start_times = np.random.uniform(0, instrument_end_time, n)
+        pitches = np.random.randint(self.min_note_num, self.max_note_num + 1, n)
+        velocities = np.random.randint(self.min_velo, self.max_velo + 1, n)
+        durations = np.random.uniform(self.min_durn, self.max_durn, n)
+        end_times = np.clip(start_times + durations, None, instrument_end_time)
+        
+        # Create notes in a list comprehension for better performance
+        return [Note(pitch=int(p), velocity=int(v), start=float(s), end=float(e)) 
+                for p, v, s, e in zip(pitches, velocities, start_times, end_times)]
 
     def apply(self, midi_data):
         modified_instruments = self._get_modified_instruments_list(midi_data)
         for instrument in modified_instruments:
-            num_new_notes_added_per_instrument = math.ceil(np.random.uniform(self.eps, self.p) * len(instrument.notes))
-            instrument.notes.extend(
-                self.__generate_n_midi_notes(n=num_new_notes_added_per_instrument,
-                                             instrument_end_time=instrument.notes[-1].end)
-            )
+            if not instrument.notes:  # Skip empty instruments
+                continue
+            num_new_notes = math.ceil(np.random.uniform(self.eps, self.p) * len(instrument.notes))
+            if num_new_notes > 0:  # Only generate notes if we need to
+                instrument.notes.extend(
+                    self.__generate_n_midi_notes(
+                        n=num_new_notes,
+                        instrument_end_time=instrument.notes[-1].end
+                    )
+                )
         return midi_data

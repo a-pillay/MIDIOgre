@@ -1,19 +1,21 @@
 from unittest.mock import Mock
+import pretty_midi
 
 
 def generate_mock_midi_data(num_notes):
-    # Create a mock MIDI data object with instruments and notes
+    """Generate a mock MIDI data object with real pretty_midi Note objects."""
     midi_data = Mock()
     instrument = Mock()
-    instrument.is_drum = False  # Set is_drum attribute to False
+    instrument.is_drum = False
 
     mock_note_list = []
     for note_num in range(num_notes):
-        note = Mock()
-        note.start = float(note_num)
-        note.end = note_num + 1.0
-        note.duration = 1.0
-        note.pitch = 60 + note_num
+        note = pretty_midi.Note(
+            velocity=70,  # Default velocity
+            pitch=60 + note_num,  # Starting from middle C, incrementing
+            start=float(note_num),
+            end=float(note_num + 1.0)
+        )
         mock_note_list.append(note)
 
     instrument.notes = mock_note_list
