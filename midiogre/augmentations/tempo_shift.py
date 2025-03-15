@@ -45,7 +45,7 @@ class TempoShift(BaseMidiTransform):
         min_tempo, max_tempo = tempo_range
         if min_tempo < 0:
             raise ValueError(
-                f"Lower range of tempo must be >=0, got {min_tempo}"
+                f"min_tempo must be positive, got {min_tempo}"
             )
         
         if min_tempo >= max_tempo:
@@ -56,34 +56,27 @@ class TempoShift(BaseMidiTransform):
         self.max_shift = max_shift
         self.tempo_range = tempo_range
         self.respect_tempo_shifts = respect_tempo_shifts
+        self.mode = mode
 
-        if mode == 'up':
-            self.mode = self._up
-        elif mode == 'down':
-            self.mode = self._down
-        else:
-            self.mode = self._both
+    def _generate_shifts(self, num_shifts: int) -> np.ndarray:
+        """Generate tempo shifts in a vectorized manner."""
+        if num_shifts == 0:
+            return np.array([])
+            
+        if self.mode == 'up':
+            return np.random.uniform(0, self.max_shift, num_shifts)
+        elif self.mode == 'down':
+            return np.random.uniform(-self.max_shift, 0, num_shifts)
+        else:  # both
+            return np.random.uniform(-self.max_shift, self.max_shift, num_shifts)
 
-    def _both(self, tempo):
-        """Shift tempo up or down randomly within max_shift."""
-        shifted_tempo = np.clip(tempo + np.random.uniform(-self.max_shift, self.max_shift),
-                              self.tempo_range[0],
-                              self.tempo_range[1])
-        return int(round(6e7 / shifted_tempo))
+    def _convert_tempo_to_bpm(self, tempo_microseconds_per_beat: int) -> float:
+        """Convert tempo from microseconds per beat to BPM."""
+        return 6e7 / tempo_microseconds_per_beat
 
-    def _up(self, tempo):
-        """Shift tempo up randomly within max_shift."""
-        shifted_tempo = np.clip(tempo + np.random.uniform(0, self.max_shift),
-                              self.tempo_range[0],
-                              self.tempo_range[1])
-        return int(round(6e7 / shifted_tempo))
-
-    def _down(self, tempo):
-        """Shift tempo down randomly within max_shift."""
-        shifted_tempo = np.clip(tempo + np.random.uniform(-self.max_shift, 0),
-                              self.tempo_range[0],
-                              self.tempo_range[1])
-        return int(round(6e7 / shifted_tempo))
+    def _convert_bpm_to_tempo(self, bpm: float) -> int:
+        """Convert BPM to tempo in microseconds per beat."""
+        return int(round(6e7 / bpm))
 
     def apply(self, midi_data):
         """
@@ -107,7 +100,7 @@ class TempoShift(BaseMidiTransform):
             logging.warning("Empty MIDI file provided")
             return midi_data
 
-        # First find all tempo events
+        # Find all tempo events in first track
         tempo_events = []
         tempo_events_idx = []
         for idx, event in enumerate(midi_data.tracks[0]):
@@ -115,38 +108,56 @@ class TempoShift(BaseMidiTransform):
                 tempo_events.append(event)
                 tempo_events_idx.append(idx)
 
-        # Get the initial tempo (or use default 120 BPM)
-        if len(tempo_events) == 0:
+        # Handle case with no tempo events
+        if not tempo_events:
             logging.warning("No tempo metadata found in MIDI file; assuming a default value of 120 BPM.")
-            tempo = 120.0
-            # Add default tempo event at start
-            if np.random.random() > self.p:
-                midi_data.tracks[0].insert(0, MetaMessage(type="set_tempo", tempo=self.mode(tempo), time=0))
+            default_bpm = 120.0
+            should_change = np.random.random() < self.p
+            
+            if should_change:
+                shifts = self._generate_shifts(1)
+                new_bpm = np.clip(default_bpm + shifts[0], self.tempo_range[0], self.tempo_range[1])
+                new_tempo = self._convert_bpm_to_tempo(new_bpm)
             else:
-                midi_data.tracks[0].insert(0, MetaMessage(type="set_tempo", tempo=int(round(6e7 / tempo)), time=0))
-        else:
-            # Remove all existing tempo events (in reverse order to maintain indices)
-            for idx in reversed(tempo_events_idx):
-                midi_data.tracks[0].pop(idx)
+                new_tempo = self._convert_bpm_to_tempo(default_bpm)
+                
+            midi_data.tracks[0].insert(0, MetaMessage(type="set_tempo", tempo=new_tempo, time=0))
+            return midi_data
 
-            if self.respect_tempo_shifts:
-                # Process each tempo event while maintaining its timing
-                should_change = np.random.random() > self.p
-                for event in tempo_events:
-                    original_tempo = 6e7 / event.tempo
-                    if should_change:
-                        new_tempo = self.mode(original_tempo)
-                    else:
-                        new_tempo = int(round(6e7 / original_tempo))
+        # Remove existing tempo events (in reverse order to maintain indices)
+        for idx in reversed(tempo_events_idx):
+            midi_data.tracks[0].pop(idx)
+
+        # Determine if we should apply changes
+        should_change = np.random.random() < self.p
+
+        if self.respect_tempo_shifts:
+            # Process all tempo events while maintaining timing
+            if should_change:
+                shifts = self._generate_shifts(len(tempo_events))
+                for i, event in enumerate(tempo_events):
+                    current_bpm = self._convert_tempo_to_bpm(event.tempo)
+                    new_bpm = np.clip(current_bpm + shifts[i], self.tempo_range[0], self.tempo_range[1])
+                    new_tempo = self._convert_bpm_to_tempo(new_bpm)
                     midi_data.tracks[0].append(
                         MetaMessage(type="set_tempo", tempo=new_tempo, time=event.time)
                     )
             else:
-                # Use only first tempo event as reference and place at start
-                tempo = 6e7 / tempo_events[0].tempo
-                if np.random.random() > self.p:
-                    midi_data.tracks[0].insert(0, MetaMessage(type="set_tempo", tempo=self.mode(tempo), time=0))
-                else:
-                    midi_data.tracks[0].insert(0, MetaMessage(type="set_tempo", tempo=int(round(6e7 / tempo)), time=0))
+                # Keep original tempos
+                for event in tempo_events:
+                    midi_data.tracks[0].append(
+                        MetaMessage(type="set_tempo", tempo=event.tempo, time=event.time)
+                    )
+        else:
+            # Use only first tempo event and place at start
+            current_bpm = self._convert_tempo_to_bpm(tempo_events[0].tempo)
+            if should_change:
+                shifts = self._generate_shifts(1)
+                new_bpm = np.clip(current_bpm + shifts[0], self.tempo_range[0], self.tempo_range[1])
+                new_tempo = self._convert_bpm_to_tempo(new_bpm)
+            else:
+                new_tempo = tempo_events[0].tempo
+                
+            midi_data.tracks[0].insert(0, MetaMessage(type="set_tempo", tempo=new_tempo, time=0))
 
         return midi_data
