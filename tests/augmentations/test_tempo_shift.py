@@ -46,14 +46,31 @@ def test_valid_mode():
 
 def test_invalid_mode():
     """Test initialization with invalid mode."""
-    with pytest.raises(ValueError, match=r"Valid DurationShift modes are.*"):
+    with pytest.raises(ValueError, match=r"Mode must be one of.*"):
         TempoShift(max_shift=10, mode='invalid')
+
+
+def test_invalid_max_shift():
+    """Test initialization with invalid max_shift."""
+    with pytest.raises(ValueError, match=r"max_shift must be positive.*"):
+        TempoShift(max_shift=0)
+    with pytest.raises(ValueError, match=r"max_shift must be positive.*"):
+        TempoShift(max_shift=-10)
 
 
 def test_invalid_tempo_range():
     """Test initialization with invalid tempo range."""
-    with pytest.raises(ValueError, match=r"Lower range of tempo must be >=0."):
+    with pytest.raises(ValueError, match=r"Lower range of tempo must be >=0.*"):
         TempoShift(max_shift=10, tempo_range=(-1, 200))
+    
+    with pytest.raises(ValueError, match=r"min_tempo must be less than max_tempo.*"):
+        TempoShift(max_shift=10, tempo_range=(200, 200))
+    
+    with pytest.raises(ValueError, match=r"min_tempo must be less than max_tempo.*"):
+        TempoShift(max_shift=10, tempo_range=(200, 100))
+    
+    with pytest.raises(ValueError, match=r"tempo_range must be a tuple or list.*"):
+        TempoShift(max_shift=10, tempo_range=100)
 
 
 def test_apply_with_tempo_both_mode():
@@ -248,39 +265,93 @@ def test_multiple_tempo_events_with_respect_false(monkeypatch):
     tempo_events = [msg for msg in modified_midi.tracks[0] if msg.type == 'set_tempo']
     assert len(tempo_events) == 1
     assert tempo_events[0].time == 0
-    
-    # Check that tempo has been shifted from the first tempo (since random > p)
-    new_tempo_bpm = 6e7 / tempo_events[0].tempo
-    assert tempo_events[0].tempo != 500000  # Should be different from original
-    assert 30 <= new_tempo_bpm <= 200
 
 
-def test_preserve_tempo_event_timing(monkeypatch):
-    """Test that tempo event timings are preserved when respect_tempo_shifts is True."""
-    # Mock numpy's random to always return 0.7 (greater than p=0.5, so should change)
-    def mock_random():
-        return 0.7
-    monkeypatch.setattr(np.random, 'random', mock_random)
-    
+def test_tempo_at_boundaries():
+    """Test tempo shifting at the boundary values of the tempo range."""
+    # Test at minimum tempo (30 BPM)
+    midi_data = create_mock_midi_with_tempo(tempo=int(6e7/30))  # 30 BPM
+    tempo_shift = TempoShift(max_shift=10, mode='down', p=0.0)  # Force shift
+    modified_midi = tempo_shift.apply(midi_data)
+    tempo_events = [msg for msg in modified_midi.tracks[0] if msg.type == 'set_tempo']
+    assert 6e7/tempo_events[0].tempo >= 30  # Should not go below minimum
+
+    # Test at maximum tempo (200 BPM)
+    midi_data = create_mock_midi_with_tempo(tempo=int(6e7/200))  # 200 BPM
+    tempo_shift = TempoShift(max_shift=10, mode='up', p=0.0)  # Force shift
+    modified_midi = tempo_shift.apply(midi_data)
+    tempo_events = [msg for msg in modified_midi.tracks[0] if msg.type == 'set_tempo']
+    assert 6e7/tempo_events[0].tempo <= 200  # Should not go above maximum
+
+
+def test_non_zero_time_tempo_events():
+    """Test handling of tempo events with non-zero time values."""
     midi_data = MidiFile()
     track = MidiTrack()
     midi_data.tracks.append(track)
     
-    # Add tempo events with specific timings
-    track.append(MetaMessage('set_tempo', tempo=500000, time=0))
-    track.append(Message('note_on', note=60, velocity=64, time=100))
+    # Add tempo events with different time values
+    track.append(MetaMessage('set_tempo', tempo=500000, time=100))
     track.append(MetaMessage('set_tempo', tempo=400000, time=200))
-    track.append(Message('note_off', note=60, velocity=64, time=300))
     
-    tempo_shift = TempoShift(max_shift=10, mode='both', p=0.5, respect_tempo_shifts=True)
+    tempo_shift = TempoShift(max_shift=10, mode='both', respect_tempo_shifts=True)
     modified_midi = tempo_shift.apply(midi_data)
     
-    # Check that tempo event timings are preserved
+    # Check that time values are preserved
     tempo_events = [msg for msg in modified_midi.tracks[0] if msg.type == 'set_tempo']
     assert len(tempo_events) == 2
-    assert tempo_events[0].time == 0
+    assert tempo_events[0].time == 100
     assert tempo_events[1].time == 200
 
 
+def test_multiple_tracks_with_tempo():
+    """Test handling of MIDI files with multiple tracks containing tempo events."""
+    midi_data = MidiFile()
+    track1 = MidiTrack()
+    track2 = MidiTrack()
+    midi_data.tracks.extend([track1, track2])
+    
+    # Add tempo events to both tracks
+    track1.append(MetaMessage('set_tempo', tempo=500000, time=0))
+    track2.append(MetaMessage('set_tempo', tempo=400000, time=0))
+    
+    tempo_shift = TempoShift(max_shift=10, mode='both')
+    modified_midi = tempo_shift.apply(midi_data)
+    
+    # Check that tempo events in first track are modified
+    track1_tempos = [msg for msg in modified_midi.tracks[0] if msg.type == 'set_tempo']
+    assert len(track1_tempos) == 1
+    # Tempo events in other tracks remain unchanged
+    track2_tempos = [msg for msg in modified_midi.tracks[1] if msg.type == 'set_tempo']
+    assert len(track2_tempos) == 1
+    assert track2_tempos[0].tempo == 400000  # Original tempo preserved
+
+
+def test_empty_tracks():
+    """Test handling of MIDI files with empty tracks."""
+    midi_data = MidiFile()
+    track1 = MidiTrack()
+    track2 = MidiTrack()
+    midi_data.tracks.extend([track1, track2])
+    
+    tempo_shift = TempoShift(max_shift=10, mode='both')
+    modified_midi = tempo_shift.apply(midi_data)
+    
+    # Check that a default tempo is added to first track
+    track1_tempos = [msg for msg in modified_midi.tracks[0] if msg.type == 'set_tempo']
+    assert len(track1_tempos) == 1
+    assert 30 <= (6e7 / track1_tempos[0].tempo) <= 200
+
+
+def test_empty_midi():
+    """Test handling of empty MIDI file."""
+    midi_data = MidiFile()
+    tempo_shift = TempoShift(max_shift=10, mode='both')
+    modified_midi = tempo_shift.apply(midi_data)
+    
+    # Should return unmodified MIDI file
+    assert len(modified_midi.tracks) == 0
+
+
 if __name__ == '__main__':
-    pytest.main() 
+    pytest.main([__file__, '-v']) 

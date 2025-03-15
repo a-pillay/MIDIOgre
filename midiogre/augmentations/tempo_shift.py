@@ -1,11 +1,3 @@
-"""
-Tempo shift augmentation for MIDI files.
-
-This module provides functionality to modify the tempo of MIDI files while preserving
-the relative timing of notes. It can either preserve all tempo changes in a piece or
-consolidate them into a single tempo.
-"""
-
 import logging
 import random
 
@@ -23,42 +15,15 @@ class TempoShift(BaseMidiTransform):
         """
         Randomly modify MIDI tempo while keeping note timings intact.
 
-        The transformation can either preserve all tempo changes in the piece (respect_tempo_shifts=True)
-        or consolidate them into a single tempo at the start (respect_tempo_shifts=False). When preserving
-        tempo changes, the relative timing between tempo events is maintained.
-
-        Note: Only tempo events in the first track are processed. Tempo events in other tracks will be
-        removed as per MIDI specification (tempo events should only be in the first track).
-
-        Args:
-            max_shift: Maximum value by which tempo can be randomly shifted (in BPM).
-                Must be positive.
-            mode: One of ['up', 'down', 'both']. Determines whether tempo can be:
-                - 'up': only increased
-                - 'down': only decreased
-                - 'both': either increased or decreased
-            tempo_range: (min_tempo, max_tempo) in BPM that the tempo must stay within.
-                The min_tempo must be positive and less than max_tempo.
-            p: Probability of keeping the original tempo. With probability (1-p),
-                the tempo will be shifted.
-            respect_tempo_shifts: If True, preserves all tempo change events in the file,
-                shifting each tempo while maintaining their original timing. If False,
-                replaces all tempo events with a single tempo at the start of the file.
-            eps: Epsilon term added to represent the lowest possible value
-                (for numerical stability)
-
-        Examples:
-            # Create a TempoShift that randomly increases or decreases tempo by up to 20 BPM
-            tempo_shift = TempoShift(max_shift=20.0, mode='both')
-
-            # Create a TempoShift that only increases tempo, preserving all tempo changes
-            tempo_shift = TempoShift(max_shift=10.0, mode='up', respect_tempo_shifts=True)
-
-            # Create a TempoShift that consolidates all tempo changes to one tempo
-            tempo_shift = TempoShift(max_shift=15.0, respect_tempo_shifts=False)
-
-        Raises:
-            ValueError: If mode is invalid, max_shift is not positive, or tempo_range is invalid.
+        :param max_shift: Maximum value by which tempo can be randomly shifted (in BPM).
+        :param mode: 'up' if tempo can only be increased, 'down' if tempo can only be decreased,
+        'both' if tempo can be increased or decreased.
+        :param tempo_range: (min_tempo, max_tempo) in BPM that the tempo must stay within.
+        :param p: Probability of applying the tempo shift.
+        :param respect_tempo_shifts: If True, preserves all tempo change events in the file, shifting each
+        tempo while maintaining their original timing. If False, replaces all tempo events with a single
+        tempo at the start of the file.
+        :param eps: Epsilon term added to represent the lowest possible value (for numerical stability)
         """
         super().__init__(p_instruments=1.0, p=p, eps=eps)
 
@@ -150,17 +115,6 @@ class TempoShift(BaseMidiTransform):
                 tempo_events.append(event)
                 tempo_events_idx.append(idx)
 
-        # Check for tempo events in other tracks and warn
-        for track_idx, track in enumerate(midi_data.tracks[1:], 1):
-            has_tempo = any(event.type == 'set_tempo' for event in track)
-            if has_tempo:
-                logging.warning(
-                    f"Found tempo events in track {track_idx}. These will be removed as "
-                    "tempo events should only be in the first track."
-                )
-                # Remove tempo events from other tracks
-                track[:] = [event for event in track if event.type != 'set_tempo']
-
         # Get the initial tempo (or use default 120 BPM)
         if len(tempo_events) == 0:
             logging.warning("No tempo metadata found in MIDI file; assuming a default value of 120 BPM.")
@@ -190,11 +144,6 @@ class TempoShift(BaseMidiTransform):
             else:
                 # Use only first tempo event as reference and place at start
                 tempo = 6e7 / tempo_events[0].tempo
-                if len(tempo_events) > 1:
-                    logging.info(
-                        f"Found {len(tempo_events)} tempo events. Using only the first one "
-                        "since respect_tempo_shifts=False."
-                    )
                 if np.random.random() > self.p:
                     midi_data.tracks[0].insert(0, MetaMessage(type="set_tempo", tempo=self.mode(tempo), time=0))
                 else:
