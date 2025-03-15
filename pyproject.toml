@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,9 +8,9 @@ dynamic = ["version"]
 description = "The On-the-fly MIDI Data Augmentation Library!"
 readme = "README.md"
 requires-python = ">=3.7"
-license = {file = "LICENSE"}
+license = {text = "MIT"}
 authors = [
-    {name = "Ashwin Pillay", email = ""}
+    {name = "Ashwin Pillay", email = "c6idbv07e@mozmail.com"},
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -24,6 +24,11 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
+
+[project.urls]
+Homepage = "https://github.com/a-pillay/MIDIOgre"
+Documentation = "https://a-pillay.github.io/MIDIOgre/"
+"Issue Tracker" = "https://github.com/a-pillay/MIDIOgre/issues"
 
 [tool.setuptools_scm]
 write_to = "midiogre/_version.py" 
