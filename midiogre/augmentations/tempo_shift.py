@@ -4,7 +4,7 @@ import random
 import numpy as np
 from mido import MetaMessage
 
-from core.transforms_interface import BaseMidiTransform
+from midiogre.core.transforms_interface import BaseMidiTransform
 
 VALID_MODES = ['both', 'up', 'down']
 

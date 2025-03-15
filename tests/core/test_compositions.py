@@ -6,7 +6,7 @@ It was subsequently modified to fix errors and better cover the concerned code.
 import pytest
 from pretty_midi import PrettyMIDI
 
-from core.compositions import Compose
+from midiogre.core.compositions import Compose
 
 
 def test_initialization():

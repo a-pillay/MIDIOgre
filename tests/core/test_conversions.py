@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import pretty_midi
 
-from core.conversions import BaseConversion, ToPRollNumpy, ToPRollTensor
+from midiogre.core.conversions import BaseConversion, ToPRollNumpy, ToPRollTensor
 
 
 def test_base_conversion_not_implemented():

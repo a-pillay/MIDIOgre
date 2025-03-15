@@ -7,7 +7,7 @@ import numpy as np
 import pretty_midi
 from matplotlib import pyplot as plt
 
-from core.conversions import ConvertToMido, ConvertToPrettyMIDI
+from midiogre.core.conversions import ConvertToMido, ConvertToPrettyMIDI
 from midiogre.augmentations import PitchShift, OnsetTimeShift, DurationShift, NoteDelete, NoteAdd, TempoShift
 from midiogre.core import ToPRollTensor, Compose
 

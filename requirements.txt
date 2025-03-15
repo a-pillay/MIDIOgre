@@ -1,0 +1,12 @@
+# Core dependencies
+numpy>=1.21.6
+pretty-midi @ git+https://github.com/craffel/pretty-midi
+torch>=1.13.1
+mido>=1.2.10
+
+# Optional dependencies for visualization
+matplotlib>=3.5.3
+
+# Development dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0 

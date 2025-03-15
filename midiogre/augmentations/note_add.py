@@ -3,7 +3,7 @@ import math
 import numpy as np
 from pretty_midi import Note
 
-from core.transforms_interface import BaseMidiTransform
+from midiogre.core.transforms_interface import BaseMidiTransform
 
 
 class NoteAdd(BaseMidiTransform):

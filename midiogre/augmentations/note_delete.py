@@ -5,7 +5,7 @@ from operator import itemgetter
 
 import numpy as np
 
-from core.transforms_interface import BaseMidiTransform
+from midiogre.core.transforms_interface import BaseMidiTransform
 
 
 class NoteDelete(BaseMidiTransform):
