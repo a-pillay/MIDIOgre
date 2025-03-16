@@ -121,6 +121,120 @@ def compute_transform_stats(original_midi: pretty_midi.PrettyMIDI,
     return stats
 
 
+def get_piano_roll_data(midi_data: pretty_midi.PrettyMIDI, fs: int = 100) -> Tuple[np.ndarray, int, int]:
+    """Get piano roll data and note range from MIDI data.
+    
+    Args:
+        midi_data: MIDI data to convert to piano roll
+        fs: Sampling rate in Hz
+        
+    Returns:
+        Tuple containing:
+        - Piano roll array
+        - Minimum note number
+        - Maximum note number
+    """
+    piano_roll = midi_data.get_piano_roll(fs=fs)
+    
+    # Find actual note range
+    notes = np.where(piano_roll > 0)[0]
+    if len(notes) > 0:
+        min_note = max(0, min(notes) - 2)  # Add padding of 2 notes
+        max_note = min(127, max(notes) + 3)  # Add padding of 2 notes
+    else:
+        min_note, max_note = 0, 127
+        
+    return piano_roll, min_note, max_note
+
+
+def plot_piano_roll_comparison(ax1: plt.Axes,
+                             ax2: plt.Axes,
+                             original_midi: pretty_midi.PrettyMIDI,
+                             transformed_midi: pretty_midi.PrettyMIDI,
+                             fs: int = 100) -> Tuple[plt.Artist, ...]:
+    """Plot side-by-side comparison of original and transformed piano rolls.
+    
+    Args:
+        ax1: Axes for original piano roll
+        ax2: Axes for transformed piano roll
+        original_midi: Original MIDI data
+        transformed_midi: Transformed MIDI data
+        fs: Sampling rate in Hz
+        
+    Returns:
+        Tuple of plot artists (for colorbar creation)
+    """
+    # Get piano rolls
+    original_proll, orig_min, orig_max = get_piano_roll_data(original_midi, fs)
+    transformed_proll, trans_min, trans_max = get_piano_roll_data(transformed_midi, fs)
+    
+    # Use common note range
+    min_note = min(orig_min, trans_min)
+    max_note = max(orig_max, trans_max)
+    
+    # Pad piano rolls to the same length
+    max_len = max(original_proll.shape[1], transformed_proll.shape[1])
+    if original_proll.shape[1] < max_len:
+        pad_width = ((0, 0), (0, max_len - original_proll.shape[1]))
+        original_proll = np.pad(original_proll, pad_width, mode='constant')
+    if transformed_proll.shape[1] < max_len:
+        pad_width = ((0, 0), (0, max_len - transformed_proll.shape[1]))
+        transformed_proll = np.pad(transformed_proll, pad_width, mode='constant')
+    
+    # Calculate differences for visualization
+    delta_proll = transformed_proll - original_proll
+    
+    # Plot original (in blue)
+    im1 = ax1.pcolor(np.arange(original_proll.shape[1]) / fs,
+                     np.arange(original_proll.shape[0]),
+                     original_proll,
+                     cmap='Blues',
+                     vmin=0,
+                     vmax=127)
+    ax1.set_ylim(min_note, max_note)
+    ax1.grid(True, alpha=0.3)
+    
+    # Create masks for unchanged, added, and deleted notes
+    unchanged_mask = delta_proll == 0
+    added_mask = delta_proll > 0
+    deleted_mask = delta_proll < 0
+    
+    # Plot unchanged notes in blue
+    unchanged = np.ma.masked_where(~unchanged_mask, transformed_proll)
+    im2 = ax2.pcolor(np.arange(transformed_proll.shape[1]) / fs,
+                     np.arange(transformed_proll.shape[0]),
+                     unchanged,
+                     cmap='Blues',
+                     vmin=0,
+                     vmax=127)
+    
+    # Plot added notes in green
+    if not np.all(~added_mask):
+        added = np.ma.masked_where(~added_mask, transformed_proll)
+        im3 = ax2.pcolor(np.arange(transformed_proll.shape[1]) / fs,
+                        np.arange(transformed_proll.shape[0]),
+                        added,
+                        cmap='Greens',
+                        vmin=0,
+                        vmax=127)
+    
+    # Plot deleted notes in gray
+    if not np.all(~deleted_mask):
+        deleted = np.ma.masked_where(~deleted_mask, original_proll)
+        im4 = ax2.pcolor(np.arange(original_proll.shape[1]) / fs,
+                        np.arange(original_proll.shape[0]),
+                        deleted,
+                        cmap='Greys',
+                        vmin=0,
+                        vmax=127,
+                        alpha=0.5)
+    
+    ax2.set_ylim(min_note, max_note)
+    ax2.grid(True, alpha=0.3)
+    
+    return im1, im2
+
+
 def viz_transform(original_midi_data: pretty_midi.PrettyMIDI,
                  transformed_midi_data: pretty_midi.PrettyMIDI,
                  transform_name: str,
@@ -142,66 +256,23 @@ def viz_transform(original_midi_data: pretty_midi.PrettyMIDI,
     """
     fig = plt.figure(figsize=(15, 6))
     
-    # Create gridspec with space for one colorbar
+    # Create gridspec with space for colorbar
     gs = plt.GridSpec(1, 3, width_ratios=[10, 10, 0.4])
     ax1 = fig.add_subplot(gs[0])  # Original plot
     ax2 = fig.add_subplot(gs[1])  # Transformed plot
-    cax = fig.add_subplot(gs[2])  # Single colorbar for velocity
+    cax = fig.add_subplot(gs[2])  # Colorbar
     
-    # Get piano rolls
-    original_proll = get_piano_roll(original_midi_data)
-    transformed_proll = get_piano_roll(transformed_midi_data)
+    # Plot piano rolls
+    im1, _ = plot_piano_roll_comparison(ax1, ax2, original_midi_data, transformed_midi_data)
     
-    # Pad piano rolls to the same length
-    max_len = max(original_proll.shape[1], transformed_proll.shape[1])
-    if original_proll.shape[1] < max_len:
-        pad_width = ((0, 0), (0, max_len - original_proll.shape[1]))
-        original_proll = np.pad(original_proll, pad_width, mode='constant')
-    if transformed_proll.shape[1] < max_len:
-        pad_width = ((0, 0), (0, max_len - transformed_proll.shape[1]))
-        transformed_proll = np.pad(transformed_proll, pad_width, mode='constant')
-    
-    # Find actual note range
-    all_notes = np.where(np.logical_or(original_proll > 0, transformed_proll > 0))[0]
-    if len(all_notes) > 0:
-        min_note = max(0, min(all_notes) - 2)  # Add padding of 2 notes
-        max_note = min(127, max(all_notes) + 3)  # Add padding of 2 notes
-    else:
-        min_note, max_note = 0, 127
-    
-    # Calculate differences for visualization
-    delta_proll = transformed_proll - original_proll
-    
-    # Plot original (in blue)
-    im1 = ax1.pcolor(original_proll, cmap='Blues', vmin=0, vmax=127)
+    # Set titles and labels
     ax1.set_title('Original')
-    ax1.set_xlabel('Time (100 ticks per beat)')
+    ax1.set_xlabel('Time (seconds)')
     ax1.set_ylabel('MIDI Note Number')
-    ax1.set_ylim(min_note, max_note)
-    
-    # Create masks for unchanged, added, and deleted notes
-    unchanged_mask = delta_proll == 0
-    added_mask = delta_proll > 0
-    deleted_mask = delta_proll < 0
-    
-    # Plot unchanged notes in blue
-    unchanged = np.ma.masked_where(~unchanged_mask, transformed_proll)
-    im2 = ax2.pcolor(unchanged, cmap='Blues', vmin=0, vmax=127)
-    
-    # Plot added notes in green
-    if not np.all(~added_mask):
-        added = np.ma.masked_where(~added_mask, transformed_proll)
-        im3 = ax2.pcolor(added, cmap='Greens', vmin=0, vmax=127)
-    
-    # Plot deleted notes in gray
-    if not np.all(~deleted_mask):
-        deleted = np.ma.masked_where(~deleted_mask, original_proll)
-        im4 = ax2.pcolor(deleted, cmap='Greys', vmin=0, vmax=127, alpha=0.5)
     
     ax2.set_title('Transformed (with changes highlighted)')
-    ax2.set_xlabel('Time (100 ticks per beat)')
+    ax2.set_xlabel('Time (seconds)')
     ax2.set_ylabel('MIDI Note Number')
-    ax2.set_ylim(min_note, max_note)
     
     # Add single colorbar for velocity
     plt.colorbar(im1, cax=cax, label='Velocity')
@@ -224,6 +295,87 @@ def viz_transform(original_midi_data: pretty_midi.PrettyMIDI,
     
     plt.show()
     plt.close()
+
+
+def plot_transformed_piano_roll(ax: plt.Axes,
+                              original_midi: pretty_midi.PrettyMIDI,
+                              transformed_midi: pretty_midi.PrettyMIDI,
+                              transform_name: str,
+                              fs: int = 100) -> plt.Artist:
+    """Plot a single transformed piano roll with changes highlighted.
+    
+    Args:
+        ax: Matplotlib axes to plot on
+        original_midi: Original MIDI data
+        transformed_midi: Transformed MIDI data
+        transform_name: Name of the transform for the title
+        fs: Sampling rate in Hz
+        
+    Returns:
+        Plot artist for colorbar creation
+    """
+    # Get piano rolls
+    original_proll, orig_min, orig_max = get_piano_roll_data(original_midi, fs)
+    transformed_proll, trans_min, trans_max = get_piano_roll_data(transformed_midi, fs)
+    
+    # Use common note range
+    min_note = min(orig_min, trans_min)
+    max_note = max(orig_max, trans_max)
+    
+    # Pad piano rolls to the same length
+    max_len = max(original_proll.shape[1], transformed_proll.shape[1])
+    if original_proll.shape[1] < max_len:
+        pad_width = ((0, 0), (0, max_len - original_proll.shape[1]))
+        original_proll = np.pad(original_proll, pad_width, mode='constant')
+    if transformed_proll.shape[1] < max_len:
+        pad_width = ((0, 0), (0, max_len - transformed_proll.shape[1]))
+        transformed_proll = np.pad(transformed_proll, pad_width, mode='constant')
+    
+    # Calculate differences
+    delta_proll = transformed_proll - original_proll
+    
+    # Create masks
+    unchanged_mask = delta_proll == 0
+    added_mask = delta_proll > 0
+    deleted_mask = delta_proll < 0
+    
+    # Plot unchanged notes in blue
+    unchanged = np.ma.masked_where(~unchanged_mask, transformed_proll)
+    im = ax.pcolor(np.arange(transformed_proll.shape[1]) / fs,
+                   np.arange(transformed_proll.shape[0]),
+                   unchanged,
+                   cmap='Blues',
+                   vmin=0,
+                   vmax=127)
+    
+    # Plot added notes in green
+    if not np.all(~added_mask):
+        added = np.ma.masked_where(~added_mask, transformed_proll)
+        ax.pcolor(np.arange(transformed_proll.shape[1]) / fs,
+                 np.arange(transformed_proll.shape[0]),
+                 added,
+                 cmap='Greens',
+                 vmin=0,
+                 vmax=127)
+    
+    # Plot deleted notes in gray
+    if not np.all(~deleted_mask):
+        deleted = np.ma.masked_where(~deleted_mask, original_proll)
+        ax.pcolor(np.arange(original_proll.shape[1]) / fs,
+                 np.arange(original_proll.shape[0]),
+                 deleted,
+                 cmap='Greys',
+                 vmin=0,
+                 vmax=127,
+                 alpha=0.5)
+    
+    ax.set_title(transform_name)
+    ax.set_xlabel('Time (seconds)')
+    ax.set_ylabel('MIDI Note Number')
+    ax.set_ylim(min_note, max_note)
+    ax.grid(True, alpha=0.3)
+    
+    return im
 
 
 if __name__ == '__main__':
