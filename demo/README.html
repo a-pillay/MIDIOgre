@@ -1,0 +1,179 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIDIOgre Transformation Examples &mdash; MIDIOgre  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MIDIOgre
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">midiogre</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midiogre.html">midiogre package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midiogre.augmentations.html">midiogre.augmentations package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../midiogre.core.html">midiogre.core package</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MIDIOgre</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MIDIOgre Transformation Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/demo/README.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="midiogre-transformation-examples">
+<h1>MIDIOgre Transformation Examples<a class="headerlink" href="#midiogre-transformation-examples" title="Link to this heading"></a></h1>
+<p>This demo folder contains examples of various MIDI transformations available in MIDIOgre. It includes sample MIDI files, their transformed versions, and visualization plots showing the effects of different transformations.</p>
+<section id="directory-structure">
+<h2>Directory Structure<a class="headerlink" href="#directory-structure" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>demo/
+├── midi/
+│   ├── original/      # Original MIDI files
+│   └── transformed/   # Transformed versions of the MIDI files
+├── plots/             # Visualization plots comparing original and transformed MIDI
+└── generate_examples.py   # Script to generate all examples
+</pre></div>
+</div>
+</section>
+<section id="available-examples">
+<h2>Available Examples<a class="headerlink" href="#available-examples" title="Link to this heading"></a></h2>
+<p>The demo includes the following transformation examples:</p>
+<ol class="arabic simple">
+<li><p><strong>Pitch Shift</strong>: Shifts notes up by 4 semitones</p></li>
+<li><p><strong>Note Modification</strong>: Demonstrates note deletion and addition</p></li>
+<li><p><strong>Time Modification</strong>: Shows onset time shifts and duration changes</p></li>
+<li><p><strong>Combined</strong>: Shows multiple transformations applied together:</p>
+<ul class="simple">
+<li><p>Pitch shifting</p></li>
+<li><p>Time shifting</p></li>
+<li><p>Note deletion and addition</p></li>
+</ul>
+</li>
+</ol>
+<p>Each example includes:</p>
+<ul class="simple">
+<li><p>Original MIDI file</p></li>
+<li><p>Transformed MIDI file</p></li>
+<li><p>Visualization plot comparing the original and transformed versions</p></li>
+</ul>
+</section>
+<section id="running-the-examples">
+<h2>Running the Examples<a class="headerlink" href="#running-the-examples" title="Link to this heading"></a></h2>
+<p>To generate all examples:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>demo/generate_examples.py
+</pre></div>
+</div>
+<p>This will:</p>
+<ol class="arabic simple">
+<li><p>Create a sample MIDI file with a simple melodic pattern</p></li>
+<li><p>Apply various transformations</p></li>
+<li><p>Save the transformed MIDI files</p></li>
+<li><p>Generate visualization plots</p></li>
+</ol>
+</section>
+<section id="visualization-details">
+<h2>Visualization Details<a class="headerlink" href="#visualization-details" title="Link to this heading"></a></h2>
+<p>The visualization plots show:</p>
+<ul class="simple">
+<li><p>Side-by-side piano roll representations</p></li>
+<li><p>Original version in red, transformed in blue</p></li>
+<li><p>Note velocity indicated by color intensity</p></li>
+<li><p>Statistical information about the transformation</p></li>
+</ul>
+</section>
+<section id="using-the-examples">
+<h2>Using the Examples<a class="headerlink" href="#using-the-examples" title="Link to this heading"></a></h2>
+<p>These examples can be used to:</p>
+<ul class="simple">
+<li><p>Understand how different transformations affect MIDI data</p></li>
+<li><p>Test and verify transformation behavior</p></li>
+<li><p>Demonstrate MIDIOgre’s capabilities</p></li>
+<li><p>Guide the development of custom transformations</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

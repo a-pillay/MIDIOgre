@@ -233,6 +233,8 @@ are applied on a per-note basis, allowing for varied articulation.</p>
 and within each instrument, to a random subset of notes determined by p.
 All shifts are automatically clipped to ensure notes maintain a minimum
 duration and don’t extend beyond the track end.</p>
+<a class="transform-viz reference internal image-reference" href="_images/durationshift.png"><img alt="Visualization of DurationShift transform" class="transform-viz align-center" src="_images/durationshift.png" style="width: 100%;" />
+</a>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -350,6 +352,8 @@ Default: 1e-12</p></li>
 <p>This module provides functionality to randomly add new notes to MIDI tracks.
 The added notes can be configured in terms of their pitch range, velocity range,
 and duration range, allowing for controlled density variations in the music.</p>
+<a class="transform-viz reference internal image-reference" href="_images/noteadd.png"><img alt="Visualization of NoteAdd transform" class="transform-viz align-center" src="_images/noteadd.png" style="width: 100%;" />
+</a>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">NoteAdd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
@@ -496,6 +500,8 @@ the end of existing notes in the track</p></li>
 <p>This module provides functionality to randomly remove notes from MIDI tracks.
 The deletion process can be configured to affect a certain percentage of notes
 across selected instruments, allowing for controlled sparsification of the music.</p>
+<a class="transform-viz reference internal image-reference" href="_images/notedelete.png"><img alt="Visualization of NoteDelete transform" class="transform-viz align-center" src="_images/notedelete.png" style="width: 100%;" />
+</a>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">NoteDelete</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
@@ -608,6 +614,8 @@ Default: 1e-12</p></li>
 <p>This module provides functionality to randomly shift the onset times of MIDI notes
 while preserving their durations. The shifts can be applied to move notes earlier
 or later in time, allowing for rhythmic variations while maintaining note lengths.</p>
+<a class="transform-viz reference internal image-reference" href="_images/onsettimeshift.png"><img alt="Visualization of OnsetTimeShift transform" class="transform-viz align-center" src="_images/onsettimeshift.png" style="width: 100%;" />
+</a>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">OnsetTimeShift</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
@@ -776,6 +784,8 @@ per-note basis, allowing for complex harmonic variations.</p>
 and within each instrument, to a random subset of notes determined by p.
 All shifts are automatically clipped to stay within the valid MIDI note
 range [0, 127].</p>
+<a class="transform-viz reference internal image-reference" href="_images/pitchshift.png"><img alt="Visualization of PitchShift transform" class="transform-viz align-center" src="_images/pitchshift.png" style="width: 100%;" />
+</a>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -879,6 +889,8 @@ Default: 1e-12</p></li>
 the relative timing of notes. The tempo can be shifted up or down within specified
 bounds, and the transform can either respect existing tempo changes or apply a single
 global tempo.</p>
+<a class="transform-viz reference internal image-reference" href="_images/temposhift.png"><img alt="Visualization of TempoShift transform" class="transform-viz align-center" src="_images/temposhift.png" style="width: 100%;" />
+</a>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This transform operates on Mido MidiFile objects. If you have a PrettyMIDI object,
@@ -1088,6 +1100,8 @@ are applied on a per-note basis, allowing for varied articulation.</p>
 and within each instrument, to a random subset of notes determined by p.
 All shifts are automatically clipped to ensure notes maintain a minimum
 duration and don’t extend beyond the track end.</p>
+<a class="transform-viz reference internal image-reference" href="_images/durationshift.png"><img alt="Visualization of DurationShift transform" class="transform-viz align-center" src="_images/durationshift.png" style="width: 100%;" />
+</a>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1542,6 +1556,8 @@ per-note basis, allowing for complex harmonic variations.</p>
 and within each instrument, to a random subset of notes determined by p.
 All shifts are automatically clipped to stay within the valid MIDI note
 range [0, 127].</p>
+<a class="transform-viz reference internal image-reference" href="_images/pitchshift.png"><img alt="Visualization of PitchShift transform" class="transform-viz align-center" src="_images/pitchshift.png" style="width: 100%;" />
+</a>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
