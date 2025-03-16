@@ -4,6 +4,12 @@ This module provides functionality to randomly remove notes from MIDI tracks.
 The deletion process can be configured to affect a certain percentage of notes
 across selected instruments, allowing for controlled sparsification of the music.
 
+.. image:: ../../demo/plots/notedelete.png
+   :alt: Visualization of NoteDelete transform
+   :align: center
+   :width: 100%
+   :class: transform-viz
+
 Example:
     >>> from midiogre.augmentations import NoteDelete
     >>> import pretty_midi

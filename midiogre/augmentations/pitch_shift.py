@@ -42,6 +42,12 @@ class PitchShift(BaseMidiTransform):
     and within each instrument, to a random subset of notes determined by p.
     All shifts are automatically clipped to stay within the valid MIDI note
     range [0, 127].
+
+    .. image:: ../../demo/plots/pitchshift.png
+       :alt: Visualization of PitchShift transform
+       :align: center
+       :width: 100%
+       :class: transform-viz
     
     Args:
         max_shift (int): Maximum number of semitones by which a note pitch can

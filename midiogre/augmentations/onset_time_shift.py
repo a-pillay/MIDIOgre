@@ -4,6 +4,12 @@ This module provides functionality to randomly shift the onset times of MIDI not
 while preserving their durations. The shifts can be applied to move notes earlier
 or later in time, allowing for rhythmic variations while maintaining note lengths.
 
+.. image:: ../../demo/plots/onsettimeshift.png
+   :alt: Visualization of OnsetTimeShift transform
+   :align: center
+   :width: 100%
+   :class: transform-viz
+
 Example:
     >>> from midiogre.augmentations import OnsetTimeShift
     >>> import pretty_midi

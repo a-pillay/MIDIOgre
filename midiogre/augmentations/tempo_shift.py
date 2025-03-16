@@ -5,6 +5,12 @@ the relative timing of notes. The tempo can be shifted up or down within specifi
 bounds, and the transform can either respect existing tempo changes or apply a single
 global tempo.
 
+.. image:: ../../demo/plots/temposhift.png
+   :alt: Visualization of TempoShift transform
+   :align: center
+   :width: 100%
+   :class: transform-viz
+
 Note:
     This transform operates on Mido MidiFile objects. If you have a PrettyMIDI object,
     you must first convert it using MIDIOgre's converters:

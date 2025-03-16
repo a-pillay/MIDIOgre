@@ -4,6 +4,12 @@ This module provides functionality to randomly add new notes to MIDI tracks.
 The added notes can be configured in terms of their pitch range, velocity range,
 and duration range, allowing for controlled density variations in the music.
 
+.. image:: ../../demo/plots/noteadd.png
+   :alt: Visualization of NoteAdd transform
+   :align: center
+   :width: 100%
+   :class: transform-viz
+
 Example:
     >>> from midiogre.augmentations import NoteAdd
     >>> import pretty_midi

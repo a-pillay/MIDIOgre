@@ -42,6 +42,12 @@ class DurationShift(BaseMidiTransform):
     and within each instrument, to a random subset of notes determined by p.
     All shifts are automatically clipped to ensure notes maintain a minimum
     duration and don't extend beyond the track end.
+
+    .. image:: ../../demo/plots/durationshift.png
+       :alt: Visualization of DurationShift transform
+       :align: center
+       :width: 100%
+       :class: transform-viz
     
     Args:
         max_shift (float): Maximum time in seconds by which a note duration can
