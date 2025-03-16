@@ -3,53 +3,167 @@
 ![GitHub stars](https://img.shields.io/github/stars/a-pillay/MIDIOgre.svg?style=flat-square)
 ![GitHub forks](https://img.shields.io/github/forks/a-pillay/MIDIOgre.svg?style=flat-square)
 ![GitHub license](https://img.shields.io/github/license/a-pillay/MIDIOgre.svg?style=flat-square)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-MIDIOgre is a Python library designed for performing data augmentations on MIDI inputs, primarily for machine learning
-models operating on MIDI data. With MIDIOgre, you can easily generate variations of MIDI sequences to enrich your
-training data and improve the robustness and generalization of your models.
+MIDIOgre is a powerful Python library for performing data augmentations on MIDI inputs, primarily designed for machine learning models operating on MIDI data. With MIDIOgre, you can easily generate variations of MIDI sequences to enrich your training data and improve the robustness and generalization of your models.
 
 ![Demo Plot of MIDIOgre Transformations](docs/plot_till_ts.png)
 
-## Augmentation Functions
+## Features
 
-### Implemented
+- **Comprehensive MIDI Augmentations**: A wide range of transformations including pitch shifting, onset time modification, duration changes, and more
+- **Easy Integration**: Simple API designed to work seamlessly with machine learning workflows
+- **Customizable**: Flexible parameters for fine-tuning augmentations to your needs
+- **Efficient**: Optimized for handling large MIDI datasets
 
-- **PitchShift**: Randomly transpose (pitch shift) MIDI note values of randomly selected instruments in a MIDI file.
-- **OnsetTimeShift**: Randomly modify MIDI note onset times while keeping their total durations intact.
-- **DurationShift**: Randomly modify MIDI note durations while keeping their onset times intact.
-- **NoteDelete**: Randomly delete some notes from a MIDI instrument track.
-- **NoteAdd**: Randomly add some notes to a MIDI instrument track.
-- **TempoShift**: Randomly vary the tempo of the whole MIDI file (currently, this does not support tempo changes within
-  the file).
+## Installation
 
-### Envisaged
+### Prerequisites
 
-- **NoteSplit**: Randomly split some notes in a MIDI instrument track to a random number of chunks.
-- **VelocityShift**: Randomly alter MIDI note velocities of randomly selected instruments in a MIDI file.
-- _Swing-based augmentations_
-- _MIDI CC based augmentations_
-- _Semantically-meaningful augmentations (respects rhythms & beats)_
-- _Suggestions welcome for more!_
+- Python 3.8 or higher
+- pip package manager
 
-_(Some of these have been inspired from [mdtk](https://github.com/JamesOwers/midi_degradation_toolkit))_
+### Install from PyPI
 
-## Note
+```bash
+pip install midiogre
+```
 
-This work is highly primitive at the moment and is undergoing active development. As of now, it is simply a showcase of
-work and is not ready to be integrated into your ML workflow. However, I intend to get it usable on priority.
+### Install from source (for development)
+
+```bash
+# Clone the repository
+git clone https://github.com/a-pillay/MIDIOgre.git
+cd MIDIOgre
+
+# Create and activate a virtual environment (optional but recommended)
+python -m venv .venv
+source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
+
+# Install in editable mode with development dependencies
+pip install -e ".[dev]"
+```
+
+> **Note**: MIDIOgre uses the development version of `pretty-midi` directly from GitHub for enhanced functionality. This is handled automatically by the installation process.
+
+## Quick Start
+
+```python
+from midiogre.augmentations import PitchShift, OnsetTimeShift, NoteDelete
+from midiogre.core import Compose
+import pretty_midi
+
+# Basic usage - single file augmentation
+midi_data = pretty_midi.PrettyMIDI('input.mid')
+transform = Compose([
+    PitchShift(max_shift=3, mode='both', p=0.8),
+    OnsetTimeShift(max_shift=0.1, mode='both', p=0.5)
+])
+augmented = transform(midi_data)
+augmented.write('output.mid')
+
+# Integration with ML pipelines
+class MIDIDataset(torch.utils.data.Dataset):
+    def __getitem__(self, idx):
+        # Your MIDI loading logic here
+        midi_data = load_midi(idx)
+        return self.transform(midi_data) if self.transform else midi_data
+
+# Define augmentation pipeline for training
+transform = Compose([
+    PitchShift(max_shift=3, mode='both', p=0.8),      # Randomly transpose by ±3 semitones
+    OnsetTimeShift(max_shift=0.1, mode='both', p=0.5), # Shift note timings by up to 100ms
+    NoteDelete(p=0.3)                                  # Randomly remove up to 30% of notes
+])
+
+# Use in your training pipeline
+train_dataset = MIDIDataset(transform=transform)
+val_dataset = MIDIDataset(transform=None)  # No augmentation for validation
+```
+
+## Available Augmentations
+
+### Currently Implemented
+
+- **PitchShift**: Transpose MIDI note values of selected instruments
+- **OnsetTimeShift**: Modify note onset times while preserving durations
+- **DurationShift**: Alter note durations while maintaining onset times
+- **NoteDelete**: Remove notes from instrument tracks
+- **NoteAdd**: Add new notes to instrument tracks
+- **TempoShift**: Modify the global tempo of MIDI files
+
+### Planned Features
+
+- **NoteSplit**: Split notes into multiple segments
+- **VelocityShift**: Modify MIDI note velocities
+- Swing-based augmentations
+- MIDI CC based augmentations
+- Semantically-meaningful augmentations (respecting rhythms & beats)
+
+## Development
+
+Please note that this project is developed with the assistance of [Cursor](https://cursor.sh/), mostly for runtime optimizations, unit-testing, documentation and build pipelines.
+
+### Setting up for development
+
+```bash
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Install documentation dependencies (if working on docs)
+pip install -r requirements-docs.txt
+```
+
+### Running Tests
+
+```bash
+pytest tests/
+# For coverage report
+pytest --cov=midiogre tests/
+```
 
 ## Contributing
 
-Contributions to MIDIOgre are welcome! If you'd like to contribute, please reach out to me via email (_<
-my_github_id_without_hyphens>@cmu.edu_).
+Contributions are welcome! Here's how you can help:
 
-Some areas I could use help (will update this progressively):
+1. Fork the repository
+2. Create a new branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run the tests to ensure everything works
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
 
-- Writing extensive unit tests (not simply for the sake of maximizing code coverage).
-- Documentation (improving existing docs & adding more info to cater to developers from all kinds of music theory &
-  programming backgrounds).
+Areas where we particularly welcome contributions:
+- Comprehensive unit tests
+- Documentation improvements
+- New augmentation techniques
+- Performance optimizations
+- Bug fixes
 
 ## License
 
-This project is licensed under the MIT License - see
-the [LICENSE](https://github.com/a-pillay/MIDIOgre/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Citation
+
+If you use MIDIOgre in your research, please cite:
+
+```bibtex
+@software{midiogre2024,
+  author = {Pillay, A},
+  title = {MIDIOgre: MIDI Data Augmentation Library},
+  year = {2024},
+  publisher = {GitHub},
+  url = {https://github.com/a-pillay/MIDIOgre}
+}
+```
+
+## Acknowledgments
+
+- Inspired by [mdtk](https://github.com/JamesOwers/midi_degradation_toolkit)
+- Built with [pretty-midi](https://github.com/craffel/pretty-midi)
+
+## Contact
+
+For questions, suggestions, or collaboration opportunities, please reach out via GitHub Issues.
