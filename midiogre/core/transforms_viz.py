@@ -23,6 +23,7 @@ Example:
 import copy
 import time
 from statistics import mean
+from typing import Optional, Tuple
 
 import matplotlib
 import numpy as np
@@ -87,83 +88,166 @@ def create_proll_cmap(cmap_name: str) -> matplotlib.colors.ListedColormap:
     return alpha_cmap
 
 
+def compute_transform_stats(original_midi: pretty_midi.PrettyMIDI, 
+                          transformed_midi: pretty_midi.PrettyMIDI) -> dict:
+    """Compute statistics comparing original and transformed MIDI.
+    
+    Args:
+        original_midi: Original MIDI data
+        transformed_midi: Transformed MIDI data
+        
+    Returns:
+        dict: Statistics about the transformation including:
+            - Note count difference
+            - Average pitch difference
+            - Average velocity difference
+            - Average duration difference
+    """
+    stats = {}
+    
+    # Get all notes from both MIDIs
+    orig_notes = [note for inst in original_midi.instruments for note in inst.notes]
+    trans_notes = [note for inst in transformed_midi.instruments for note in inst.notes]
+    
+    # Basic statistics
+    stats['note_count_diff'] = len(trans_notes) - len(orig_notes)
+    
+    if orig_notes and trans_notes:
+        # Compute average differences
+        stats['avg_pitch_diff'] = mean([n.pitch for n in trans_notes]) - mean([n.pitch for n in orig_notes])
+        stats['avg_velocity_diff'] = mean([n.velocity for n in trans_notes]) - mean([n.velocity for n in orig_notes])
+        stats['avg_duration_diff'] = mean([n.end - n.start for n in trans_notes]) - mean([n.end - n.start for n in orig_notes])
+    
+    return stats
+
+
 def viz_transform(original_midi_data: pretty_midi.PrettyMIDI,
-                 transformed_proll: np.ndarray,
-                 transform_name: str):
+                 transformed_midi_data: pretty_midi.PrettyMIDI,
+                 transform_name: str,
+                 save_path: Optional[str] = None):
     """Visualize the effect of a MIDI transform.
     
     Creates a side-by-side visualization comparing the original MIDI data
     with the transformed version. The visualization uses piano roll format
-    with different colors for original and transformed data.
+    with different colors:
+    - Blue: Original/unchanged notes
+    - Gray: Deleted notes
+    - Green: Added notes
     
     Args:
-        original_midi_data (pretty_midi.PrettyMIDI): The original MIDI data.
-        transformed_proll (np.ndarray): Piano roll representation of the
-            transformed MIDI data.
-        transform_name (str): Name of the transform for the plot title.
-            
-    Note:
-        - Original data is shown in red
-        - Transformed data is shown in blue
-        - Color intensity indicates note velocity
-        - Both piano rolls are overlaid in the same plot for easy comparison
+        original_midi_data: The original MIDI data
+        transformed_midi_data: The transformed MIDI data
+        transform_name: Name of the transform for the plot title
+        save_path: Optional path to save the visualization
     """
-    fig, ax = plt.subplots(nrows=1, ncols=1)
-
+    fig = plt.figure(figsize=(15, 6))
+    
+    # Create gridspec with space for one colorbar
+    gs = plt.GridSpec(1, 3, width_ratios=[10, 10, 0.4])
+    ax1 = fig.add_subplot(gs[0])  # Original plot
+    ax2 = fig.add_subplot(gs[1])  # Transformed plot
+    cax = fig.add_subplot(gs[2])  # Single colorbar for velocity
+    
+    # Get piano rolls
     original_proll = get_piano_roll(original_midi_data)
-
-    cmap1 = create_proll_cmap('Reds')
-    cmap2 = create_proll_cmap('Blues')
-
-    hmap1 = ax.pcolor(original_proll, cmap=cmap1)
-    cbar1 = plt.colorbar(hmap1, aspect=50)
-    cbar1.ax.set_ylabel('Original')
-
-    hmap2 = ax.pcolor(transformed_proll, cmap=cmap2)
-    cbar2 = plt.colorbar(hmap2, aspect=50)
-    cbar2.ax.set_ylabel('Transformed')
-
-    ax.set_xlabel("Time Unit")
-    ax.set_ylabel("Midi Note")
-
-    plt.title('{}: Original v/s Transformed'.format(transform_name))
+    transformed_proll = get_piano_roll(transformed_midi_data)
+    
+    # Pad piano rolls to the same length
+    max_len = max(original_proll.shape[1], transformed_proll.shape[1])
+    if original_proll.shape[1] < max_len:
+        pad_width = ((0, 0), (0, max_len - original_proll.shape[1]))
+        original_proll = np.pad(original_proll, pad_width, mode='constant')
+    if transformed_proll.shape[1] < max_len:
+        pad_width = ((0, 0), (0, max_len - transformed_proll.shape[1]))
+        transformed_proll = np.pad(transformed_proll, pad_width, mode='constant')
+    
+    # Find actual note range
+    all_notes = np.where(np.logical_or(original_proll > 0, transformed_proll > 0))[0]
+    if len(all_notes) > 0:
+        min_note = max(0, min(all_notes) - 2)  # Add padding of 2 notes
+        max_note = min(127, max(all_notes) + 3)  # Add padding of 2 notes
+    else:
+        min_note, max_note = 0, 127
+    
+    # Calculate differences for visualization
+    delta_proll = transformed_proll - original_proll
+    
+    # Plot original (in blue)
+    im1 = ax1.pcolor(original_proll, cmap='Blues', vmin=0, vmax=127)
+    ax1.set_title('Original')
+    ax1.set_xlabel('Time (100 ticks per beat)')
+    ax1.set_ylabel('MIDI Note Number')
+    ax1.set_ylim(min_note, max_note)
+    
+    # Create masks for unchanged, added, and deleted notes
+    unchanged_mask = delta_proll == 0
+    added_mask = delta_proll > 0
+    deleted_mask = delta_proll < 0
+    
+    # Plot unchanged notes in blue
+    unchanged = np.ma.masked_where(~unchanged_mask, transformed_proll)
+    im2 = ax2.pcolor(unchanged, cmap='Blues', vmin=0, vmax=127)
+    
+    # Plot added notes in green
+    if not np.all(~added_mask):
+        added = np.ma.masked_where(~added_mask, transformed_proll)
+        im3 = ax2.pcolor(added, cmap='Greens', vmin=0, vmax=127)
+    
+    # Plot deleted notes in gray
+    if not np.all(~deleted_mask):
+        deleted = np.ma.masked_where(~deleted_mask, original_proll)
+        im4 = ax2.pcolor(deleted, cmap='Greys', vmin=0, vmax=127, alpha=0.5)
+    
+    ax2.set_title('Transformed (with changes highlighted)')
+    ax2.set_xlabel('Time (100 ticks per beat)')
+    ax2.set_ylabel('MIDI Note Number')
+    ax2.set_ylim(min_note, max_note)
+    
+    # Add single colorbar for velocity
+    plt.colorbar(im1, cax=cax, label='Velocity')
+    
+    # Add a small legend for the colors
+    legend_elements = [
+        plt.Rectangle((0, 0), 1, 1, facecolor='blue', alpha=0.7, label='Original/Unchanged'),
+        plt.Rectangle((0, 0), 1, 1, facecolor='green', alpha=0.7, label='Added'),
+        plt.Rectangle((0, 0), 1, 1, facecolor='gray', alpha=0.5, label='Deleted')
+    ]
+    ax2.legend(handles=legend_elements, loc='upper right', bbox_to_anchor=(1, -0.1),
+               ncol=3, fontsize=8)
+    
+    # Main title
+    fig.suptitle(f'MIDI Transform: {transform_name}', fontsize=14)
+    plt.tight_layout()
+    
+    if save_path:
+        plt.savefig(save_path, bbox_inches='tight', dpi=300)
+    
     plt.show()
-    plt.cla()
+    plt.close()
 
 
 if __name__ == '__main__':
-    # Example usage of the visualization tools
+    # Example usage showing different types of transformations
     midi_data = load_midi('../assets/example.mid')
     midi_data = truncate_midi(midi_data, 100)
-    save_midi(midi_data, '../assets/short.mid')
-
-    # Create a transform pipeline with various augmentations
-    midi_transform = Compose([
-        ConvertToMido(),
-        TempoShift(max_shift=10, mode='down', tempo_range=(30.0, 200.0), p=0.1),
-        ConvertToPrettyMIDI(),
-        PitchShift(max_shift=5, mode='both', p_instruments=1.0, p=0.1),
-        OnsetTimeShift(max_shift=1.2, mode='both', p_instruments=1.0, p=0.1),
-        DurationShift(max_shift=0.5, mode='both', p_instruments=1.0, p=0.1),
-        NoteDelete(p_instruments=1.0, p=0.1),
-        NoteAdd(note_num_range=(50, 80), note_velocity_range=(20, 120), note_duration_range=(0.5, 1.5),
-                restrict_to_instrument_time=True, p_instruments=1.0, p=0.1),
-
-        # ToPRollTensor(device='cpu')
+    
+    # Example 1: Pitch Shift
+    pitch_transform = Compose([PitchShift(max_shift=5, mode='both', p=1.0)])
+    transformed = pitch_transform(copy.deepcopy(midi_data))
+    viz_transform(midi_data, transformed, 'Pitch Shift')
+    
+    # Example 2: Note Addition/Deletion
+    note_transform = Compose([
+        NoteDelete(p=0.2),
+        NoteAdd(note_num_range=(50, 80), p=0.3)
     ])
-
-    # Benchmark transform pipeline
-    num_iters = 5
-    durns = []
-    for i in range(num_iters):
-        transformed_midi_data = copy.deepcopy('../assets/example.mid')
-        overall_start = time.time()
-        transformed_midi_data = midi_transform(transformed_midi_data)
-        durns.append(time.time() - overall_start)
-    print("Mean time taken for {} iters of {} MIDIOgre transforms = {}s".format(num_iters, len(midi_transform),
-                                                                                mean(durns)))
-
-    # Save and visualize results
-    save_midi(transformed_midi_data, '../assets/short_transformed.mid')
-    transformed_midi_data = truncate_midi(transformed_midi_data, 100)
-    viz_transform(midi_data, get_piano_roll(transformed_midi_data), 'After MIDIOgre Augmentations')
+    transformed = note_transform(copy.deepcopy(midi_data))
+    viz_transform(midi_data, transformed, 'Note Modification')
+    
+    # Example 3: Time-based transforms
+    time_transform = Compose([
+        OnsetTimeShift(max_shift=0.5, mode='both', p=1.0),
+        DurationShift(max_shift=0.2, mode='both', p=1.0)
+    ])
+    transformed = time_transform(copy.deepcopy(midi_data))
+    viz_transform(midi_data, transformed, 'Time Modification')
