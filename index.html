@@ -83,58 +83,182 @@
 <h2>MIDIOgre<a class="headerlink" href="#midiogre" title="Link to this heading"></a></h2>
 <p><img alt="GitHub stars" src="https://img.shields.io/github/stars/a-pillay/MIDIOgre.svg?style=flat-square" />
 <img alt="GitHub forks" src="https://img.shields.io/github/forks/a-pillay/MIDIOgre.svg?style=flat-square" />
-<img alt="GitHub license" src="https://img.shields.io/github/license/a-pillay/MIDIOgre.svg?style=flat-square" /></p>
-<p>MIDIOgre is a Python library designed for performing data augmentations on MIDI inputs, primarily for machine learning
-models operating on MIDI data. With MIDIOgre, you can easily generate variations of MIDI sequences to enrich your
-training data and improve the robustness and generalization of your models.</p>
+<img alt="GitHub license" src="https://img.shields.io/github/license/a-pillay/MIDIOgre.svg?style=flat-square" />
+<a class="reference external" href="https://www.python.org/downloads/"><img alt="Python 3.8+" src="https://img.shields.io/badge/python-3.8+-blue.svg" /></a></p>
+<p>MIDIOgre is a powerful Python library for performing data augmentations on MIDI inputs, primarily designed for machine learning models operating on MIDI data. With MIDIOgre, you can easily generate variations of MIDI sequences to enrich your training data and improve the robustness and generalization of your models.</p>
 <p><img alt="Demo Plot of MIDIOgre Transformations" src="docs/plot_till_ts.png" /></p>
-<section id="augmentation-functions">
-<h3>Augmentation Functions<a class="headerlink" href="#augmentation-functions" title="Link to this heading"></a></h3>
-<section id="implemented">
-<h4>Implemented<a class="headerlink" href="#implemented" title="Link to this heading"></a></h4>
+<section id="features">
+<h3>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><strong>PitchShift</strong>: Randomly transpose (pitch shift) MIDI note values of randomly selected instruments in a MIDI file.</p></li>
-<li><p><strong>OnsetTimeShift</strong>: Randomly modify MIDI note onset times while keeping their total durations intact.</p></li>
-<li><p><strong>DurationShift</strong>: Randomly modify MIDI note durations while keeping their onset times intact.</p></li>
-<li><p><strong>NoteDelete</strong>: Randomly delete some notes from a MIDI instrument track.</p></li>
-<li><p><strong>NoteAdd</strong>: Randomly add some notes to a MIDI instrument track.</p></li>
-<li><p><strong>TempoShift</strong>: Randomly vary the tempo of the whole MIDI file (currently, this does not support tempo changes within
-the file).</p></li>
+<li><p><strong>Comprehensive MIDI Augmentations</strong>: A wide range of transformations including pitch shifting, onset time modification, duration changes, and more</p></li>
+<li><p><strong>Easy Integration</strong>: Simple API designed to work seamlessly with machine learning workflows</p></li>
+<li><p><strong>Customizable</strong>: Flexible parameters for fine-tuning augmentations to your needs</p></li>
+<li><p><strong>Efficient</strong>: Optimized for handling large MIDI datasets</p></li>
 </ul>
 </section>
-<section id="envisaged">
-<h4>Envisaged<a class="headerlink" href="#envisaged" title="Link to this heading"></a></h4>
+<section id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h3>
+<section id="prerequisites">
+<h4>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h4>
 <ul class="simple">
-<li><p><strong>NoteSplit</strong>: Randomly split some notes in a MIDI instrument track to a random number of chunks.</p></li>
-<li><p><strong>VelocityShift</strong>: Randomly alter MIDI note velocities of randomly selected instruments in a MIDI file.</p></li>
-<li><p><em>Swing-based augmentations</em></p></li>
-<li><p><em>MIDI CC based augmentations</em></p></li>
-<li><p><em>Semantically-meaningful augmentations (respects rhythms &amp; beats)</em></p></li>
-<li><p><em>Suggestions welcome for more!</em></p></li>
+<li><p>Python 3.8 or higher</p></li>
+<li><p>pip package manager</p></li>
 </ul>
-<p><em>(Some of these have been inspired from <a class="reference external" href="https://github.com/JamesOwers/midi_degradation_toolkit">mdtk</a>)</em></p>
+</section>
+<section id="install-from-pypi">
+<h4>Install from PyPI<a class="headerlink" href="#install-from-pypi" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>midiogre
+</pre></div>
+</div>
+</section>
+<section id="install-from-source-for-development">
+<h4>Install from source (for development)<a class="headerlink" href="#install-from-source-for-development" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/a-pillay/MIDIOgre.git
+<span class="nb">cd</span><span class="w"> </span>MIDIOgre
+
+<span class="c1"># Create and activate a virtual environment (optional but recommended)</span>
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">  </span><span class="c1"># On Windows, use `.venv\Scripts\activate`</span>
+
+<span class="c1"># Install in editable mode with development dependencies</span>
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong>Note</strong>: MIDIOgre uses the development version of <code class="docutils literal notranslate"><span class="pre">pretty-midi</span></code> directly from GitHub for enhanced functionality. This is handled automatically by the installation process.</p>
+</div></blockquote>
 </section>
 </section>
-<section id="note">
-<h3>Note<a class="headerlink" href="#note" title="Link to this heading"></a></h3>
-<p>This work is highly primitive at the moment and is undergoing active development. As of now, it is simply a showcase of
-work and is not ready to be integrated into your ML workflow. However, I intend to get it usable on priority.</p>
+<section id="quick-start">
+<h3>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.augmentations</span><span class="w"> </span><span class="kn">import</span> <span class="n">PitchShift</span><span class="p">,</span> <span class="n">OnsetTimeShift</span><span class="p">,</span> <span class="n">NoteDelete</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">midiogre.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Compose</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pretty_midi</span>
+
+<span class="c1"># Basic usage - single file augmentation</span>
+<span class="n">midi_data</span> <span class="o">=</span> <span class="n">pretty_midi</span><span class="o">.</span><span class="n">PrettyMIDI</span><span class="p">(</span><span class="s1">&#39;input.mid&#39;</span><span class="p">)</span>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">Compose</span><span class="p">([</span>
+    <span class="n">PitchShift</span><span class="p">(</span><span class="n">max_shift</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+    <span class="n">OnsetTimeShift</span><span class="p">(</span><span class="n">max_shift</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="p">])</span>
+<span class="n">augmented</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span>
+<span class="n">augmented</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;output.mid&#39;</span><span class="p">)</span>
+
+<span class="c1"># Integration with ML pipelines</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MIDIDataset</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="c1"># Your MIDI loading logic here</span>
+        <span class="n">midi_data</span> <span class="o">=</span> <span class="n">load_midi</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">midi_data</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="k">else</span> <span class="n">midi_data</span>
+
+<span class="c1"># Define augmentation pipeline for training</span>
+<span class="n">transform</span> <span class="o">=</span> <span class="n">Compose</span><span class="p">([</span>
+    <span class="n">PitchShift</span><span class="p">(</span><span class="n">max_shift</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>      <span class="c1"># Randomly transpose by ±3 semitones</span>
+    <span class="n">OnsetTimeShift</span><span class="p">(</span><span class="n">max_shift</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span> <span class="c1"># Shift note timings by up to 100ms</span>
+    <span class="n">NoteDelete</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>                                  <span class="c1"># Randomly remove up to 30% of notes</span>
+<span class="p">])</span>
+
+<span class="c1"># Use in your training pipeline</span>
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">MIDIDataset</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">)</span>
+<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">MIDIDataset</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># No augmentation for validation</span>
+</pre></div>
+</div>
+</section>
+<section id="available-augmentations">
+<h3>Available Augmentations<a class="headerlink" href="#available-augmentations" title="Link to this heading"></a></h3>
+<section id="currently-implemented">
+<h4>Currently Implemented<a class="headerlink" href="#currently-implemented" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>PitchShift</strong>: Transpose MIDI note values of selected instruments</p></li>
+<li><p><strong>OnsetTimeShift</strong>: Modify note onset times while preserving durations</p></li>
+<li><p><strong>DurationShift</strong>: Alter note durations while maintaining onset times</p></li>
+<li><p><strong>NoteDelete</strong>: Remove notes from instrument tracks</p></li>
+<li><p><strong>NoteAdd</strong>: Add new notes to instrument tracks</p></li>
+<li><p><strong>TempoShift</strong>: Modify the global tempo of MIDI files</p></li>
+</ul>
+</section>
+<section id="planned-features">
+<h4>Planned Features<a class="headerlink" href="#planned-features" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>NoteSplit</strong>: Split notes into multiple segments</p></li>
+<li><p><strong>VelocityShift</strong>: Modify MIDI note velocities</p></li>
+<li><p>Swing-based augmentations</p></li>
+<li><p>MIDI CC based augmentations</p></li>
+<li><p>Semantically-meaningful augmentations (respecting rhythms &amp; beats)</p></li>
+</ul>
+</section>
+</section>
+<section id="development">
+<h3>Development<a class="headerlink" href="#development" title="Link to this heading"></a></h3>
+<p>Please note that this project is developed with the assistance of <a class="reference external" href="https://cursor.sh/">Cursor</a>, mostly for runtime optimizations, unit-testing, documentation and build pipelines.</p>
+<section id="setting-up-for-development">
+<h4>Setting up for development<a class="headerlink" href="#setting-up-for-development" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install development dependencies</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-dev.txt
+
+<span class="c1"># Install documentation dependencies (if working on docs)</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements-docs.txt
+</pre></div>
+</div>
+</section>
+<section id="running-tests">
+<h4>Running Tests<a class="headerlink" href="#running-tests" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>tests/
+<span class="c1"># For coverage report</span>
+pytest<span class="w"> </span>--cov<span class="o">=</span>midiogre<span class="w"> </span>tests/
+</pre></div>
+</div>
+</section>
 </section>
 <section id="contributing">
 <h3>Contributing<a class="headerlink" href="#contributing" title="Link to this heading"></a></h3>
-<p>Contributions to MIDIOgre are welcome! If you’d like to contribute, please reach out to me via email (<em>&lt;
-my_github_id_without_hyphens&gt;&#64;cmu.edu</em>).</p>
-<p>Some areas I could use help (will update this progressively):</p>
+<p>Contributions are welcome! Here’s how you can help:</p>
+<ol class="arabic simple">
+<li><p>Fork the repository</p></li>
+<li><p>Create a new branch (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">-b</span> <span class="pre">feature/amazing-feature</span></code>)</p></li>
+<li><p>Make your changes</p></li>
+<li><p>Run the tests to ensure everything works</p></li>
+<li><p>Commit your changes (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">'Add</span> <span class="pre">amazing</span> <span class="pre">feature'</span></code>)</p></li>
+<li><p>Push to the branch (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">feature/amazing-feature</span></code>)</p></li>
+<li><p>Open a Pull Request</p></li>
+</ol>
+<p>Areas where we particularly welcome contributions:</p>
 <ul class="simple">
-<li><p>Writing extensive unit tests (not simply for the sake of maximizing code coverage).</p></li>
-<li><p>Documentation (improving existing docs &amp; adding more info to cater to developers from all kinds of music theory &amp;
-programming backgrounds).</p></li>
+<li><p>Comprehensive unit tests</p></li>
+<li><p>Documentation improvements</p></li>
+<li><p>New augmentation techniques</p></li>
+<li><p>Performance optimizations</p></li>
+<li><p>Bug fixes</p></li>
 </ul>
 </section>
 <section id="license">
 <h3>License<a class="headerlink" href="#license" title="Link to this heading"></a></h3>
-<p>This project is licensed under the MIT License - see
-the <a class="reference external" href="https://github.com/a-pillay/MIDIOgre/blob/main/LICENSE">LICENSE</a> file for details.</p>
+<p>This project is licensed under the MIT License - see the <a class="reference internal" href="#LICENSE"><span class="xref myst">LICENSE</span></a> file for details.</p>
+</section>
+<section id="citation">
+<h3>Citation<a class="headerlink" href="#citation" title="Link to this heading"></a></h3>
+<p>If you use MIDIOgre in your research, please cite:</p>
+<div class="highlight-bibtex notranslate"><div class="highlight"><pre><span></span><span class="nc">@software</span><span class="p">{</span><span class="nl">midiogre2024</span><span class="p">,</span>
+<span class="w">  </span><span class="na">author</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{Pillay, A}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">title</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{MIDIOgre: MIDI Data Augmentation Library}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">year</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{2024}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">publisher</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{GitHub}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">url</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{https://github.com/a-pillay/MIDIOgre}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="acknowledgments">
+<h3>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Inspired by <a class="reference external" href="https://github.com/JamesOwers/midi_degradation_toolkit">mdtk</a></p></li>
+<li><p>Built with <a class="reference external" href="https://github.com/craffel/pretty-midi">pretty-midi</a></p></li>
+</ul>
+</section>
+<section id="contact">
+<h3>Contact<a class="headerlink" href="#contact" title="Link to this heading"></a></h3>
+<p>For questions, suggestions, or collaboration opportunities, please reach out via GitHub Issues.</p>
 </section>
 </section>
 </section>
