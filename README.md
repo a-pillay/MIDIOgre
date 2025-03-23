@@ -59,6 +59,16 @@ source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
 # Install in editable mode with development dependencies
 pip install -e ".[dev]"
 ```
+
+## Documentation
+
+The complete documentation for MIDIOgre is available online at [https://a-pillay.github.io/MIDIOgre/](https://a-pillay.github.io/MIDIOgre/). The documentation includes:
+- Detailed API reference
+- Usage examples
+- Tutorials
+- Best practices
+- Development guidelines
+
 ## Quick Start
 
 ```python
