@@ -5,14 +5,16 @@
 ![GitHub license](https://img.shields.io/github/license/a-pillay/MIDIOgre.svg?style=flat-square)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-MIDIOgre is a powerful Python library for performing data augmentations on MIDI inputs, primarily designed for machine learning models operating on MIDI data. With MIDIOgre, you can easily generate variations of MIDI sequences to enrich your training data and improve the robustness and generalization of your models.
+MIDIOgre is a powerful Python library for performing data augmentations on MIDI inputs, primarily designed for machine learning models operating on symbolic music data. With MIDIOgre, you can easily generate variations of MIDI sequences to enrich your training data and improve the robustness and generalization of your models.
+
+While inspired by the functionalities of existing libraries like [mdtk](https://github.com/JamesOwers/midi_degradation_toolkit) and [miditok](https://miditok.readthedocs.io/en/v2.0.1/data_augmentation.html), MIDIOgre offers _on-the-fly_ augmentation similar to [albumentation](https://github.com/albumentations-team/albumentations) and [audiomentation](https://github.com/iver56/audiomentations), generating randomly modified MIDI data directly in RAM to enable extensive augmentation with minimal memory overhead.
 
 ![A plot of implemented MIDIOgre augmentations.](https://raw.githubusercontent.com/a-pillay/MIDIOgre/main/demo/plots/combined.png)
 
 ## Features
 
 - **Comprehensive MIDI Augmentations**: A wide range of transformations including pitch shifting, onset time modification, duration changes, and more
-- **Easy Integration**: Simple API designed to work seamlessly with machine learning workflows
+- **Easy Integration**: API design follows [PyTorch augmentation](https://pytorch.org/vision/main/transforms.html) scheme to integrate seamlessly with machine learning workflows 
 - **Customizable**: Flexible parameters for fine-tuning augmentations to your needs
 - **Efficient**: Optimized for handling large MIDI datasets
 
@@ -29,6 +31,20 @@ MIDIOgre is a powerful Python library for performing data augmentations on MIDI 
 pip install midiogre
 ```
 
+The following scenarios will require the development version of `pretty-midi` from GitHub:
+- When using `TempoShift` followed by other MIDIOgre augmentations in a `Compose` pipeline
+- This is because `TempoShift` returns a `mido.MidiFile` object that needs to be converted back to a `pretty_midi.PrettyMIDI` object
+
+If you need this functionality, install the development version of `pretty-midi`:
+```bash
+pip install "pretty-midi @ git+https://github.com/craffel/pretty-midi"
+```
+
+If you encounter any installation issues, try upgrading pip first:
+```bash
+pip install --upgrade pip
+```
+
 ### Install from source (for development)
 
 ```bash
@@ -43,9 +59,6 @@ source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
 # Install in editable mode with development dependencies
 pip install -e ".[dev]"
 ```
-
-> **Note**: MIDIOgre uses the development version of `pretty-midi` directly from GitHub for enhanced functionality. This is handled automatically by the installation process.
-
 ## Quick Start
 
 ```python
@@ -161,7 +174,11 @@ If you use MIDIOgre in your research, please cite:
 
 ## Acknowledgments
 
-- Inspired by [mdtk](https://github.com/JamesOwers/midi_degradation_toolkit)
+- Inspired by:
+    - [mdtk](https://github.com/JamesOwers/midi_degradation_toolkit)
+    - [miditok](https://miditok.readthedocs.io/en/v2.0.1/data_augmentation.html)
+    - [albumentation](https://github.com/albumentations-team/albumentations)
+    - [audiomentation](https://github.com/iver56/audiomentations)
 - Built with [pretty-midi](https://github.com/craffel/pretty-midi)
 
 ## Contact
