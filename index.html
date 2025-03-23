@@ -85,13 +85,14 @@
 <img alt="GitHub forks" src="https://img.shields.io/github/forks/a-pillay/MIDIOgre.svg?style=flat-square" />
 <img alt="GitHub license" src="https://img.shields.io/github/license/a-pillay/MIDIOgre.svg?style=flat-square" />
 <a class="reference external" href="https://www.python.org/downloads/"><img alt="Python 3.8+" src="https://img.shields.io/badge/python-3.8+-blue.svg" /></a></p>
-<p>MIDIOgre is a powerful Python library for performing data augmentations on MIDI inputs, primarily designed for machine learning models operating on MIDI data. With MIDIOgre, you can easily generate variations of MIDI sequences to enrich your training data and improve the robustness and generalization of your models.</p>
+<p>MIDIOgre is a powerful Python library for performing data augmentations on MIDI inputs, primarily designed for machine learning models operating on symbolic music data. With MIDIOgre, you can easily generate variations of MIDI sequences to enrich your training data and improve the robustness and generalization of your models.</p>
+<p>While inspired by the functionalities of existing libraries like <a class="reference external" href="https://github.com/JamesOwers/midi_degradation_toolkit">mdtk</a> and <a class="reference external" href="https://miditok.readthedocs.io/en/v2.0.1/data_augmentation.html">miditok</a>, MIDIOgre offers <em>on-the-fly</em> augmentation similar to <a class="reference external" href="https://github.com/albumentations-team/albumentations">albumentation</a> and <a class="reference external" href="https://github.com/iver56/audiomentations">audiomentation</a>, generating randomly modified MIDI data directly in RAM to enable extensive augmentation with minimal memory overhead.</p>
 <p><img alt="A plot of implemented MIDIOgre augmentations." src="https://raw.githubusercontent.com/a-pillay/MIDIOgre/main/demo/plots/combined.png" /></p>
 <section id="features">
 <h3>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><strong>Comprehensive MIDI Augmentations</strong>: A wide range of transformations including pitch shifting, onset time modification, duration changes, and more</p></li>
-<li><p><strong>Easy Integration</strong>: Simple API designed to work seamlessly with machine learning workflows</p></li>
+<li><p><strong>Easy Integration</strong>: API design follows <a class="reference external" href="https://pytorch.org/vision/main/transforms.html">PyTorch augmentation</a> scheme to integrate seamlessly with machine learning workflows</p></li>
 <li><p><strong>Customizable</strong>: Flexible parameters for fine-tuning augmentations to your needs</p></li>
 <li><p><strong>Efficient</strong>: Optimized for handling large MIDI datasets</p></li>
 </ul>
@@ -110,6 +111,19 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>midiogre
 </pre></div>
 </div>
+<p>The following scenarios will require the development version of <code class="docutils literal notranslate"><span class="pre">pretty-midi</span></code> from GitHub:</p>
+<ul class="simple">
+<li><p>When using <code class="docutils literal notranslate"><span class="pre">TempoShift</span></code> followed by other MIDIOgre augmentations in a <code class="docutils literal notranslate"><span class="pre">Compose</span></code> pipeline</p></li>
+<li><p>This is because <code class="docutils literal notranslate"><span class="pre">TempoShift</span></code> returns a <code class="docutils literal notranslate"><span class="pre">mido.MidiFile</span></code> object that needs to be converted back to a <code class="docutils literal notranslate"><span class="pre">pretty_midi.PrettyMIDI</span></code> object</p></li>
+</ul>
+<p>If you need this functionality, install the development version of <code class="docutils literal notranslate"><span class="pre">pretty-midi</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;pretty-midi @ git+https://github.com/craffel/pretty-midi&quot;</span>
+</pre></div>
+</div>
+<p>If you encounter any installation issues, try upgrading pip first:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+</pre></div>
+</div>
 </section>
 <section id="install-from-source-for-development">
 <h4>Install from source (for development)<a class="headerlink" href="#install-from-source-for-development" title="Link to this heading"></a></h4>
@@ -125,9 +139,6 @@ python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </s
 pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
 </pre></div>
 </div>
-<blockquote>
-<div><p><strong>Note</strong>: MIDIOgre uses the development version of <code class="docutils literal notranslate"><span class="pre">pretty-midi</span></code> directly from GitHub for enhanced functionality. This is handled automatically by the installation process.</p>
-</div></blockquote>
 </section>
 </section>
 <section id="quick-start">
@@ -252,7 +263,14 @@ pytest<span class="w"> </span>--cov<span class="o">=</span>midiogre<span class="
 <section id="acknowledgments">
 <h3>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>Inspired by <a class="reference external" href="https://github.com/JamesOwers/midi_degradation_toolkit">mdtk</a></p></li>
+<li><p>Inspired by:</p>
+<ul>
+<li><p><a class="reference external" href="https://github.com/JamesOwers/midi_degradation_toolkit">mdtk</a></p></li>
+<li><p><a class="reference external" href="https://miditok.readthedocs.io/en/v2.0.1/data_augmentation.html">miditok</a></p></li>
+<li><p><a class="reference external" href="https://github.com/albumentations-team/albumentations">albumentation</a></p></li>
+<li><p><a class="reference external" href="https://github.com/iver56/audiomentations">audiomentation</a></p></li>
+</ul>
+</li>
 <li><p>Built with <a class="reference external" href="https://github.com/craffel/pretty-midi">pretty-midi</a></p></li>
 </ul>
 </section>
