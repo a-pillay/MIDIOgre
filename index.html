@@ -232,6 +232,21 @@ pytest<span class="w"> </span>--cov<span class="o">=</span>midiogre<span class="
 </pre></div>
 </div>
 </section>
+<section id="versioning">
+<h4>Versioning<a class="headerlink" href="#versioning" title="Link to this heading"></a></h4>
+<p>MIDIOgre uses <a class="reference external" href="https://github.com/pypa/setuptools_scm">setuptools_scm</a> for versioning based on git tags:</p>
+<ul>
+<li><p><strong>Release versions</strong> (e.g., <code class="docutils literal notranslate"><span class="pre">v0.1.8</span></code>): Created from git tags. To create a new release:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>tag<span class="w"> </span>-a<span class="w"> </span>v0.1.8<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Release v0.1.8&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v0.1.8
+</pre></div>
+</div>
+<p>This will trigger the release workflow and publish to PyPI.</p>
+</li>
+<li><p><strong>Development versions</strong> (e.g., <code class="docutils literal notranslate"><span class="pre">v0.1.8.dev0+g3a4d9f2</span></code>): Automatically generated for commits to the main branch.
+These are also published to PyPI but marked as development releases.</p></li>
+</ul>
+</section>
 </section>
 <section id="contributing">
 <h3>Contributing<a class="headerlink" href="#contributing" title="Link to this heading"></a></h3>
