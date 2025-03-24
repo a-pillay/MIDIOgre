@@ -46,7 +46,7 @@ jobs:
         
         # Verify that the built package is a release version (not a dev version)
         WHEEL_FILE=$(ls dist/*.whl | head -n 1)
-        if [[ $WHEEL_FILE == *dev* ]]; then
+        if [[ $WHEEL_FILE != *post0* ]]; then
           echo "Error: Build produced a development version from a tag"
           exit 1
         fi
