@@ -48,7 +48,7 @@ jobs:
         twine check dist/*
         # Verify this is a dev version
         WHEEL_FILE=$(ls dist/*.whl | head -n 1)
-        if [[ $WHEEL_FILE != *dev* ]]; then
+        if [[ $WHEEL_FILE == *post0* ]]; then
           echo "Warning: Not a development version. Skipping upload."
           echo "skip_upload=true" >> $GITHUB_OUTPUT
         else

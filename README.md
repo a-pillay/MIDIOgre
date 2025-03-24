@@ -149,14 +149,14 @@ pytest --cov=midiogre tests/
 
 MIDIOgre uses [setuptools_scm](https://github.com/pypa/setuptools_scm) for versioning based on git tags:
 
-- **Release versions** (e.g., `v0.1.8`): Created from git tags. To create a new release:
+- **Release versions** (e.g., `vX.Y.Z`): Created from git tags. To create a new release:
   ```bash
-  git tag -a v0.1.8 -m "Release v0.1.8"
-  git push origin v0.1.8
+  git tag -a vX.Y.Z -m "Release vX.Y.Z"
+  git push origin vX.Y.Z
   ```
-  This will trigger the release workflow and publish to PyPI.
+  This will trigger the release workflow and publish to PyPI with version `X.Y.Z.post0`.
 
-- **Development versions** (e.g., `v0.1.8.dev0+g3a4d9f2`): Automatically generated for commits to the main branch.
+- **Development versions** (e.g., `vX.Y.Z.postN`): Automatically generated for commits to the main branch.
   These are also published to PyPI but marked as development releases.
 
 ## Contributing
