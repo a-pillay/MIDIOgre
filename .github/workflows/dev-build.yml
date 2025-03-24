@@ -1,16 +1,18 @@
-name: Publish to PyPI
+name: Development Build
 
 on:
   push:
-    tags:
-      - 'v*'  # Trigger on version tags
+    branches:
+      - main
+      - 'feature/**'
+      - 'release/**'
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment: release
-    permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
     
     steps:
     - uses: actions/checkout@v3
@@ -39,10 +41,5 @@ jobs:
     - name: Check package
       run: |
         twine check dist/*
-        echo "Package version from tag: ${GITHUB_REF#refs/tags/v}"
-    
-    - name: Publish package to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        verbose: true
-        print-hash: true 
+        # Print the version that would be used
+        python -c "from setuptools_scm import get_version; print(f'Development version: {get_version()}')" 
