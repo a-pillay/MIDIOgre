@@ -1,9 +1,8 @@
-name: Development Build
+name: Test Feature Branches
 
 on:
   push:
     branches:
-      - main
       - 'feature/**'
       - 'release/**'
   pull_request:

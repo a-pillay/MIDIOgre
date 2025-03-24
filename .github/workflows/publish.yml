@@ -1,4 +1,4 @@
-name: Publish to PyPI
+name: Publish Release to PyPI
 
 on:
   push:
@@ -36,10 +36,20 @@ jobs:
     - name: Build package
       run: python -m build
     
-    - name: Check package
+    - name: Check package and verify release version
       run: |
         twine check dist/*
-        echo "Package version from tag: ${GITHUB_REF#refs/tags/v}"
+        # Extract version from tag (remove 'v' prefix)
+        TAG_VERSION=${GITHUB_REF#refs/tags/v}
+        echo "Package version from tag: $TAG_VERSION"
+        
+        # Verify that the built package is a release version (not a dev version)
+        WHEEL_FILE=$(ls dist/*.whl | head -n 1)
+        if [[ $WHEEL_FILE == *dev* ]]; then
+          echo "Error: Build produced a development version from a tag"
+          exit 1
+        fi
+        echo "Verified release version build"
     
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
