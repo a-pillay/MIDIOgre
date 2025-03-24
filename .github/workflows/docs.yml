@@ -1,5 +1,5 @@
 name: Documentation
-
+# This workflow is used to build and deploy the documentation to GitHub Pages
 on:
   push:
     branches: [ main ]
