@@ -32,8 +32,8 @@ Documentation = "https://a-pillay.github.io/MIDIOgre/"
 
 [tool.setuptools_scm]
 write_to = "midiogre/_version.py"
-version_scheme = "guess-next-dev"
-local_scheme = "no-local-version"
+version_scheme = "post-release"
+local_scheme = "node-and-date"
 
 [tool.black]
 line-length = 88
