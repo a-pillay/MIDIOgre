@@ -15,7 +15,6 @@ setup(
     packages=find_packages(exclude=["demo", "tests"]),
     use_scm_version={
         "write_to": "midiogre/_version.py",
-        "version_scheme": "release",
     },
     setup_requires=['setuptools_scm'],
     license='MIT',
